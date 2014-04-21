@@ -248,33 +248,53 @@ public class Mastermind_View extends JFrame
 				{
 					JFileChooser jFileChooser = new JFileChooser();
 					jFileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+
 					if(jFileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
 					{
-						File file = jFileChooser.getSelectedFile();
-						Mastermind_File.Save_Mastermind(mastermind, file.getAbsolutePath());
+						try
+						{
+							Mastermind_File.Save_Mastermind(mastermind, jFileChooser.getSelectedFile());
+						}
+						catch (IOException e)
+						{
+							e.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Error");
+						}
 					}
 				}
 			});
+
 			JMenuItem jMenuItem_load = new JMenuItem("Load");
 			jMenuItem_load.addActionListener(new ActionListener()
 			{
-				
 				@Override
 				public void actionPerformed(ActionEvent arg0)
 				{
 					JFileChooser jFileChooser = new JFileChooser();
 					jFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+
 					if(jFileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
 					{
-						File file = jFileChooser.getSelectedFile();
-						if(Mastermind_File.Load_Mastermind(file.getAbsolutePath()) != null)
+						Mastermind mastermindFile;
+						try
 						{
-						mastermind.setMastermind(Mastermind_File.Load_Mastermind(file.getAbsolutePath()));
-						update();
-						}else{
-							JOptionPane.showMessageDialog(null, "Wrong or Corrupted File");
+							mastermindFile = Mastermind_File.Load_Mastermind(jFileChooser.getSelectedFile());
 						}
-						
+						catch (ClassNotFoundException e)
+						{
+							e.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Wrong or Corrupted File");
+							return;
+						}
+						catch (IOException e)
+						{
+							e.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Wrong or Corrupted File");
+							return;
+						}
+
+						mastermind.setMastermind(mastermindFile);
+						update();
 					}
 				}
 			});
