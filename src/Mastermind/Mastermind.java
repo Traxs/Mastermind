@@ -40,12 +40,17 @@ public class Mastermind implements java.io.Serializable
 
 	public void setMastermind(Mastermind mastermind)
 	{
-		this.SecretCode = mastermind.SecretCode;
-		this.codeLength = mastermind.codeLength;
-		this.rowLength = mastermind.rowLength;
-		this.colorLength = mastermind.codeLength;
-		this.rows = mastermind.rows;
-		this.ki = new KI(this, colorLength, codeLength);
+		if(mastermind.getClass().isInstance(this))
+		{
+			this.SecretCode = mastermind.SecretCode;
+			this.codeLength = mastermind.codeLength;
+			this.rowLength = mastermind.rowLength;
+			this.colorLength = mastermind.codeLength;
+			this.rows = mastermind.rows;
+			this.ki = new KI(this, colorLength, codeLength);
+		}else{
+			System.out.print("Class or Header");
+		}
 	}
 	
 	private void genSecretCode()

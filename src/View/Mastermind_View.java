@@ -267,8 +267,14 @@ public class Mastermind_View extends JFrame
 					if(jFileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
 					{
 						File file = jFileChooser.getSelectedFile();
+						if(Mastermind_File.Load_Mastermind(file.getAbsolutePath()) != null)
+						{
 						mastermind.setMastermind(Mastermind_File.Load_Mastermind(file.getAbsolutePath()));
 						update();
+						}else{
+							JOptionPane.showMessageDialog(null, "Wrong or Corrupted File");
+						}
+						
 					}
 				}
 			});
