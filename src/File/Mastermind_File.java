@@ -9,7 +9,6 @@ import Mastermind.Mastermind;
 
 public class Mastermind_File
 {
-	/* SO HALLo*/
 	public static void Save_Mastermind(Mastermind mastermind, String path)
 	{
 		try
