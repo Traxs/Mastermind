@@ -11,14 +11,15 @@ public class Stone_View extends JComponent
 	private static final long serialVersionUID = -2760172724481463167L;
 
 	protected StoneCode Code;
+	public static int StoneSize = 55; //Groesse eines Spielsteins
 
 	public Stone_View(StoneCode Code)
 	{
 		this.Code = Code;
 
-		setMinimumSize(new Dimension(55, 55));
-		setMaximumSize(new Dimension(55, 55));
-		setPreferredSize(new Dimension(55, 55));
+		setMinimumSize(new Dimension(StoneSize, StoneSize));
+		setMaximumSize(new Dimension(StoneSize, StoneSize));
+		setPreferredSize(new Dimension(StoneSize, StoneSize));
 	}
 	
 	public StoneCode getCode()
