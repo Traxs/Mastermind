@@ -6,29 +6,34 @@ public class Row implements java.io.Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 5164485915316272767L;
-	private int Red;
-	private int White;
-	private StoneCode[] Code;
+	private int red;
+	private int white;
+	private int[] code;
 	
-	public Row(StoneCode[] Code, int Red, int White)
+	public Row(int[] code, int red, int white)
 	{
-		this.Red = Red;
-		this.White = White;
-		this.Code = Code;
+		this.red = red;
+		this.white = white;
+		this.code = code;
 	}
 	
 	public int getRed()
 	{
-		return Red;
+		return red;
 	}
 	
 	public int getWhite()
 	{
-		return White;
+		return white;
 	}
 
-	public StoneCode[] getCode()
+	public int[] getCode()
 	{
-		return Code;
+		return code;
+	}
+	
+	public int getCodeLength()
+	{
+		return code.length;
 	}
 }

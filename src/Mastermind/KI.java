@@ -68,7 +68,7 @@ public class KI
 					System.out.println("Summe:" + sum);
 					
 					SetStoneCode[] setStoneCodes = arrayList.get(index);
-					StoneCode[] stoneCodes = new StoneCode[codeLength];
+					int[] stoneCodes = new int[codeLength];
 					
 					for(int i = 0; i < setStoneCodes.length; i++)
 					{
@@ -83,47 +83,21 @@ public class KI
 		}
 	}
 	
-	public StoneCode[] getStart()
+	public int[] getStart()
 	{
-		/*
-		int low = codeLength / 2; 
-		int rn = (int) (Math.random() * colorLength);
-		int i = 0;
-		StoneCode[] st = new StoneCode[codeLength];
-		for(i = 0; i < low; i++)
-		{
-			st[i] = StoneCode.getStoneCode(rn);	
-		}
-		int buffer = rn;
-		while(rn == buffer)
-		{
-			rn = (int) (Math.random() * colorLength);
-		}
-
-		for(; i < st.length; i++)
-		{
-			st[i] = StoneCode.getStoneCode(rn);
-		}
-		*/
-		StoneCode[] st = new StoneCode[codeLength];
+		int[] st = new int[codeLength];
 		for(int i = 0; i < codeLength; i++)
 		{
-			st[i] = StoneCode.getStoneCode(i % colorLength); 
+			st[i] = i % colorLength; 
 		}
-		 
-		/*
-		StoneCode[] st = new StoneCode[codeLength];
-		st[0] = StoneCode.getStoneCode(1);
-		st[1] = StoneCode.getStoneCode(2);
-		st[2] = StoneCode.getStoneCode(2);
-		*/
+
 		return st;
 	}
 	
 	private ArrayList<SetStoneCode[]> getPossibilities(Row row)
 	{
 		ArrayList<SetStoneCode[]> arrayList = new ArrayList<SetStoneCode[]>();
-		StoneCode[] stoneCodes = row.getCode();
+		int[] stoneCodes = row.getCode();
 		int red = row.getRed(), white = row.getWhite();
 		int[] permutation = new int[stoneCodes.length];
 

@@ -4,31 +4,31 @@ import java.util.TreeSet;
 
 public class SetStoneCode
 {
-	private TreeSet<StoneCode> set;
+	private TreeSet<Integer> set;
 	
-	private SetStoneCode(TreeSet<StoneCode> set)
+	private SetStoneCode(TreeSet<Integer> set)
 	{
 		this.set = set;
 	}
 	
 	public SetStoneCode(boolean not, int colorLength, int code)
 	{
-		set = new TreeSet<StoneCode>();
+		set = new TreeSet<Integer>();
 		if(not)
 		{
-			set.add(StoneCode.getStoneCode(code));
+			set.add(code);
 		}
 		else
 		{
 			for(int i = 0; i < colorLength; i++)
 			{
-				set.add(StoneCode.getStoneCode(i));
+				set.add(i);
 			}
-			set.remove(StoneCode.getStoneCode(code));
+			set.remove(code);
 		}
 	}
 	
-	public static SetStoneCode[] createRow(int[] resultCodes, int colorLenght, StoneCode[] stoneCodes)
+	public static SetStoneCode[] createRow(int[] resultCodes, int colorLenght, int[] stoneCodes)
 	{
 		SetStoneCode[] setStoneCodes = new SetStoneCode[resultCodes.length];
 		for(int i = 0; i < resultCodes.length; i++)
@@ -36,13 +36,13 @@ public class SetStoneCode
 			switch(resultCodes[i])
 			{
 				case ResultCode.RED:
-					setStoneCodes[i] = new SetStoneCode(true, colorLenght, stoneCodes[i].getCode());
+					setStoneCodes[i] = new SetStoneCode(true, colorLenght, stoneCodes[i]);
 				break;
 				case ResultCode.WHITE:
-					setStoneCodes[i] = new SetStoneCode(false, colorLenght, stoneCodes[i].getCode());
+					setStoneCodes[i] = new SetStoneCode(false, colorLenght, stoneCodes[i]);
 				break;
 				case ResultCode.NOTHING:
-					setStoneCodes[i] = new SetStoneCode(false, colorLenght, stoneCodes[i].getCode());
+					setStoneCodes[i] = new SetStoneCode(false, colorLenght, stoneCodes[i]);
 				break;
 			}
 		}
@@ -71,8 +71,8 @@ public class SetStoneCode
 	
 	public static SetStoneCode union(SetStoneCode set1, SetStoneCode set2)
 	{
-		TreeSet<StoneCode> newSet = new TreeSet<StoneCode>();
-		StoneCode[] set1Array = (StoneCode[]) set1.set.toArray(new StoneCode[0]);
+		TreeSet<Integer> newSet = new TreeSet<Integer>();
+		Integer[] set1Array = (Integer[]) set1.set.toArray(new Integer[0]);
 		
 		for(int i = 0; i < set1Array.length; i++)
 		{
@@ -101,7 +101,7 @@ public class SetStoneCode
 		return set.size();
 	}
 	
-	public StoneCode getFirst()
+	public int getFirst()
 	{
 		return set.first();
 	}

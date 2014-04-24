@@ -1,8 +1,12 @@
 package Mastermind;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
 import View.Mastermind_View;
+import File.Mastermind_File;
 
 public class Mastermind implements java.io.Serializable
 {
@@ -10,89 +14,95 @@ public class Mastermind implements java.io.Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = -4438978518578456012L;
-	private StoneCode[] SecretCode;
+	private int[] secretCode;
 	private int codeLength;
 	private int rowLength;
 	private int colorLength;
 	private ArrayList<Row> rows;
+	private State state;
 	private transient KI ki;
 	private transient Mastermind_View mastermind_View;
-	public static final int DefaulCodeLength = 5;
-	public static final int DefaultRowLength = 15;
-	public static final int DefaultColorLength = 5;
-	
+	public static final int DEFAULTCODELENGTH = 6;
+	public static final int DEFAULTROWLENGTH = 12;
+	public static final int DEFAULTCOLORLENGTH = 6;
 	
 	public Mastermind(Mastermind_View mastermind_View)
 	{
-		this(mastermind_View, Mastermind.DefaulCodeLength, Mastermind.DefaultRowLength, Mastermind.DefaultColorLength);
+		this(mastermind_View, Mastermind.DEFAULTCODELENGTH, Mastermind.DEFAULTROWLENGTH, Mastermind.DEFAULTCOLORLENGTH);
 	}
 	
-	public Mastermind(Mastermind_View mastermind_View, int CodeLength, int RowLength, int ColorLength)
+	public Mastermind(Mastermind_View mastermind_View, int codeLength, int rowLength, int colorLength)
 	{
 		this.mastermind_View = mastermind_View;
-		this.codeLength = CodeLength;
-		this.rowLength = RowLength;
-		this.colorLength = ColorLength;
+		this.codeLength = codeLength;
+		this.rowLength = rowLength;
+		this.colorLength = colorLength;
 		genSecretCode();
-		this.rows = new ArrayList<Row>();
-		this.ki = new KI(this, ColorLength, CodeLength);
+		rows = new ArrayList<Row>();
+		state = State.isplaying;
+		ki = new KI(this, colorLength, codeLength);
 	}
 
-	public void setMastermind(Mastermind mastermind)
+	public void saveMastermind(File file) throws IOException
 	{
-		if(mastermind.getClass().isInstance(this))
-		{
-			this.SecretCode = mastermind.SecretCode;
-			this.codeLength = mastermind.codeLength;
-			this.rowLength = mastermind.rowLength;
-			this.colorLength = mastermind.codeLength;
-			this.rows = mastermind.rows;
-			this.ki = new KI(this, colorLength, codeLength);
-		}else{
-			System.out.print("Class or Header");
-		}
+		Mastermind_File.saveMastermind(this, file);
 	}
 	
+	public void loadMastermind(File file) throws ClassNotFoundException, IOException
+	{
+		Mastermind mastermind = Mastermind_File.loadMastermind(file);
+		this.secretCode = mastermind.secretCode;
+		this.codeLength = mastermind.codeLength;
+		this.rowLength = mastermind.rowLength;
+		this.colorLength = mastermind.codeLength;
+		this.rows = mastermind.rows;
+		this.state = mastermind.state;
+		ki = new KI(this, colorLength, codeLength);
+	}
+
 	private void genSecretCode()
 	{
-		SecretCode = new StoneCode[codeLength];
+		secretCode = new int[codeLength];
 		Random Rand = new Random();
 		
 		for(int i = 0; i < codeLength; i++)
 		{
-			SecretCode[i] = StoneCode.getStoneCode(Rand.nextInt(colorLength));
+			secretCode[i] = Rand.nextInt(colorLength);
 		}
 	}
-	
-	
+
 	public void test()
 	{
 		ki.getHint(rows);
 	}
 
-	public void addRow(StoneCode[] Code)
+	public void addRow(int[] code)
 	{
-		if(rows.size() >= rowLength)
+		switch(state)
 		{
-			return;
+			case win:
+			case lose:
+				return;
+			default:
+			break;
 		}
 		
-		boolean[] Mark = new boolean[codeLength];
-		int Red = 0, White = 0;
+		boolean[] mark = new boolean[codeLength];
+		int red = 0, white = 0;
 		
 		for(int i = 0; i < codeLength; i++)
 		{
-			if(Code[i].equals(SecretCode[i]))
+			if(code[i] == secretCode[i])
 			{
-				Mark[i] = true;
-				Red++;
+				mark[i] = true;
+				red++;
 			}
 			else
 			{
 				int j;
 				for(j = 0; j < codeLength; j++)
 				{
-					if(!Mark[j] & !Code[j].equals(SecretCode[j]) & Code[i].equals(SecretCode[j]))
+					if(!mark[j] & (code[j] != secretCode[j]) & code[i] == secretCode[j])
 					{
 						break;
 					}
@@ -100,39 +110,51 @@ public class Mastermind implements java.io.Serializable
 				
 				if(j < codeLength)
 				{
-					Mark[j] = true;
-					White++;
+					mark[j] = true;
+					white++;
 				}
 			}
 		}
 
-		Row newRow = new Row(Code, Red, White);
+		Row newRow = new Row(code, red, white);
 		rows.add(newRow);
 		mastermind_View.addRow(newRow);
 
 		if(newRow.getRed() == codeLength)
 		{
-			mastermind_View.setGameWin();
+			setState(State.win);
 		}
-		else if(rows.size() == rowLength)
+		else if(rows.size() >= rowLength)
 		{
-			mastermind_View.setGameLose();
+			setState(State.lose);
 		}
+	}
+	
+	private void setState(State state)
+	{
+		this.state = state;
+		mastermind_View.setState(state);
+	}
+	
+	public State getState()
+	{
+		return state;
 	}
 	
 	//*** SecretCode ***
-	public StoneCode[] getSecretCode()
+	public int[] getSecretCode()
 	{
-		return SecretCode;
+		return secretCode;
 	}
 	
-	public int getRowSize(){
+	public int getRowSize()
+	{
 		return this.rows.size();
 	}
 	
-	public Row getRow(int RowNumber)
+	public Row getRow(int rowNumber)
 	{
-		return rows.get(RowNumber);
+		return rows.get(rowNumber);
 	}
 	
 	public int getCodeLength()

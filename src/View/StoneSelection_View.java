@@ -3,32 +3,24 @@ package View;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import Mastermind.StoneCode;
-
 public class StoneSelection_View extends Stone_View implements MouseListener
 {
 	private static final long serialVersionUID = -795637293536622894L;
 	
-	private int ColorLength;
+	private int colorLength;
 
-	public StoneSelection_View(StoneCode Code, int ColorLength)
+	public StoneSelection_View(int colorLength)
 	{
-		super(Code);
-		this.ColorLength = ColorLength;
+		super(0);
+		this.colorLength = colorLength;
 		addMouseListener(this);
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0)
 	{
-		int NewCode = Code.getCode() + 1;
-		
-		if(NewCode >= ColorLength)
-		{
-			NewCode = 0;
-		}
-		
-		Code = StoneCode.getStoneCode(NewCode);
+		code = (code + 1) >= colorLength ? 0 : code + 1;
+
 		repaint();
 	}
 

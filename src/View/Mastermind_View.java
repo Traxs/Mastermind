@@ -1,47 +1,49 @@
 package View;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import File.Mastermind_File;
-import Mastermind.Mastermind;
-import Mastermind.Row;
-import Mastermind.StoneCode;
-import Network.Mastermind_Client;
-import Network.Mastermind_Server;
-
+import javax.swing.JSlider;
 import javax.swing.Box;
 import javax.swing.JButton;
+
+import Mastermind.Mastermind;
+import Mastermind.Row;
+import Mastermind.State;
+import File.Mastermind_File;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.IOException;
-import java.net.UnknownHostException;
 
 public class Mastermind_View extends JFrame
 {
 	private static final long serialVersionUID = -809208636941136548L;
-	private JScrollPane scrollPane_Playfield;
-	private Box verticalBox_Playfield;
 	private Mastermind mastermind;
-	private Box horizontalBox_SelectionStone;
-	private JLabel jLabel_Row;
 	private int rowLength;
+	private int codeLength;
+	private int colorLength;
+	private Box verticalBox_Playfield;
+	private JScrollPane scrollPane_Playfield;
+	private JScrollPane scrollPane_Selection;
 	private JScrollPane scrollPane_Secret;
+	private Box horizontalBox_SelectionStone;
 	private Box horizontalBox_Secret;
-	private Box verticalBox_Secret;
-	private Stone_View stoneSelection_View;
+	private JLabel jLabel_Row;
+	private JButton jbutton_Tipp;
+	private JButton jbutton_Add;
 	
 	public static void main(String[] args)
 	{
@@ -58,7 +60,6 @@ public class Mastermind_View extends JFrame
 	public Mastermind_View()
 	{
 		this.mastermind = new Mastermind(this);
-		this.rowLength = mastermind.getRowLength();
 		start();
 	}
 
@@ -73,42 +74,39 @@ public class Mastermind_View extends JFrame
 	{
 		setTitle("Mastermind");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(590, 620);
 
 		JPanel contentPane = new JPanel();
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
-		
+				
 		//*** Playfield ***
 		{
 			scrollPane_Playfield = new JScrollPane();
-			scrollPane_Playfield.setBounds(12, 12, 450, 410);
 			contentPane.add(scrollPane_Playfield);
 		
 			verticalBox_Playfield = Box.createVerticalBox();
+			verticalBox_Playfield.setOpaque(true);
+			verticalBox_Playfield.setBackground(new Color(42,42,42));
 			scrollPane_Playfield.setViewportView(verticalBox_Playfield);
 		}
 
-		JButton button_Add = new JButton("Add");
-		button_Add.setBounds(474, 434, 98, 25);
-		button_Add.addMouseListener(new MouseAdapter()
+		jbutton_Add = new JButton("Add");
+		jbutton_Add.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				int Length = horizontalBox_SelectionStone.getComponentCount();
-				StoneCode[] NewCode = new StoneCode[Length];
-				for(int i = 0; i < Length; i++)
+				int[] newCode = new int[codeLength];
+				for(int i = 0; i < codeLength; i++)
 				{
-					NewCode[i] = ((Stone_View)horizontalBox_SelectionStone.getComponent(i)).getCode();
+					newCode[i] = ((Stone_View)horizontalBox_SelectionStone.getComponent(i)).getCode();
 				}
 				
-				mastermind.addRow(NewCode);
+				mastermind.addRow(newCode);
 			}
 		});
-		JButton button_Tipp = new JButton("Tipp");
-		button_Tipp.setBounds(474, 300, 98, 25);
-		button_Tipp.addMouseListener(new MouseAdapter()
+		jbutton_Tipp = new JButton("Tipp");
+		jbutton_Tipp.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseClicked(MouseEvent e)
@@ -116,131 +114,83 @@ public class Mastermind_View extends JFrame
 				mastermind.test();
 			}
 		});
-		JButton button_Server = new JButton("Server");
-		button_Server.setBounds(474, 200, 98, 25);
-		button_Server.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				//SERVER
-				Thread t = new Thread(new Runnable()
-				{
-				    public void run()
-				    {
-				    	new Mastermind_Server().Start_Server(2222);  
-				    }
-				});
-				t.start();
-				
-			}
-		});
-		JButton button_Client = new JButton("Client");
-		button_Client.setBounds(474, 250, 98, 25);
-		button_Client.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				//CLIENT
-				Thread t = new Thread(new Runnable()
-				{
-				    public void run()
-				    {
-				    	try {
-							new Mastermind_Client().Connect("localhost", 2222, "ClientName");
-						} catch (UnknownHostException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-				    }
-				});
-				t.start();
-				
-				
-			}
-		});
-		JButton button_Send = new JButton("Send");
-		button_Send.setBounds(474, 150, 98, 25);
-		button_Send.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				//CLIENT
-				Thread t = new Thread(new Runnable()
-				{
-				    public void run()
-				    {
-				    	Mastermind_Client.sendMessage("SO HALLO");
-				    }
-				});
-				t.start();
-				
-				
-			}
-		});
-		contentPane.add(button_Send);
-		contentPane.add(button_Server);
-		contentPane.add(button_Client);
-		contentPane.add(button_Tipp);
-		contentPane.add(button_Add);
-		
 		jLabel_Row = new JLabel("0/" + rowLength);
-		jLabel_Row.setBounds(474, 12, 80, 30);
+		contentPane.add(jbutton_Add);
+		contentPane.add(jbutton_Tipp);
 		contentPane.add(jLabel_Row);
 		
 		//*** Selection Box ***
 		{
-			JScrollPane scrollPane_Selection = new JScrollPane();
-			scrollPane_Selection.setBounds(12, 434, 450, 58);
+			scrollPane_Selection = new JScrollPane();
 			contentPane.add(scrollPane_Selection);
-		
-			Box verticalBox_Selection = Box.createVerticalBox();
-			scrollPane_Selection.setViewportView(verticalBox_Selection);
-		
-			horizontalBox_SelectionStone = Box.createHorizontalBox();
-			verticalBox_Selection.add(horizontalBox_SelectionStone);
-			
-			StoneSelection_View stoneSelection_View;
-			int Colms = mastermind.getCodeLength();
 
-			for(int i = 0; i < Colms; i++)
-			{
-				stoneSelection_View = new StoneSelection_View(StoneCode.getStoneCode(0), mastermind.getColorLength());
-				horizontalBox_SelectionStone.add(stoneSelection_View);
-			}
+			horizontalBox_SelectionStone = Box.createHorizontalBox();
+			horizontalBox_SelectionStone.setOpaque(true);
+			horizontalBox_SelectionStone.setBackground(new Color(42,42,42));
+			scrollPane_Selection.setViewportView(horizontalBox_SelectionStone);
 		}
 		
 		//*** Secret Box ***
 		{
 			scrollPane_Secret = new JScrollPane();
-			scrollPane_Secret.setBounds(12, 500, 450, 58);
 			contentPane.add(scrollPane_Secret);
-		
-			verticalBox_Secret = Box.createVerticalBox();
-			scrollPane_Secret.setViewportView(verticalBox_Secret);
-		
-			horizontalBox_Secret = Box.createHorizontalBox();
-			verticalBox_Secret.add(horizontalBox_Secret);
-			
-			
-			StoneCode[] SecretCode = mastermind.getSecretCode();
 
-			for(int i = 0; i < SecretCode.length; i++)
-			{
-				stoneSelection_View = new Stone_View(SecretCode[i]);
-				horizontalBox_Secret.add(stoneSelection_View);
-			}
+			horizontalBox_Secret = Box.createHorizontalBox();
+			horizontalBox_Secret.setOpaque(true);
+			horizontalBox_Secret.setBackground(new Color(42,42,42));
+			scrollPane_Secret.setViewportView(horizontalBox_Secret);
 		}
 		
 		//*** JMenuBar ***
 		{
 			JMenuBar jMenuBar = new JMenuBar();
-			JMenuItem jMenuItem_Save = new JMenuItem("Save");
+			JMenu datei  = new JMenu("Datei");
+			
+			JMenuItem jMenuItem_NewGame = new JMenuItem("Neues Spiel");
+			jMenuItem_NewGame.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent arg0)
+				{
+					//Ein Fenster mit den Optionen anzeigen
+					JPanel settingpanel = new JPanel();
+					JFrame settingframe = new JFrame("Neues Spiel");
+					JSlider ColorNumber = new JSlider(JSlider.HORIZONTAL, 3, 15, Mastermind.DEFAULTCOLORLENGTH);
+					JSlider RowNumber = new JSlider(JSlider.HORIZONTAL, 10, 50, Mastermind.DEFAULTROWLENGTH);
+					JSlider CodeNumber = new JSlider(JSlider.HORIZONTAL, 3, 15, Mastermind.DEFAULTCODELENGTH);
+					JLabel ColorLabel = new JLabel("Anzahl der Farben:\n");
+					JLabel RowLabel = new JLabel("\n\nAnzahl der max. Versuche:\n");
+					JLabel CodeLabel = new JLabel("\n\nL�nge des Codes:\n");
+					settingpanel.setLayout(new BoxLayout(settingpanel, BoxLayout.PAGE_AXIS));
+					ColorNumber.setMajorTickSpacing(3);
+					ColorNumber.setMinorTickSpacing(1);
+					ColorNumber.setPaintTicks(true);
+					ColorNumber.setPaintLabels(true);
+					CodeNumber.setMajorTickSpacing(3);
+					CodeNumber.setMinorTickSpacing(1);
+					CodeNumber.setPaintTicks(true);
+					CodeNumber.setPaintLabels(true);
+					RowNumber.setMajorTickSpacing(5);
+					RowNumber.setMinorTickSpacing(1);
+					RowNumber.setPaintTicks(true);
+					RowNumber.setPaintLabels(true);
+					settingpanel.add(ColorLabel);
+					settingpanel.add(ColorNumber);
+					settingpanel.add(CodeLabel);
+					settingpanel.add(CodeNumber);
+					settingpanel.add(RowLabel);
+					settingpanel.add(RowNumber);			
+					//Anzeigen
+					JOptionPane.showMessageDialog(settingframe, settingpanel, "Neues Spiel", JOptionPane.PLAIN_MESSAGE);		
+					//Werte verarbeiten
+					int newColorLength = ColorNumber.getValue();
+					int newCodeLength = CodeNumber.getValue();
+					int newRowLength = RowNumber.getValue();
+					//Updaten
+					startNewGame(newColorLength, newRowLength, newCodeLength);
+				}
+			});
+			
+			JMenuItem jMenuItem_Save = new JMenuItem("Speichern",  Mastermind_File.loadIcon("save.png"));
 			jMenuItem_Save.addActionListener(new ActionListener()
 			{
 				@Override
@@ -253,7 +203,7 @@ public class Mastermind_View extends JFrame
 					{
 						try
 						{
-							Mastermind_File.Save_Mastermind(mastermind, jFileChooser.getSelectedFile());
+							mastermind.saveMastermind(jFileChooser.getSelectedFile());
 						}
 						catch (IOException e)
 						{
@@ -264,7 +214,7 @@ public class Mastermind_View extends JFrame
 				}
 			});
 
-			JMenuItem jMenuItem_load = new JMenuItem("Load");
+			JMenuItem jMenuItem_load = new JMenuItem("Laden", Mastermind_File.loadIcon("load.png"));
 			jMenuItem_load.addActionListener(new ActionListener()
 			{
 				@Override
@@ -275,103 +225,146 @@ public class Mastermind_View extends JFrame
 
 					if(jFileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
 					{
-						Mastermind mastermindFile;
 						try
 						{
-							mastermindFile = Mastermind_File.Load_Mastermind(jFileChooser.getSelectedFile());
+							mastermind.loadMastermind(jFileChooser.getSelectedFile());
 						}
 						catch (ClassNotFoundException e)
 						{
 							e.printStackTrace();
-							JOptionPane.showMessageDialog(null, "Wrong or Corrupted File");
+							JOptionPane.showMessageDialog(null, "Class not found.");
 							return;
 						}
 						catch (IOException e)
 						{
 							e.printStackTrace();
-							JOptionPane.showMessageDialog(null, "Wrong or Corrupted File");
+							JOptionPane.showMessageDialog(null, "Wrong or corrupted file.");
 							return;
 						}
 
-						mastermind.setMastermind(mastermindFile);
 						update();
 					}
 				}
 			});
 
-			jMenuBar.add(jMenuItem_Save);
-			jMenuBar.add(jMenuItem_load);
+			datei.add(jMenuItem_NewGame);
+			datei.add(jMenuItem_load);
+			datei.add(jMenuItem_Save);
+			jMenuBar.add(datei);
 
 			setJMenuBar(jMenuBar);
+			
+			update();
 		}
 
-
-		this.setResizable(false);
-		this.setVisible(true);
+		setResizable(false);
+		setVisible(true);
 	}
-	
+
 	public void addRow(Row newRow)
 	{
-		StoneCode[] Code = newRow.getCode();
+		int[] code = newRow.getCode();
 		Box horizontalBox = Box.createHorizontalBox();
 
-		for(int i = 0; i < Code.length; i++)
+		for(int i = 0; i < code.length; i++)
 		{
-			horizontalBox.add(new Stone_View(Code[i]));
+			horizontalBox.add(new Stone_View(code[i]));
 		}
 
 		horizontalBox.add(new Result_View(newRow));
 
-		verticalBox_Playfield.add(horizontalBox);
-		jLabel_Row.setText(verticalBox_Playfield.getComponentCount() + "/" + rowLength);
+		verticalBox_Playfield.add(horizontalBox, 1);
+		jLabel_Row.setText(verticalBox_Playfield.getComponentCount() - 1 + "/" + rowLength);
 		scrollPane_Playfield.updateUI();
 	}
 	
-	// UPDATING after LOADING
+	//Zum Updaten nach einem Laden
 	public void update()
 	{
 		verticalBox_Playfield.removeAll();
+		horizontalBox_Secret.removeAll();
+		horizontalBox_SelectionStone.removeAll();
+		
+		rowLength = mastermind.getRowLength();
+		codeLength = mastermind.getCodeLength();
+		colorLength = mastermind.getColorLength();
+		
+		//Berechnung der Gr��en der Fensterinhalte dynamisch anhand der Codel�nge
+		int rowSize = Stone_View.STONESIZE * codeLength + (Result_View.RESULTSIZE *
+				 (codeLength % 2 == 0 ? codeLength / 2 : codeLength / 2 + 1)) + 30;
+
+		//Setze Fenstergr��e
+		setSize(rowSize + 135, 620);
+		scrollPane_Playfield.setBounds(12, 12, rowSize, 410);
+		scrollPane_Selection.setBounds(12, 434, rowSize, 58);
+		scrollPane_Secret.setBounds(12, 500, rowSize, 58);
+		
+		jbutton_Add.setBounds(rowSize+24, 434, 98, 25);
+		jbutton_Tipp.setBounds(rowSize+24, 300, 98, 25);
+		jLabel_Row.setBounds(rowSize+24, 12, 80, 30);
+
+		jbutton_Add.setEnabled(true);
+		jbutton_Tipp.setEnabled(true);
 		jLabel_Row.setText(0 + "/" + rowLength);
 		
+		Box startBox = Box.createHorizontalBox();
+
+		for(int i = 0; i < mastermind.getCodeLength(); i++)
+		{
+			startBox.add(new Stone_View(-1));
+		}
+		startBox.add(new Result_View(new Row(new int[codeLength], 0, 0)));
+		verticalBox_Playfield.add(startBox);
+
 		for(int i = 0; i < mastermind.getRowSize();i++)
 		{
-			StoneCode[] Code = mastermind.getRow(i).getCode();
-			Box horizontalBox = Box.createHorizontalBox();
+			addRow(mastermind.getRow(i));
+		}		
 
-			for(int a = 0; a < Code.length; a++)
-			{
-				horizontalBox.add(new Stone_View(Code[a]));
-			}
-
-			horizontalBox.add(new Result_View(mastermind.getRow(i)));
-			verticalBox_Playfield.add(horizontalBox);
-			jLabel_Row.setText(verticalBox_Playfield.getComponentCount() + "/" + rowLength);
-		}
-
-		verticalBox_Secret.removeAll();
-		horizontalBox_Secret.removeAll();
-		horizontalBox_Secret = Box.createHorizontalBox();
-		verticalBox_Secret.add(horizontalBox_Secret);
-		StoneCode[] SecretCode = mastermind.getSecretCode();
-		stoneSelection_View.removeAll();
-
-		for(int i = 0; i < SecretCode.length; i++)
+		Stone_View stoneSelection_View;
+		int[] secretCode = mastermind.getSecretCode();
+		for(int i = 0; i < secretCode.length; i++)
 		{
-			stoneSelection_View = new Stone_View(SecretCode[i]);
+			stoneSelection_View = new Stone_View(secretCode[i]);
 			horizontalBox_Secret.add(stoneSelection_View);
 		}
 
+		for(int i = 0; i < codeLength; i++)
+		{
+			stoneSelection_View = new StoneSelection_View(colorLength);
+			horizontalBox_SelectionStone.add(stoneSelection_View);
+		}
+		
+		setState(mastermind.getState());
+
+		scrollPane_Selection.updateUI();
 		scrollPane_Secret.updateUI();
 		scrollPane_Playfield.updateUI();
 	}
-
-	public void setGameLose()
+	
+	//Wird aufgerufen wenn der Benutzer w�hrend eines laufenden Spiels ein neues Spiel startet
+	public void startNewGame(int newColorLength, int newRowLength, int newCodeLength)
 	{
-		JOptionPane.showMessageDialog(null, "Lose");
+		//Neues Mastermind
+		this.mastermind = new Mastermind(this, newCodeLength, newRowLength, newColorLength);
+		update();
 	}
 	
-	public void setGameWin()
+	public void setState(State state)
 	{
-		JOptionPane.showMessageDialog(null, "Win");
+		switch(state)
+		{
+			case isplaying:
+				jbutton_Add.setEnabled(true);
+				jbutton_Tipp.setEnabled(true);
+			break;
+			default:
+				verticalBox_Playfield.remove(0);
+				jbutton_Add.setEnabled(false);
+				jbutton_Tipp.setEnabled(false);
+				jLabel_Row.setText(verticalBox_Playfield.getComponentCount() + "/" + rowLength);
+				JOptionPane.showMessageDialog(null, (state == State.win ? "Win" : "Lose"));
+			break;
+		}
 	}
 }
