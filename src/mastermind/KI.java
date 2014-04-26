@@ -19,79 +19,112 @@ public class KI
 		this.rowCal = 0;
 		this.arrayList = new ArrayList<SetStoneCode[]>();
 		this.thread = new Thread();
+
+		if(mastermind.getState() == State.playingKI)
+		{
+			startKI();
+		}
 	}
 	
 	public void getHint(final ArrayList<Row> rows)
 	{
-		if(!thread.isAlive())
+		if(thread.isAlive())
+			return;
+		
+		thread = new Thread(new Runnable()
 		{
-			thread = new Thread(new Runnable()
+			@Override
+			public void run()
 			{
-				@Override
-				public void run()
-				{
-					Row[] rowArray = (Row[])rows.toArray(new Row[0]);
-					
-					if(rowArray.length == 0)
-					{
-						mastermind.addRow(getStart());
-						return;
-					}
-					
-					if(rowCal == 0)
-					{
-						arrayList = getPossibilities(rowArray[0]);
-						rowCal = 1;
-					}
-					
-					System.out.println("rowCal:" + rowCal + " rowArray:" + rowArray.length);
-					
-					for(int i = rowCal; i < rowArray.length; i++)
-					{
-						arrayList = unionPossibilities(arrayList, getPossibilities(rowArray[i]));
-					}
-					
-					rowCal = rowArray.length;
-					
-					int index = 0, max = SetStoneCode.getRowSize(arrayList.get(0)), size = arrayList.size();
-					int sum = max;
-					for(int i = 1; i < size; i++)
-					{
-						sum += SetStoneCode.getRowSize(arrayList.get(i));
-						if(max < SetStoneCode.getRowSize(arrayList.get(i)))
-						{
-							max = SetStoneCode.getRowSize(arrayList.get(i));
-							index = i;
-						}
-					}
-					
-					System.out.println("Summe:" + sum);
-					
-					SetStoneCode[] setStoneCodes = arrayList.get(index);
-					int[] stoneCodes = new int[codeLength];
-					
-					for(int i = 0; i < setStoneCodes.length; i++)
-					{
-						stoneCodes[i] = setStoneCodes[i].getFirst();
-					}
-				
-					mastermind.addRow(stoneCodes);
-				}
-			});
+				mastermind.addRow(calculateHighestProbability(mastermind.getRows()));
+			}
+		});
 
-			thread.start();
-		}
+		thread.start();
 	}
 	
-	public int[] getStart()
+	private void startKI()
 	{
-		int[] st = new int[codeLength];
-		for(int i = 0; i < codeLength; i++)
-		{
-			st[i] = i % colorLength; 
-		}
+		if(thread.isAlive())
+			return;
 
-		return st;
+		thread = new Thread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				while(mastermind.getState() == State.playingKI)
+				{
+					try
+					{
+						Thread.sleep(2000);
+					}
+					catch (InterruptedException e)
+					{
+						e.printStackTrace();
+					}
+					
+					mastermind.addRow(calculateHighestProbability(mastermind.getRows()));
+				}
+			}
+		});
+
+		thread.start();
+	}
+
+	private int[] calculateHighestProbability(final ArrayList<Row> rows)
+	{
+		Row[] rowArray = (Row[])rows.toArray(new Row[0]);
+		int[] stoneCodes = new int[codeLength];
+		
+		if(rowArray.length == 0)
+		{
+			for(int i = 0; i < codeLength; i++)
+			{
+				stoneCodes[i] = i % colorLength; 
+			}
+
+			return stoneCodes;
+		}
+		
+		if(rowCal == 0)
+		{
+			arrayList = getPossibilities(rowArray[0]);
+			rowCal = 1;
+		}
+		
+		System.out.println("rowCal:" + rowCal + " rowArray:" + rowArray.length);
+		
+		for(int i = rowCal; i < rowArray.length; i++)
+		{
+			arrayList = unionPossibilities(arrayList, getPossibilities(rowArray[i]));
+		}
+		
+		rowCal = rowArray.length;
+		
+		int index = 0, max = SetStoneCode.getRowSize(arrayList.get(0)), size = arrayList.size();
+		int sum = max;
+		for(int i = 1; i < size; i++)
+		{
+			sum += SetStoneCode.getRowSize(arrayList.get(i));
+			if(max < SetStoneCode.getRowSize(arrayList.get(i)))
+			{
+				max = SetStoneCode.getRowSize(arrayList.get(i));
+				index = i;
+			}
+		}
+		
+		System.out.println("Summe:" + sum);
+		
+		SetStoneCode[] setStoneCodes = arrayList.get(index);
+		
+		
+		for(int i = 0; i < setStoneCodes.length; i++)
+		{
+			stoneCodes[i] = setStoneCodes[i].getFirst();
+		}
+		
+		return stoneCodes;
 	}
 	
 	private ArrayList<SetStoneCode[]> getPossibilities(Row row)

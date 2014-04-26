@@ -39,7 +39,7 @@ public class Mastermind implements java.io.Serializable
 		this.colorLength = colorLength;
 		genSecretCode();
 		rows = new ArrayList<Row>();
-		state = State.isplaying;
+		state = State.playingHuman;
 		ki = new KI(this, colorLength, codeLength);
 	}
 
@@ -145,6 +145,11 @@ public class Mastermind implements java.io.Serializable
 	public int[] getSecretCode()
 	{
 		return secretCode;
+	}
+	
+	public ArrayList<Row> getRows()
+	{
+		return this.rows;
 	}
 	
 	public int getRowSize()

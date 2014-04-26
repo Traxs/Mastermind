@@ -96,6 +96,9 @@ public class Mastermind_View extends JFrame
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
+				if(!jbutton_Add.isEnabled())
+					return;
+				
 				int[] newCode = new int[codeLength];
 				for(int i = 0; i < codeLength; i++)
 				{
@@ -111,6 +114,9 @@ public class Mastermind_View extends JFrame
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
+				if(!jbutton_Tipp.isEnabled())
+					return;
+				
 				mastermind.test();
 			}
 		});
@@ -219,7 +225,7 @@ public class Mastermind_View extends JFrame
 			{
 				@Override
 				public void actionPerformed(ActionEvent arg0)
-				{
+				{	
 					JFileChooser jFileChooser = new JFileChooser();
 					jFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
 
@@ -354,9 +360,13 @@ public class Mastermind_View extends JFrame
 	{
 		switch(state)
 		{
-			case isplaying:
+			case playingHuman:
 				jbutton_Add.setEnabled(true);
 				jbutton_Tipp.setEnabled(true);
+			break;
+			case playingKI:
+				jbutton_Add.setEnabled(false);
+				jbutton_Tipp.setEnabled(false);
 			break;
 			default:
 				verticalBox_Playfield.remove(0);
