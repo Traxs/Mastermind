@@ -1,10 +1,12 @@
-package View;
+package view;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+
 import javax.swing.JComponent;
-import File.Mastermind_File;
+
+import file.Mastermind_File;
 
 public class Stone_View extends JComponent
 {

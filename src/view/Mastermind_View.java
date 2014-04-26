@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -17,10 +17,10 @@ import javax.swing.JSlider;
 import javax.swing.Box;
 import javax.swing.JButton;
 
-import Mastermind.Mastermind;
-import Mastermind.Row;
-import Mastermind.State;
-import File.Mastermind_File;
+import mastermind.Mastermind;
+import mastermind.Row;
+import mastermind.State;
+import file.Mastermind_File;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

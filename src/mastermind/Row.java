@@ -1,4 +1,4 @@
-package Mastermind;
+package mastermind;
 
 public class Row implements java.io.Serializable
 {

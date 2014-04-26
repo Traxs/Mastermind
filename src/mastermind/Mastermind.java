@@ -1,12 +1,12 @@
-package Mastermind;
+package mastermind;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import View.Mastermind_View;
-import File.Mastermind_File;
+import view.Mastermind_View;
+import file.Mastermind_File;
 
 public class Mastermind implements java.io.Serializable
 {

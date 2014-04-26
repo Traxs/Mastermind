@@ -14,7 +14,7 @@ import java.io.ObjectOutputStream;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import Mastermind.Mastermind;
+import mastermind.Mastermind;
 
 public class Mastermind_File
 {

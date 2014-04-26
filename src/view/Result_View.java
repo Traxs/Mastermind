@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -6,8 +6,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
 
-import Mastermind.Row;
-import File.Mastermind_File;
+import mastermind.Row;
+import file.Mastermind_File;
 
 public class Result_View extends JComponent
 {

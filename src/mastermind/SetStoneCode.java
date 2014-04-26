@@ -1,4 +1,4 @@
-package Mastermind;
+package mastermind;
 
 import java.util.TreeSet;
 
