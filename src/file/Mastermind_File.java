@@ -67,11 +67,13 @@ public class Mastermind_File
 	
 	public static BufferedImage loadImage(String PathToFile)
 	{
-		try {
+		try
+		{
 			return toCompatibleImage(ImageIO.read(Mastermind_File.class.getClassLoader().getResource("img/" + PathToFile)));
-		} catch(IOException e) {
-			System.out.println("img/" + PathToFile);
-			//e.printStackTrace();
+		} 
+		catch(IOException e)
+		{
+			e.printStackTrace();
 			return null;
 		}
 	}

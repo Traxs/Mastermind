@@ -117,6 +117,7 @@ public class Mastermind implements java.io.Serializable
 		}
 
 		Row newRow = new Row(code, red, white);
+		
 		rows.add(newRow);
 		mastermind_View.addRow(newRow);
 
@@ -128,6 +129,11 @@ public class Mastermind implements java.io.Serializable
 		{
 			setState(State.lose);
 		}
+	}
+	
+	public void isPossible(final int[] code)
+	{
+		ki.isPossible(code);
 	}
 	
 	private void setState(State state)

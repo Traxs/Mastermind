@@ -1,5 +1,6 @@
 package mastermind;
 
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 public class SetStoneCode
@@ -94,6 +95,32 @@ public class SetStoneCode
 		}
 		
 		return size;
+	}
+
+	public static ArrayList<SetStoneCode[]> unionSetStoneCodeArrayList(ArrayList<SetStoneCode[]> p1,
+			ArrayList<SetStoneCode[]> p2)
+	{
+		ArrayList<SetStoneCode[]> newPossibilities = new ArrayList<SetStoneCode[]>();
+		SetStoneCode[] newPossibility;
+		
+		for(SetStoneCode[] p1Element : p1)
+		{
+			for(SetStoneCode[] p2Element : p2)
+			{
+				newPossibility = SetStoneCode.unionRow(p1Element, p2Element);
+				if(newPossibility != null)
+				{
+					newPossibilities.add(newPossibility);
+				}
+			}
+		}
+
+		return newPossibilities;
+	}
+	
+	public boolean contains(int i)
+	{
+		return set.contains(i);
 	}
 	
 	public int getSize()

@@ -105,7 +105,14 @@ public class Mastermind_View extends JFrame
 					newCode[i] = ((Stone_View)horizontalBox_SelectionStone.getComponent(i)).getCode();
 				}
 				
-				mastermind.addRow(newCode);
+				if(mastermind.getState() == State.playingHumanHelp)
+				{
+					mastermind.isPossible(newCode);
+				}
+				else
+				{
+					mastermind.addRow(newCode);
+				}	
 			}
 		});
 		jbutton_Tipp = new JButton("Tipp");
@@ -361,6 +368,7 @@ public class Mastermind_View extends JFrame
 		switch(state)
 		{
 			case playingHuman:
+			case playingHumanHelp:
 				jbutton_Add.setEnabled(true);
 				jbutton_Tipp.setEnabled(true);
 			break;

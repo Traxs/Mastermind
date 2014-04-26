@@ -2,5 +2,5 @@ package mastermind;
 
 public enum State
 {
-	playingHuman, playingKI, lose, win
+	playingHuman, playingHumanHelp,playingKI , lose, win
 }

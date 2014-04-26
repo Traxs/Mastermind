@@ -26,6 +26,49 @@ public class KI
 		}
 	}
 	
+	public void isPossible(final int[] code)
+	{
+		if(thread.isAlive())
+			return;
+		
+		thread = new Thread(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				if(mastermind.getRowSize() == 0)
+				{
+					mastermind.addRow(code);
+					return;
+				}
+
+				calculatePossibilities();
+
+				int i;
+				for(SetStoneCode[] arrayListElement : arrayList)
+				{
+					for(i = 0; i < codeLength; i++)
+					{
+						if(!arrayListElement[i].contains(code[i]))
+						{
+							break;
+						}
+					}
+					
+					if(i == codeLength)
+					{
+						mastermind.addRow(code);
+						return;
+					}
+				}
+	
+				System.out.println("FEHLER");
+			}
+		});
+
+		thread.start();
+	}
+	
 	public void getHint(final ArrayList<Row> rows)
 	{
 		if(thread.isAlive())
@@ -36,7 +79,7 @@ public class KI
 			@Override
 			public void run()
 			{
-				mastermind.addRow(calculateHighestProbability(mastermind.getRows()));
+				mastermind.addRow(getHighestProbability());
 			}
 		});
 
@@ -63,21 +106,39 @@ public class KI
 					{
 						e.printStackTrace();
 					}
-					
-					mastermind.addRow(calculateHighestProbability(mastermind.getRows()));
+
+					mastermind.addRow(getHighestProbability());
 				}
 			}
 		});
 
 		thread.start();
 	}
-
-	private int[] calculateHighestProbability(final ArrayList<Row> rows)
+	
+	private void calculatePossibilities()
 	{
+		final ArrayList<Row> rows = mastermind.getRows();
 		Row[] rowArray = (Row[])rows.toArray(new Row[0]);
+
+		if(rowCal == 0)
+		{
+			arrayList = getPossibilities(rowArray[0]);
+			rowCal = 1;
+		}
+
+		for(int i = rowCal; i < rowArray.length; i++)
+		{
+			arrayList = SetStoneCode.unionSetStoneCodeArrayList(arrayList, getPossibilities(rowArray[i]));
+		}
+		
+		rowCal = rowArray.length;
+	}
+
+	private int[] getHighestProbability()
+	{
 		int[] stoneCodes = new int[codeLength];
 		
-		if(rowArray.length == 0)
+		if(mastermind.getRowSize() == 0)
 		{
 			for(int i = 0; i < codeLength; i++)
 			{
@@ -86,44 +147,31 @@ public class KI
 
 			return stoneCodes;
 		}
+
+		calculatePossibilities();
 		
-		if(rowCal == 0)
-		{
-			arrayList = getPossibilities(rowArray[0]);
-			rowCal = 1;
-		}
-		
-		System.out.println("rowCal:" + rowCal + " rowArray:" + rowArray.length);
-		
-		for(int i = rowCal; i < rowArray.length; i++)
-		{
-			arrayList = unionPossibilities(arrayList, getPossibilities(rowArray[i]));
-		}
-		
-		rowCal = rowArray.length;
-		
-		int index = 0, max = SetStoneCode.getRowSize(arrayList.get(0)), size = arrayList.size();
+		SetStoneCode[] setStoneCodesMax = null;
+		int max = 0, buffer;
 		int sum = max;
-		for(int i = 1; i < size; i++)
+		
+		for(SetStoneCode[] setStoneCodesBuffer : arrayList)
 		{
-			sum += SetStoneCode.getRowSize(arrayList.get(i));
-			if(max < SetStoneCode.getRowSize(arrayList.get(i)))
+			buffer = SetStoneCode.getRowSize(setStoneCodesBuffer);
+			sum += buffer;
+			if(max < buffer)
 			{
-				max = SetStoneCode.getRowSize(arrayList.get(i));
-				index = i;
+				setStoneCodesMax = setStoneCodesBuffer;
+				max = buffer;
 			}
 		}
-		
+
 		System.out.println("Summe:" + sum);
-		
-		SetStoneCode[] setStoneCodes = arrayList.get(index);
-		
-		
-		for(int i = 0; i < setStoneCodes.length; i++)
+
+		for(int i = 0; i < setStoneCodesMax.length; i++)
 		{
-			stoneCodes[i] = setStoneCodes[i].getFirst();
+			stoneCodes[i] = setStoneCodesMax[i].getFirst();
 		}
-		
+
 		return stoneCodes;
 	}
 	
@@ -162,28 +210,6 @@ public class KI
 		return arrayList;
 	}
 	
-	private static ArrayList<SetStoneCode[]> unionPossibilities(ArrayList<SetStoneCode[]> p1,
-			ArrayList<SetStoneCode[]> p2)
-	{
-		ArrayList<SetStoneCode[]> newPossibilities = new ArrayList<SetStoneCode[]>();
-		SetStoneCode[][] p1Array = (SetStoneCode[][]) p1.toArray(new SetStoneCode[0][0]);
-		SetStoneCode[][] p2Array = (SetStoneCode[][]) p2.toArray(new SetStoneCode[0][0]);
-		SetStoneCode[] newPossibility;
-		
-		for(int i = 0; i < p1Array.length; i++)
-		{
-			for(int j = 0; j < p2Array.length; j++)
-			{
-				newPossibility = SetStoneCode.unionRow(p1Array[i], p2Array[j]);
-				if(newPossibility != null)
-				{
-					newPossibilities.add(newPossibility);
-				}
-			}
-		}
-		return newPossibilities;
-	}
-	
 	private static boolean nextPermutation(int []permutation)
 	{
 		int index, buffer;
@@ -200,8 +226,7 @@ public class KI
 				return true;
 			}
 		}
-		
-		
+
 		return false;
 	}
 	
