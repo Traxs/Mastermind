@@ -149,11 +149,10 @@ public class KI
 		}
 
 		calculatePossibilities();
-		
+
 		SetStoneCode[] setStoneCodesMax = null;
-		int max = 0, buffer;
-		int sum = max;
-		
+		long max = 0, buffer, sum = 0;
+
 		for(SetStoneCode[] setStoneCodesBuffer : arrayList)
 		{
 			buffer = SetStoneCode.getRowSize(setStoneCodesBuffer);

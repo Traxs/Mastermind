@@ -86,14 +86,15 @@ public class SetStoneCode
 		return new SetStoneCode(newSet);
 	}
 	
-	public static int getRowSize(SetStoneCode[] setStoneCodes)
+	public static long getRowSize(SetStoneCode[] setStoneCodes)
 	{
-		int size = 1;
-		for(int i = 0; i < setStoneCodes.length; i++)
+		long size = 1;
+
+		for(SetStoneCode setStoneCode : setStoneCodes)
 		{
-			size*= setStoneCodes[i].getSize();
+			size *= setStoneCode.getSize();
 		}
-		
+
 		return size;
 	}
 
