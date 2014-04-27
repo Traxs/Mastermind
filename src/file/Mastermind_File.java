@@ -28,7 +28,7 @@ public class Mastermind_File
 	public static Mastermind loadMastermind(File file) throws IOException, ClassNotFoundException
 	{	
 		ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file));
-		Mastermind mastermind = (Mastermind)objectInputStream.readObject();
+		Mastermind mastermind = (Mastermind) objectInputStream.readObject();
 		objectInputStream.close();
 
 		return mastermind;
@@ -37,7 +37,8 @@ public class Mastermind_File
 	//Bugfix gegen Lag
 	private static BufferedImage toCompatibleImage(BufferedImage image)
 	{
-	    if(image==null)System.out.println("Image is null");
+	    if(image==null)
+	    	System.out.println("Image is null");
 	    // obtain the current system graphical settings
 	    GraphicsConfiguration gfx_config = GraphicsEnvironment.
 	            getLocalGraphicsEnvironment().getDefaultScreenDevice().

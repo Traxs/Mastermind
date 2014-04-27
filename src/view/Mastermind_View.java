@@ -3,7 +3,6 @@ package view;
 import java.awt.Color;
 import java.awt.EventQueue;
 
-import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,7 +12,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSlider;
 import javax.swing.Box;
 import javax.swing.JButton;
 
@@ -60,17 +58,17 @@ public class Mastermind_View extends JFrame
 	public Mastermind_View()
 	{
 		this.mastermind = new Mastermind(this);
-		start();
+		createView();
 	}
 
 	public Mastermind_View(int codeLength, int rowLength, int colorLength)
 	{
 		this.mastermind = new Mastermind(this, codeLength, rowLength, colorLength);
 		this.rowLength = rowLength;
-		start();
+		createView();
 	}
 	
-	public void start()
+	public void createView()
 	{
 		setTitle("Mastermind");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -160,46 +158,17 @@ public class Mastermind_View extends JFrame
 			JMenu datei  = new JMenu("Datei");
 			
 			JMenuItem jMenuItem_NewGame = new JMenuItem("Neues Spiel");
-			jMenuItem_NewGame.addActionListener(new ActionListener() {
+			jMenuItem_NewGame.addActionListener(new ActionListener()
+			{
 				@Override
 				public void actionPerformed(ActionEvent arg0)
 				{
-					//Ein Fenster mit den Optionen anzeigen
-					JPanel settingpanel = new JPanel();
-					JFrame settingframe = new JFrame("Neues Spiel");
-					JSlider ColorNumber = new JSlider(JSlider.HORIZONTAL, 3, 15, Mastermind.DEFAULTCOLORLENGTH);
-					JSlider RowNumber = new JSlider(JSlider.HORIZONTAL, 10, 50, Mastermind.DEFAULTROWLENGTH);
-					JSlider CodeNumber = new JSlider(JSlider.HORIZONTAL, 3, 15, Mastermind.DEFAULTCODELENGTH);
-					JLabel ColorLabel = new JLabel("Anzahl der Farben:\n");
-					JLabel RowLabel = new JLabel("\n\nAnzahl der max. Versuche:\n");
-					JLabel CodeLabel = new JLabel("\n\nL�nge des Codes:\n");
-					settingpanel.setLayout(new BoxLayout(settingpanel, BoxLayout.PAGE_AXIS));
-					ColorNumber.setMajorTickSpacing(3);
-					ColorNumber.setMinorTickSpacing(1);
-					ColorNumber.setPaintTicks(true);
-					ColorNumber.setPaintLabels(true);
-					CodeNumber.setMajorTickSpacing(3);
-					CodeNumber.setMinorTickSpacing(1);
-					CodeNumber.setPaintTicks(true);
-					CodeNumber.setPaintLabels(true);
-					RowNumber.setMajorTickSpacing(5);
-					RowNumber.setMinorTickSpacing(1);
-					RowNumber.setPaintTicks(true);
-					RowNumber.setPaintLabels(true);
-					settingpanel.add(ColorLabel);
-					settingpanel.add(ColorNumber);
-					settingpanel.add(CodeLabel);
-					settingpanel.add(CodeNumber);
-					settingpanel.add(RowLabel);
-					settingpanel.add(RowNumber);			
-					//Anzeigen
-					JOptionPane.showMessageDialog(settingframe, settingpanel, "Neues Spiel", JOptionPane.PLAIN_MESSAGE);		
-					//Werte verarbeiten
-					int newColorLength = ColorNumber.getValue();
-					int newCodeLength = CodeNumber.getValue();
-					int newRowLength = RowNumber.getValue();
-					//Updaten
-					startNewGame(newColorLength, newRowLength, newCodeLength);
+					NewGame_View newGame_View = new NewGame_View();
+					JOptionPane.showMessageDialog(null, newGame_View, "Neues Spiel", 
+							JOptionPane.PLAIN_MESSAGE);		
+					
+					startNewGame(newGame_View.getColorNumber(), newGame_View.getRowNumber(),
+							newGame_View.getCodeNumber());
 				}
 			});
 			
@@ -266,7 +235,7 @@ public class Mastermind_View extends JFrame
 			jMenuBar.add(datei);
 
 			setJMenuBar(jMenuBar);
-			
+
 			update();
 		}
 
