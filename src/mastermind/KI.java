@@ -7,7 +7,7 @@ public class KI
 	private int colorLength;
 	private int codeLength;
 	private int rowCal;
-	private ArrayList<SetStoneCode[]> arrayList;
+	private ArrayList<Short[]> arrayList;
 	private Thread thread;
 	private Mastermind mastermind;
 	private long timestap;
@@ -18,7 +18,7 @@ public class KI
 		this.colorLength = colorLenth;
 		this.codeLength = codeLength;
 		this.rowCal = 0;
-		this.arrayList = new ArrayList<SetStoneCode[]>();
+		this.arrayList = new ArrayList<Short[]>();
 		this.thread = new Thread();
 
 		if(mastermind.getState() == State.playingKI)
@@ -46,11 +46,11 @@ public class KI
 				calculatePossibilities();
 
 				int i;
-				for(SetStoneCode[] arrayListElement : arrayList)
+				for(Short[] arrayListElement : arrayList)
 				{
 					for(i = 0; i < codeLength; i++)
 					{
-						if(!arrayListElement[i].contains(code[i]))
+						if(!SetCode.contains(arrayListElement[i], code[i]))
 						{
 							break;
 						}
@@ -131,7 +131,7 @@ public class KI
 
 		for(int i = rowCal; i < rowArray.length; i++)
 		{
-			arrayList = SetStoneCode.unionSetStoneCodeArrayList(arrayList, getPossibilities(rowArray[i]));
+			arrayList = SetCode.unionSetStoneCodeArrayList(arrayList, getPossibilities(rowArray[i]));
 		}
 		
 		rowCal = rowArray.length;
@@ -153,12 +153,12 @@ public class KI
 
 		calculatePossibilities();
 
-		SetStoneCode[] setStoneCodesMax = null;
+		Short[] setStoneCodesMax = null;
 		long max = 0, buffer, sum = 0;
 
-		for(SetStoneCode[] setStoneCodesBuffer : arrayList)
+		for(Short[] setStoneCodesBuffer : arrayList)
 		{
-			buffer = SetStoneCode.getRowSize(setStoneCodesBuffer);
+			buffer = SetCode.getRowSize(setStoneCodesBuffer);
 			sum += buffer;
 			if(max < buffer)
 			{
@@ -171,15 +171,15 @@ public class KI
 
 		for(int i = 0; i < setStoneCodesMax.length; i++)
 		{
-			stoneCodes[i] = setStoneCodesMax[i].getFirst();
+			stoneCodes[i] =  SetCode.getFirst(setStoneCodesMax[i]);
 		}
 
 		return stoneCodes;
 	}
 	
-	private ArrayList<SetStoneCode[]> getPossibilities(Row row)
+	private ArrayList<Short[]> getPossibilities(Row row)
 	{
-		ArrayList<SetStoneCode[]> arrayList = new ArrayList<SetStoneCode[]>();
+		ArrayList<Short[]> arrayList = new ArrayList<Short[]>();
 		int[] stoneCodes = row.getCode();
 		int red = row.getRed(), white = row.getWhite();
 		int[] permutation = new int[stoneCodes.length];
@@ -203,10 +203,10 @@ public class KI
 			}
 		}
 		
-		arrayList.add(SetStoneCode.createRow(permutation, colorLength, stoneCodes));
+		arrayList.add(SetCode.createRow(permutation, colorLength, stoneCodes));
 		while(nextPermutation(permutation))
 		{
-			arrayList.add(SetStoneCode.createRow(permutation, colorLength, stoneCodes));
+			arrayList.add(SetCode.createRow(permutation, colorLength, stoneCodes));
 		}
 
 		return arrayList;
