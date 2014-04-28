@@ -6,12 +6,12 @@ import java.util.TreeSet;
 public class SetStoneCode
 {
 	private TreeSet<Integer> set;
-	
+
 	private SetStoneCode(TreeSet<Integer> set)
 	{
 		this.set = set;
 	}
-	
+
 	public SetStoneCode(boolean not, int colorLength, int code)
 	{
 		set = new TreeSet<Integer>();
@@ -49,7 +49,7 @@ public class SetStoneCode
 		}
 		return setStoneCodes;
 	}
-	
+
 	public static SetStoneCode[] unionRow(SetStoneCode[] array1, SetStoneCode[] array2)
 	{
 		SetStoneCode[] newArray = new SetStoneCode[array1.length];
@@ -69,23 +69,15 @@ public class SetStoneCode
 
 		return newArray;		
 	}
-	
+
 	public static SetStoneCode union(SetStoneCode set1, SetStoneCode set2)
 	{
-		TreeSet<Integer> newSet = new TreeSet<Integer>();
-		Integer[] set1Array = (Integer[]) set1.set.toArray(new Integer[0]);
-		
-		for(int i = 0; i < set1Array.length; i++)
-		{
-			if(set2.set.contains(set1Array[i]))
-			{
-				newSet.add(set1Array[i]);
-			}
-		}
-		
+		TreeSet<Integer> newSet = new TreeSet<Integer>(set1.set);
+		newSet.retainAll(set2.set);
+
 		return new SetStoneCode(newSet);
 	}
-	
+
 	public static long getRowSize(SetStoneCode[] setStoneCodes)
 	{
 		long size = 1;
@@ -105,30 +97,32 @@ public class SetStoneCode
 		SetStoneCode[] newPossibility;
 		
 		for(SetStoneCode[] p1Element : p1)
-		{
+		{	
 			for(SetStoneCode[] p2Element : p2)
 			{
 				newPossibility = SetStoneCode.unionRow(p1Element, p2Element);
 				if(newPossibility != null)
 				{
-					newPossibilities.add(newPossibility);
+					newPossibilities.add(0, newPossibility);
 				}
 			}
+		
+		
 		}
 
 		return newPossibilities;
 	}
-	
+
 	public boolean contains(int i)
 	{
 		return set.contains(i);
 	}
-	
+
 	public int getSize()
 	{
 		return set.size();
 	}
-	
+
 	public int getFirst()
 	{
 		return set.first();

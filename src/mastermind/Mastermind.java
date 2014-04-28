@@ -54,7 +54,7 @@ public class Mastermind implements java.io.Serializable
 		this.secretCode = mastermind.secretCode;
 		this.codeLength = mastermind.codeLength;
 		this.rowLength = mastermind.rowLength;
-		this.colorLength = mastermind.codeLength;
+		this.colorLength = mastermind.colorLength;
 		this.rows = mastermind.rows;
 		this.state = mastermind.state;
 		ki = new KI(this, colorLength, codeLength);

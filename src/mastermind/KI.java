@@ -10,6 +10,7 @@ public class KI
 	private ArrayList<SetStoneCode[]> arrayList;
 	private Thread thread;
 	private Mastermind mastermind;
+	private long timestap;
 	
 	public KI(Mastermind mastermind, int colorLenth, int codeLength)
 	{
@@ -79,7 +80,9 @@ public class KI
 			@Override
 			public void run()
 			{
+				timestap = System.currentTimeMillis();
 				mastermind.addRow(getHighestProbability());
+				System.out.println("TIME:" + (System.currentTimeMillis() - timestap));
 			}
 		});
 
@@ -164,7 +167,7 @@ public class KI
 			}
 		}
 
-		System.out.println("Summe:" + sum);
+		System.out.println("Summe:" + sum + " ArrayList:" + arrayList.size());
 
 		for(int i = 0; i < setStoneCodesMax.length; i++)
 		{
