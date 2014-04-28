@@ -131,7 +131,7 @@ public class KI
 
 		for(int i = rowCal; i < rowArray.length; i++)
 		{
-			arrayList = SetCode.unionSetStoneCodeArrayList(arrayList, getPossibilities(rowArray[i]));
+			arrayList = SetCode.unionSetCodeArrayList(arrayList, getPossibilities(rowArray[i]));
 		}
 		
 		rowCal = rowArray.length;
@@ -202,12 +202,12 @@ public class KI
 				permutation[i] = ResultCode.NOTHING;
 			}
 		}
-		
-		arrayList.add(SetCode.createRow(permutation, colorLength, stoneCodes));
-		while(nextPermutation(permutation))
+
+		do
 		{
 			arrayList.add(SetCode.createRow(permutation, colorLength, stoneCodes));
 		}
+		while(nextPermutation(permutation));
 
 		return arrayList;
 	}

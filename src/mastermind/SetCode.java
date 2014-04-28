@@ -4,53 +4,42 @@ import java.util.ArrayList;
 
 public class SetCode
 {
-	//private TreeSet<Integer> set;
 	private static final short[] set = { 
-			0b000000000000001, 0b000000000000010, 0b000000000000100, 
-			0b000000000001000, 0b000000000010000, 0b000000000100000,
-			0b000000001000000, 0b000000010000000, 0b000000100000000, 
-			0b000001000000000, 0b000010000000000, 0b000100000000000, 
-			0b001000000000000, 0b010000000000000, 0b100000000000000};
+		0b000000000000001, 0b000000000000010, 0b000000000000100, 
+		0b000000000001000, 0b000000000010000, 0b000000000100000,
+		0b000000001000000, 0b000000010000000, 0b000000100000000, 
+		0b000001000000000, 0b000010000000000, 0b000100000000000, 
+		0b001000000000000, 0b010000000000000, 0b100000000000000};
+	
+	private static final short[] setAll = {	  0b000000000000000,
+		0b000000000000001, 0b000000000000011, 0b000000000000111, 
+		0b000000000001111, 0b000000000011111, 0b000000000111111,
+		0b000000001111111, 0b000000011111111, 0b000000111111111, 
+		0b000001111111111, 0b000011111111111, 0b000111111111111, 
+		0b001111111111111, 0b011111111111111, 0b111111111111111};
 	
 	private SetCode(){}
-	
-	public static short createCodeSet(boolean not, int colorLength, int code)
-	{
-		if(not)
-		{
-			return set[code];
-		}
-		else
-		{
-			short temp = 0;
-			for(int i = 0; i < colorLength; i++)
-			{
-				temp |= set[i];
-			}
-			
-			temp ^= set[code];
-			
-			return temp;
-		}
-	}
-	
+
 	public static Short[] createRow(int[] resultCodes, int colorLength, int[] stoneCodes)
 	{
 		Short[] setCodes = new Short[resultCodes.length];
 		for(int i = 0; i < resultCodes.length; i++)
 		{
+			setCodes[i] = resultCodes[i] == ResultCode.RED ? set[stoneCodes[i]] 
+					: (short) (setAll[colorLength] ^ set[stoneCodes[i]]);
+			/*
 			switch(resultCodes[i])
 			{
 				case ResultCode.RED:
-					setCodes[i] = createCodeSet(true, colorLength, stoneCodes[i]);
+					setCodes[i] = set[stoneCodes[i]];
 				break;
 				case ResultCode.WHITE:
-					setCodes[i] = createCodeSet(false, colorLength, stoneCodes[i]);
+					setCodes[i] = (short) (setAll[colorLength] ^ set[stoneCodes[i]]);
 				break;
 				case ResultCode.NOTHING:
-					setCodes[i] = createCodeSet(false, colorLength, stoneCodes[i]);
+					setCodes[i] = (short) (setAll[colorLength] ^ set[stoneCodes[i]]);
 				break;
-			}
+			}*/
 		}
 
 		return setCodes;
@@ -89,7 +78,7 @@ public class SetCode
 		return size;
 	}
 
-	public static ArrayList<Short[]> unionSetStoneCodeArrayList(ArrayList<Short[]> p1,
+	public static ArrayList<Short[]> unionSetCodeArrayList(ArrayList<Short[]> p1,
 			ArrayList<Short[]> p2)
 	{
 		ArrayList<Short[]> newPossibilities = new ArrayList<Short[]>();
@@ -139,10 +128,5 @@ public class SetCode
 		}
 
 		return -1;
-	}
-	
-	public static void main(String[] args)
-	{
-		System.out.println(Integer.toBinaryString(createCodeSet(true, 0, 4)));
 	}
 }
