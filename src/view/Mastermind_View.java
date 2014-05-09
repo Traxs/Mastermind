@@ -25,7 +25,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-
+//INT
 public class Mastermind_View extends JFrame
 {
 	private static final long serialVersionUID = -809208636941136548L;
