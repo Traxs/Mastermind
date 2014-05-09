@@ -129,10 +129,9 @@ public class KI
 
 		for(int i = rowCal; i < rowArray.length; i++)
 		{
-			arrayList = SetCode.unionSetCodeArrayList(arrayList, getPossibilities(rowArray[i]));
+			arrayList = SetCode.unionSetCodeArrayList(arrayList, 
+			        getPossibilities(rowArray[i]));
 		}
-		
-		rowCal = rowArray.length;
 	}
 
 	private int[] getHighestProbability()
