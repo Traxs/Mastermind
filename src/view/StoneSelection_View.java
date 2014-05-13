@@ -65,13 +65,13 @@ public class StoneSelection_View extends Stone_View implements MouseListener
 		@Override
 		public void actionPerformed(ActionEvent e)
 		{
-			code = cCode;
-			updateCode();
+			setCode(cCode);
 		}
 	}
 	
-	public void updateCode()
+	public void setCode(int code)
 	{
+	    this.code = code;
 		repaint();
 	}
 	
@@ -80,8 +80,7 @@ public class StoneSelection_View extends Stone_View implements MouseListener
 	{
 		if(arg0.getButton() == MouseEvent.BUTTON1)
 		{
-			code = (code + 1) >= colorLength ? 0 : code + 1;
-			
+			setCode((code + 1) >= colorLength ? 0 : code + 1);
 			repaint();
 		}
 	}

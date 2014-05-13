@@ -329,12 +329,11 @@ public class Mastermind_View extends JFrame
 
     public void addRow(Row newRow)
     {
-        int[] code = newRow.getCode();
         Box horizontalBox = Box.createHorizontalBox();
 
-        for (int i = 0; i < code.length; i++)
+        for (int code : newRow.getCode())
         {
-            horizontalBox.add(new Stone_View(code[i]));
+            horizontalBox.add(new Stone_View(code));
         }
 
         horizontalBox.add(new Result_View(newRow));
@@ -347,12 +346,10 @@ public class Mastermind_View extends JFrame
 
     public void addHint(int[] code)
     {
-        horizontalBox_Hint.removeAll();
-        Stone_View stone_View;
         for (int i = 0; i < code.length; i++)
         {
-            stone_View = new Stone_View(code[i]);
-            horizontalBox_Hint.add(stone_View);
+            ((StoneSelection_View)horizontalBox_SelectionStone.
+                    getComponent(i)).setCode(code[i]);
         }
     }
 
@@ -461,6 +458,14 @@ public class Mastermind_View extends JFrame
             jbutton_Add.setEnabled(false);
             jbutton_Hint.setEnabled(false);
             jbutton_Hint.setText("Hint");
+
+            horizontalBox_Hint.removeAll();
+            for(int code : mastermind.getSecretCode())
+            {
+                System.out.print("sdas");
+                horizontalBox_Hint.add(new Stone_View(code));
+            }
+
             jLabel_Row.setText(verticalBox_Playfield.getComponentCount() + "/"
                     + rowLength);
             JOptionPane.showMessageDialog(null, (state == State.win ? "Win"
