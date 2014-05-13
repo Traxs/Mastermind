@@ -5,7 +5,7 @@ import java.awt.EventQueue;
 import java.awt.Frame;
 
 import javax.swing.BorderFactory;
-import javax.swing.JComponent;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.UIManager;
 
 import mastermind.Mastermind;
 import mastermind.Row;
@@ -33,6 +34,7 @@ public class Mastermind_View extends JFrame
 {
     private static final long serialVersionUID = -809208636941136548L;
     private Mastermind mastermind;
+    private NewGame_View newGame_View = null;
     private int rowLength;
     private int codeLength;
     private int colorLength;
@@ -46,9 +48,9 @@ public class Mastermind_View extends JFrame
     private JButton jbutton_Hint;
     private JButton jbutton_Add;
     private int posX = 0, posY = 0;
-
+    private static final String[] usedComponents = {"Menu","MenuBar", "MenuItem", "Panel", "RadioButton", "Slider", "Label", "ComboBox", "CheckBox", "Button"};
     public static final Color backgroundColor = new Color(42, 42, 42);
-
+    private static final ImageIcon icon = new ImageIcon("MIcon");
     public static void main(String[] args)
     {
         EventQueue.invokeLater(new Runnable()
@@ -67,11 +69,39 @@ public class Mastermind_View extends JFrame
         createView();
     }
 
+    
+    private void colorUI(Color colorBackground, Color colorForeground,Color colorBorder)
+    {
+    	for(int i = 0; i < usedComponents.length; i++)
+    	{
+    		UIManager.put(usedComponents[i] + ".background", colorBackground);
+    		UIManager.put(usedComponents[i] + ".foreground", colorForeground);	
+    	}
+    	
+    	UIManager.put("Menu.border", BorderFactory.createLineBorder(colorBorder));
+    	UIManager.put("MenuItem.selectionBackground", Color.WHITE);
+    	UIManager.put("MenuItem.selectionForeground", backgroundColor);
+    	UIManager.put("OptionPane.background", backgroundColor);
+    	UIManager.put("OptionPane.foreground", colorForeground);
+    	UIManager.put("OptionPane.messageForeground", colorForeground);;
+    	UIManager.put("ScrollBar.border", Color.DARK_GRAY);
+    	UIManager.put("ScrollBar.darkShadow", Color.DARK_GRAY);
+    	UIManager.put("ScrollBar.highlight", Color.DARK_GRAY);
+    	UIManager.put("ScrollBar.thumb", Color.DARK_GRAY);
+        UIManager.put("ScrollBar.thumbShadow", Color.DARK_GRAY);
+        UIManager.put("ScrollBar.thumbDarkShadow", Color.DARK_GRAY);
+        UIManager.put("ScrollBar.thumbLightShadow", Color.DARK_GRAY);
+        UIManager.put("ScrollBar.shadow", Color.DARK_GRAY);
+        UIManager.put("control", Color.DARK_GRAY);
+    }
+    
+    
     public void createView()
     {
-        JPanel contentPane = new JPanel();
+    	setIconImage(icon.getImage());
+    	colorUI(backgroundColor,Color.WHITE,Color.BLACK);
+    	JPanel contentPane = new JPanel();
         contentPane.setLayout(null);
-        setComponentColorAndBorder(contentPane, true);
         setContentPane(contentPane);
 
         addMouseListener(new MouseAdapter()
@@ -96,6 +126,8 @@ public class Mastermind_View extends JFrame
 
         // *** Playfield Box***
         scrollPane_Playfield = new JScrollPane();
+        
+
         verticalBox_Playfield = Box.createVerticalBox();
         createBox(scrollPane_Playfield, verticalBox_Playfield);
         contentPane.add(scrollPane_Playfield);
@@ -111,39 +143,52 @@ public class Mastermind_View extends JFrame
         horizontalBox_Hint = Box.createHorizontalBox();
         createBox(scrollPane_Hint, horizontalBox_Hint);
         contentPane.add(scrollPane_Hint);
-
-        jbutton_Add = new JButton("Add");
-        setComponentColorAndBorder(jbutton_Add, true);
-        jbutton_Add.addMouseListener(new MouseAdapter()
-        {
-            @Override
-            public void mouseClicked(MouseEvent e)
+        	jbutton_Add = new JButton("Add");
+            jbutton_Add.addMouseListener(new MouseAdapter()
             {
-                if (!jbutton_Add.isEnabled())
-                    return;
+                @Override
+                public void mouseClicked(MouseEvent e)
+                {
+                    if (!jbutton_Add.isEnabled())
+                        return;
 
-                int[] newCode = new int[codeLength];
-                for (int i = 0; i < codeLength; i++)
-                {
-                    newCode[i] =
-                            ((Stone_View) horizontalBox_SelectionStone
-                                    .getComponent(i)).getCode();
-                }
+                    int[] newCode = new int[codeLength];
+                    for (int i = 0; i < codeLength; i++)
+                    {
+                        newCode[i] =
+                                ((Stone_View) horizontalBox_SelectionStone
+                                        .getComponent(i)).getCode();
+                    }
 
-                if (mastermind.getState() == State.playingHumanHelp)
-                {
-                    mastermind.isPossible(newCode);
+                    
+                    if(jbutton_Add.getText() == "Set Code")
+                    {
+                    	startNewGame(newGame_View.getColorNumber(),
+                            newGame_View.getRowNumber(),
+                            newGame_View.getCodeNumber(),
+                            newGame_View.getState(),
+                            newCode);
+                    	setState(State.codeSet);
+                    }
+                    else
+                    {
+	                    
+	                    if (mastermind.getState() == State.playingHumanHelp)
+	                    {
+	                        mastermind.isPossible(newCode);
+	                    }
+	                    else
+	                    {
+	                        mastermind.addRow(newCode);
+	                    }
+                    }
                 }
-                else
-                {
-                    mastermind.addRow(newCode);
-                }
-            }
-        });
-        contentPane.add(jbutton_Add);
+            });
+
+        
+                contentPane.add(jbutton_Add);
 
         jbutton_Hint = new JButton();
-        setComponentColorAndBorder(jbutton_Hint, true);
         jbutton_Hint.addMouseListener(new MouseAdapter()
         {
             @Override
@@ -165,37 +210,44 @@ public class Mastermind_View extends JFrame
         contentPane.add(jbutton_Hint);
 
         jLabel_Row = new JLabel("0/" + rowLength);
-        setComponentColorAndBorder(jLabel_Row, false);
         contentPane.add(jLabel_Row);
 
         // *** JMenuBar ***
         {
             JMenuBar jMenuBar = new JMenuBar();
-            setComponentColorAndBorder(jMenuBar, false);
+            jMenuBar.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            jMenuBar.setBorderPainted(true);
             setJMenuBar(jMenuBar);
 
             JMenu jMenu_File = new JMenu("File");
-            setComponentColorAndBorder(jMenu_File, false);
+            jMenu_File.setBorderPainted(false);
             jMenuBar.add(jMenu_File);
 
-            JMenuItem jMenuItem_NewGame = new JMenuItem("New Game");
-            setComponentColorAndBorder(jMenuItem_NewGame, false);
+            JMenuItem jMenuItem_NewGame = new JMenuItem("New Game",Mastermind_File.loadIcon("new.png"));
             jMenuItem_NewGame.addActionListener(new ActionListener()
             {
                 @Override
                 public void actionPerformed(ActionEvent arg0)
                 {
-                    NewGame_View newGame_View = new NewGame_View();
+                    newGame_View = new NewGame_View();
 
                     if (JOptionPane.showConfirmDialog(null, newGame_View,
                             "New Game", JOptionPane.OK_CANCEL_OPTION,
                             JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION)
                     {
-                        startNewGame(newGame_View.getColorNumber(),
-                                newGame_View.getRowNumber(),
-                                newGame_View.getCodeNumber(),
-                                newGame_View.getState());
-
+                    	if(newGame_View.getState() == State.playingKI)
+                    	{
+                    		setState(State.playingKI);
+                    	}
+                    	else
+                    	{
+                    		startNewGame(newGame_View.getColorNumber(),
+                                    newGame_View.getRowNumber(),
+                                    newGame_View.getCodeNumber(),
+                                    newGame_View.getState(),
+                                    null);
+                    	}
+                        
                     }
                 }
             });
@@ -203,7 +255,6 @@ public class Mastermind_View extends JFrame
 
             JMenuItem jMenuItem_Save =
                     new JMenuItem("Save", Mastermind_File.loadIcon("save.png"));
-            setComponentColorAndBorder(jMenuItem_Save, false);
             jMenuItem_Save.addActionListener(new ActionListener()
             {
                 @Override
@@ -231,7 +282,6 @@ public class Mastermind_View extends JFrame
 
             JMenuItem jMenuItem_load =
                     new JMenuItem("Load", Mastermind_File.loadIcon("load.png"));
-            setComponentColorAndBorder(jMenuItem_load, false);
             jMenuItem_load.addActionListener(new ActionListener()
             {
                 @Override
@@ -267,11 +317,39 @@ public class Mastermind_View extends JFrame
                 }
             });
             jMenu_File.add(jMenuItem_load);
+            
+            JMenu jMenu_Help = new JMenu("Help");
+            jMenu_Help.setBorderPainted(false);
+            jMenuBar.add(jMenu_Help);
 
+            JMenuItem jMenuItem_Help = new JMenuItem("Help",Mastermind_File.loadIcon("Help.png"));
+            jMenuItem_Help.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent arg0)
+                {
+                	//LOAD BENUTZERHANDBUCH GENAU HIER !!
+                }
+            });
+            jMenu_Help.add(jMenuItem_Help);
+
+            JMenuItem jMenuItem_about = new JMenuItem("About",Mastermind_File.loadIcon("about.png"));
+            jMenuItem_about.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent arg0)
+                {
+                	JOptionPane.showMessageDialog(null, "Version 1.0.0 \u00A9 by \n- Birk Kauer\n- Raphael Pavlidis\n- Nico\n- Bettina");
+                }
+            });
+            jMenu_Help.add(jMenuItem_about);
+            
+            
             jMenuBar.add(Box.createHorizontalGlue());
 
             JButton jbutton_Min = new JButton("  _  ");
-            setComponentColorAndBorder(jbutton_Min, false);
+            jbutton_Min.setBorderPainted(false);
+            jbutton_Min.setFocusable(false);
             jbutton_Min.addMouseListener(new MouseAdapter()
             {
                 @Override
@@ -283,7 +361,8 @@ public class Mastermind_View extends JFrame
             jMenuBar.add(jbutton_Min);
 
             JButton jbutton_Exit = new JButton("  X  ");
-            setComponentColorAndBorder(jbutton_Exit, false);
+            jbutton_Exit.setFocusable(false);
+            jbutton_Exit.setBorderPainted(false);
             jbutton_Exit.addMouseListener(new MouseAdapter()
             {
                 @Override
@@ -302,6 +381,8 @@ public class Mastermind_View extends JFrame
         setResizable(false);
         setVisible(true);
     }
+    
+    
 
     private void createBox(JScrollPane jScrollPane, Box box)
     {
@@ -311,21 +392,7 @@ public class Mastermind_View extends JFrame
         jScrollPane.setViewportView(box);
     }
 
-    private void setComponentColorAndBorder(JComponent jComponent,
-            boolean border)
-    {
-        jComponent.setBackground(backgroundColor);
-        jComponent.setForeground(Color.white);
-
-        if (border)
-        {
-            jComponent.setBorder(BorderFactory.createLineBorder(Color.black));
-        }
-        else
-        {
-            jComponent.setBorder(BorderFactory.createEmptyBorder(5, 8, 5, 8));
-        }
-    }
+    
 
     public void addRow(Row newRow)
     {
@@ -418,12 +485,12 @@ public class Mastermind_View extends JFrame
     // Wird aufgerufen wenn der Benutzer w�hrend eines laufenden Spiels ein
     // neues Spiel startet
     public void startNewGame(int newColorLength, int newRowLength,
-            int newCodeLength, State state)
+            int newCodeLength, State state, int[] secretCode)
     {
         // Neues Mastermind
         this.mastermind =
                 new Mastermind(this, newCodeLength, newRowLength,
-                        newColorLength, state);
+                        newColorLength, state, secretCode);
         update();
     }
 
@@ -436,13 +503,29 @@ public class Mastermind_View extends JFrame
     {
         switch (state)
         {
+        case codeSet:
+        	horizontalBox_Hint.removeAll();
+            for(int code : mastermind.getSecretCode())
+            {
+                horizontalBox_Hint.add(new Stone_View(code));
+            }
+            horizontalBox_SelectionStone.removeAll();
+            jbutton_Add.setEnabled(false);
+            break;
         case playingHuman:
+        	jbutton_Add.setText("Add");
+        	jbutton_Hint.setEnabled(true);
+        	jbutton_Add.setEnabled(true);
         case playingHumanHelp:
             jbutton_Add.setEnabled(true);
             jbutton_Hint.setEnabled(true);
             jbutton_Hint.setText("Hint");
             break;
         case playingKI:
+        	jbutton_Add.setEnabled(true);
+        	jbutton_Hint.setEnabled(false);
+        	jbutton_Add.setText("Set Code");
+        	break;
         case checkPossible:
             jbutton_Add.setEnabled(false);
             jbutton_Hint.setEnabled(false);
@@ -467,6 +550,7 @@ public class Mastermind_View extends JFrame
 
             jLabel_Row.setText(verticalBox_Playfield.getComponentCount() + "/"
                     + rowLength);
+            
             JOptionPane.showMessageDialog(this, (state == State.win ? "Win"
                     : "Lose"));
             break;

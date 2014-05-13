@@ -155,12 +155,11 @@ public class KI
 		calculatePossibilities();
 
 		Integer[] setStoneCodesMax = null;
-		long max = 0, buffer, sum = 0;
+		long max = 0, buffer;
 
 		for(Integer[] setStoneCodesBuffer : arrayList)
 		{
 			buffer = SetCode.getRowSize(setStoneCodesBuffer);
-			sum += buffer;
 			if(max < buffer)
 			{
 				setStoneCodesMax = setStoneCodesBuffer;
@@ -168,7 +167,6 @@ public class KI
 			}
 		}
 		
-		System.out.println("Summe:" + sum + " ArrayList:" + arrayList.size());
 
 		for(int i = 0; i < setStoneCodesMax.length; i++)
 		{
@@ -193,7 +191,6 @@ public class KI
 			}
 			else if(white > 0)
 			{
-				//permutation[i] = ResultCode.WHITE;
 				permutation[i] = ResultCode.NOTHING;
 				white--;
 			}

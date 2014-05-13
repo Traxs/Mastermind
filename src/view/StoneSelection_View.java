@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -21,29 +20,29 @@ public class StoneSelection_View extends Stone_View implements MouseListener
 		super(0);
 		this.colorLength = colorLength;
 		addMouseListener(this);
-		setComponentPopupMenu(new PopUpDemo());
+		setComponentPopupMenu(new PopUp());
 	}
 
-	class PopUpDemo extends JPopupMenu
+	class PopUp extends JPopupMenu
 	{
 	    /**
 		 * 
 		 */
 		private static final long serialVersionUID = -9101520749960960679L;
 
-		public PopUpDemo()
+		public PopUp()
 		{
 	    	JMenuItemCode jMenuItemCode;
 	    		
 	        for(int i = 0; i < colorLength; i++)
 	        	{
 	        		jMenuItemCode = new JMenuItemCode(i);
-	        		jMenuItemCode.setBackground(Color.gray);
+	        		jMenuItemCode.setBackground(Mastermind_View.backgroundColor);
 	        		jMenuItemCode.setBorderPainted(false);
 	        		jMenuItemCode.setIcon(new ImageIcon(BUFFERED_IMAGES[i].getScaledInstance(32, 32, 10000)));
 	        		add(jMenuItemCode);
 	        	}
-	        	setBackground(Color.gray);
+	        	setBackground(Mastermind_View.backgroundColor);
 	        	setBorderPainted(false);
 		}
 	}

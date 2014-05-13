@@ -19,7 +19,7 @@ public class Mastermind implements java.io.Serializable
 	private int rowLength;
 	private int colorLength;
 	private ArrayList<Row> rows;
-	private State state;
+	protected State state;
 	private transient KI ki;
 	private transient Mastermind_View mastermind_View;
 	public static final int DEFAULTCODELENGTH = 6;
@@ -30,17 +30,25 @@ public class Mastermind implements java.io.Serializable
 	{
 		this(mastermind_View, Mastermind.DEFAULTCODELENGTH, 
 		        Mastermind.DEFAULTROWLENGTH, Mastermind.DEFAULTCOLORLENGTH, 
-		        State.playingHuman);
+		        State.playingHuman, null);
 	}
 	
+	
 	public Mastermind(Mastermind_View mastermind_View, int codeLength, 
-	        int rowLength, int colorLength, State state)
+	        int rowLength, int colorLength, State state, int[] secretCode)
 	{
 		this.mastermind_View = mastermind_View;
 		this.codeLength = codeLength;
 		this.rowLength = rowLength;
 		this.colorLength = colorLength;
-		genSecretCode();
+		if(secretCode == null)
+		{
+			genSecretCode();
+		}
+		else
+		{
+			this.secretCode = secretCode;
+		}
 		rows = new ArrayList<Row>();
 		this.state = state;
 		ki = new KI(this, colorLength, codeLength);

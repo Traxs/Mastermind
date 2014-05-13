@@ -3,6 +3,7 @@ package view;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
@@ -28,7 +29,9 @@ public class NewGame_View extends JPanel implements ItemListener
 	public NewGame_View()
 	{
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-
+		
+		
+		
 		jSliderColorNumber = new JSlider(JSlider.HORIZONTAL, 3, 15, Mastermind.DEFAULTCOLORLENGTH);
 		jSliderColorNumber.setMajorTickSpacing(3);
 		jSliderColorNumber.setMinorTickSpacing(1);
@@ -52,25 +55,27 @@ public class NewGame_View extends JPanel implements ItemListener
 
 		jRadioButtonHuman = new JRadioButton("Normal");
 		jRadioButtonHuman.setSelected(true);
-		jRadioButtonHumanHelp = new JRadioButton("mit Assistent");
-		jRadioButtonKI = new JRadioButton("Computer");
+		jRadioButtonHumanHelp = new JRadioButton("with Assistent");
+		jRadioButtonKI = new JRadioButton("against KI");
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(jRadioButtonHuman);
 		buttonGroup.add(jRadioButtonHumanHelp);
 		buttonGroup.add(jRadioButtonKI);
 
-		add(new JLabel("Anzahl der Farben:\n"));
+		add(new JLabel("how many different colors?\n"));
 		add(jSliderColorNumber);
-		add(new JLabel("\n\nLänge des Codes:\n"));
+		add(new JLabel("\n\nhow many stones?\n"));
 		add(jSliderCodeNumber);
-		add(new JLabel("\n\nAnzahl der max. Versuche:\n"));
+		add(new JLabel("\n\nhow many tries?\n"));
 		add(jSliderRowNumber);
 		add(jCheckBoxRowNumber);
-		add(new JLabel("\n\nModus:\n"));
+		add(new JLabel("\n\nMode:\n"));
 		add(jRadioButtonHuman);
 		add(jRadioButtonHumanHelp);
 		add(jRadioButtonKI);
+		
+	
 	}
 	
 	public State getState()
