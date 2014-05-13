@@ -26,11 +26,13 @@ public class KI
 		}
 	}
 	
+	public void stop()
+	{
+	    //thread.
+	}
+	
 	public void isPossible(final int[] code)
 	{
-		if(thread.isAlive())
-			return;
-		
 		thread = new Thread(new Runnable()
 		{
 			@Override
@@ -38,7 +40,7 @@ public class KI
 			{
 				if(mastermind.getRowSize() == 0)
 				{
-					mastermind.addRow(code);
+				    mastermind.finishCheck(code, true);
 					return;
 				}
 
@@ -57,29 +59,26 @@ public class KI
 					
 					if(i == codeLength)
 					{
-						mastermind.addRow(code);
+					    mastermind.finishCheck(code, true);
 						return;
 					}
 				}
-	
-				System.out.println("FEHLER");
+
+				mastermind.finishCheck(code, false);
 			}
 		});
 
 		thread.start();
 	}
 	
-	public void getHint(final ArrayList<Row> rows)
+	public void getHint()
 	{
-		if(thread.isAlive())
-			return;
-		
 		thread = new Thread(new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				mastermind.addRow(getHighestProbability());
+				mastermind.finishHint(getHighestProbability());
 			}
 		});
 
@@ -113,6 +112,11 @@ public class KI
 		});
 
 		thread.start();
+	}
+
+	public boolean isKICalculating()
+	{
+	    return thread.isAlive();
 	}
 	
 	private void calculatePossibilities()

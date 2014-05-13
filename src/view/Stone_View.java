@@ -30,7 +30,7 @@ public class Stone_View extends JComponent
 	private static final BufferedImage GREY = Mastermind_File.loadImage("grey.png");
 	private static final BufferedImage DARKBLUE = Mastermind_File.loadImage("darkblue.png");
 	private static final BufferedImage DARKGREEN = Mastermind_File.loadImage("darkgreen.png");
-	private static final BufferedImage[] BUFFERED_IMAGES = {WHITE, BLACK, RED, GREEN, ORANGE, PINK, BROWN, YELLOW, CYAN, LIME, PURPLE, MAGENTA, GREY, DARKBLUE, DARKGREEN};
+	protected static final BufferedImage[] BUFFERED_IMAGES = {WHITE, BLACK, RED, GREEN, ORANGE, PINK, BROWN, YELLOW, CYAN, LIME, PURPLE, MAGENTA, GREY, DARKBLUE, DARKGREEN};
 
 	public Stone_View(int code)
 	{

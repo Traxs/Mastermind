@@ -1,18 +1,29 @@
 package view;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 
 import mastermind.Mastermind;
+import mastermind.State;
 
-public class NewGame_View extends JPanel
+public class NewGame_View extends JPanel implements ItemListener
 {
 	private static final long serialVersionUID = 691420212962120955L;
 	private JSlider jSliderColorNumber;
 	private JSlider jSliderRowNumber;
 	private JSlider jSliderCodeNumber;
+	private JCheckBox jCheckBoxRowNumber;
+	private JRadioButton jRadioButtonHuman;
+	private JRadioButton jRadioButtonHumanHelp;
+	private JRadioButton jRadioButtonKI;
 	
 	public NewGame_View()
 	{
@@ -36,12 +47,41 @@ public class NewGame_View extends JPanel
 		jSliderRowNumber.setPaintTicks(true);
 		jSliderRowNumber.setPaintLabels(true);
 		
+		jCheckBoxRowNumber = new JCheckBox("Infinity");
+		jCheckBoxRowNumber.addItemListener(this);
+
+		jRadioButtonHuman = new JRadioButton("Normal");
+		jRadioButtonHuman.setSelected(true);
+		jRadioButtonHumanHelp = new JRadioButton("mit Assistent");
+		jRadioButtonKI = new JRadioButton("Computer");
+		
+		ButtonGroup buttonGroup = new ButtonGroup();
+		buttonGroup.add(jRadioButtonHuman);
+		buttonGroup.add(jRadioButtonHumanHelp);
+		buttonGroup.add(jRadioButtonKI);
+
 		add(new JLabel("Anzahl der Farben:\n"));
 		add(jSliderColorNumber);
 		add(new JLabel("\n\nLänge des Codes:\n"));
 		add(jSliderCodeNumber);
 		add(new JLabel("\n\nAnzahl der max. Versuche:\n"));
 		add(jSliderRowNumber);
+		add(jCheckBoxRowNumber);
+		add(new JLabel("\n\nModus:\n"));
+		add(jRadioButtonHuman);
+		add(jRadioButtonHumanHelp);
+		add(jRadioButtonKI);
+	}
+	
+	public State getState()
+	{
+	    if(jRadioButtonHuman.isSelected())
+	        return State.playingHuman;
+	    
+	    if(jRadioButtonHumanHelp.isSelected())
+	        return State.playingHumanHelp;
+	       
+	    return State.playingKI;
 	}
 	
 	public int getColorNumber()
@@ -51,11 +91,17 @@ public class NewGame_View extends JPanel
 	
 	public int getRowNumber()
 	{
-		return jSliderRowNumber.getValue();
+		return jCheckBoxRowNumber.isSelected() ? -1 : jSliderRowNumber.getValue();
 	}
 	
 	public int getCodeNumber()
 	{
 		return jSliderCodeNumber.getValue();
 	}
+
+    @Override
+    public void itemStateChanged(ItemEvent e)
+    {
+        jSliderRowNumber.setEnabled(e.getStateChange() == ItemEvent.DESELECTED);
+    }
 }

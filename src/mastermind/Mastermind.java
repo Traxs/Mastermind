@@ -28,10 +28,13 @@ public class Mastermind implements java.io.Serializable
 	
 	public Mastermind(Mastermind_View mastermind_View)
 	{
-		this(mastermind_View, Mastermind.DEFAULTCODELENGTH, Mastermind.DEFAULTROWLENGTH, Mastermind.DEFAULTCOLORLENGTH);
+		this(mastermind_View, Mastermind.DEFAULTCODELENGTH, 
+		        Mastermind.DEFAULTROWLENGTH, Mastermind.DEFAULTCOLORLENGTH, 
+		        State.playingHuman);
 	}
 	
-	public Mastermind(Mastermind_View mastermind_View, int codeLength, int rowLength, int colorLength)
+	public Mastermind(Mastermind_View mastermind_View, int codeLength, 
+	        int rowLength, int colorLength, State state)
 	{
 		this.mastermind_View = mastermind_View;
 		this.codeLength = codeLength;
@@ -39,12 +42,13 @@ public class Mastermind implements java.io.Serializable
 		this.colorLength = colorLength;
 		genSecretCode();
 		rows = new ArrayList<Row>();
-		state = State.playingHuman;
+		this.state = state;
 		ki = new KI(this, colorLength, codeLength);
 	}
 
 	public void saveMastermind(File file) throws IOException
 	{
+	    stopKI();
 		Mastermind_File.saveMastermind(this, file);
 	}
 	
@@ -71,10 +75,70 @@ public class Mastermind implements java.io.Serializable
 		}
 	}
 
-	public void test()
+	public void getHint()
 	{
-		ki.getHint(rows);
+		if(!ki.isKICalculating())
+		{
+	        setState(state == State.playingHuman ? State.caculateKI : 
+	                State.caculateHelpKI);
+		    ki.getHint();
+		}
 	}
+	
+	public void finishHint(int[] code)
+	{
+	    mastermind_View.addHint(code);
+	    switch(state)
+	    {
+	        case caculateKI:
+	            setState(State.playingHuman);
+	        break;
+	        case caculateHelpKI:
+	            setState(State.playingHumanHelp);
+	        break;
+	        default:
+	        break;
+	    }
+	}
+
+    public void isPossible(final int[] code)
+    {
+        if(!ki.isKICalculating())
+        {
+            setState(State.checkPossible);
+            ki.isPossible(code);
+        }
+    }
+    
+    public void finishCheck(final int[] code, boolean isPossible)
+    {
+        setState(State.playingHumanHelp);
+        if(isPossible)
+        {
+            addRow(code);
+        }
+        else
+        {
+            mastermind_View.isNotPossible();
+        }
+    }
+	
+    public void stopKI()
+    {
+        ki.stop();
+        switch(state)
+        {
+            case caculateKI:
+                state = State.playingHuman;
+            break;
+            case caculateHelpKI:
+            case checkPossible:
+                state = State.playingHumanHelp;
+            break;
+            default:
+            break;
+        }
+    }
 
 	public void addRow(int[] code)
 	{
@@ -125,15 +189,10 @@ public class Mastermind implements java.io.Serializable
 		{
 			setState(State.win);
 		}
-		else if(rows.size() >= rowLength)
+		else if(rows.size() >= rowLength && rowLength > 0)
 		{
 			setState(State.lose);
 		}
-	}
-	
-	public void isPossible(final int[] code)
-	{
-		ki.isPossible(code);
 	}
 	
 	private void setState(State state)
