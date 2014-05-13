@@ -462,15 +462,18 @@ public class Mastermind_View extends JFrame
             horizontalBox_Hint.removeAll();
             for(int code : mastermind.getSecretCode())
             {
-                System.out.print("sdas");
                 horizontalBox_Hint.add(new Stone_View(code));
             }
 
             jLabel_Row.setText(verticalBox_Playfield.getComponentCount() + "/"
                     + rowLength);
-            JOptionPane.showMessageDialog(null, (state == State.win ? "Win"
+            JOptionPane.showMessageDialog(this, (state == State.win ? "Win"
                     : "Lose"));
             break;
         }
+        
+        scrollPane_Selection.updateUI();
+        scrollPane_Hint.updateUI();
+        scrollPane_Playfield.updateUI();
     }
 }
