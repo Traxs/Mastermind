@@ -4,5 +4,5 @@ public enum State
 {
 	playingHuman, playingHumanHelp, playingKI, 
 	caculateKI, caculateHelpKI, checkPossible,
-	codeSet,lose, win
+	codeSet,stopKI, stoppedKI,lose, win
 }

@@ -79,7 +79,7 @@ public class SetCode
 	}
 
 	public static ArrayList<Integer[]> unionSetCodeArrayList(ArrayList<Integer[]> p1,
-			ArrayList<Integer[]> p2)
+			ArrayList<Integer[]> p2, Thread thread)
 	{
 		ArrayList<Integer[]> newPossibilities = new ArrayList<Integer[]>();
 		Integer[] newPossibility;
@@ -88,10 +88,17 @@ public class SetCode
 		{	
 			for(Integer[] p2Element : p2)
 			{
+				if(!thread.isInterrupted())
+				{
 				newPossibility = SetCode.unionRow(p1Element, p2Element);
 				if(newPossibility != null)
 				{
 					newPossibilities.add(0, newPossibility);
+				}
+				}
+				else
+				{
+					break;
 				}
 			}
 		}

@@ -28,7 +28,13 @@ public class KI
 	
 	public void stop()
 	{
+		thread.interrupt();
 	    //thread.
+	}
+	
+	public boolean getThreadState()
+	{
+		return thread.isAlive();
 	}
 	
 	public void isPossible(final int[] code)
@@ -45,22 +51,29 @@ public class KI
 				}
 
 				calculatePossibilities();
-
+				
 				int i;
 				for(Integer[] arrayListElement : arrayList)
 				{
-					for(i = 0; i < codeLength; i++)
+					if ( ! thread.isInterrupted() )
 					{
-						if(!SetCode.contains(arrayListElement[i], code[i]))
+						for(i = 0; i < codeLength; i++)
 						{
-							break;
+							if(!SetCode.contains(arrayListElement[i], code[i]))
+							{
+								break;
+							}
 						}
-					}
-					
-					if(i == codeLength)
+				    
+						if(i == codeLength)
+						{
+						    mastermind.finishCheck(code, true);
+							return;
+						}
+				    }
+					else
 					{
-					    mastermind.finishCheck(code, true);
-						return;
+						break;
 					}
 				}
 
@@ -97,17 +110,26 @@ public class KI
 			{
 				while(mastermind.getState() == State.playingKI)
 				{
-					try
+					if ( ! thread.isInterrupted() )
 					{
-						Thread.sleep(2000);
+				 
+						try
+						{
+							Thread.sleep(2000);
+						}
+						catch (InterruptedException e)
+						{
+							e.printStackTrace();
+						}
+	
+						mastermind.addRow(getHighestProbability());
 					}
-					catch (InterruptedException e)
+					else
 					{
-						e.printStackTrace();
+						break;
 					}
-
-					mastermind.addRow(getHighestProbability());
-				}
+					
+				 }
 			}
 		});
 
@@ -133,8 +155,15 @@ public class KI
 
 		for(int i = rowCal; i < rowArray.length; i++)
 		{
+			if ( ! thread.isInterrupted() )
+			{
 			arrayList = SetCode.unionSetCodeArrayList(arrayList, 
-			        getPossibilities(rowArray[i]));
+			        getPossibilities(rowArray[i]), this.thread);
+			}
+			else
+			{
+				break;
+			}
 		}
 	}
 

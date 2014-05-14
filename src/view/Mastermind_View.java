@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
 
@@ -48,9 +49,15 @@ public class Mastermind_View extends JFrame
     private JButton jbutton_Hint;
     private JButton jbutton_Add;
     private int posX = 0, posY = 0;
+    private StatusBar statusBar;
+    private static boolean painted = false;
+    
     private static final String[] usedComponents = {"Menu","MenuBar", "MenuItem", "Panel", "RadioButton", "Slider", "Label", "ComboBox", "CheckBox", "Button"};
     public static final Color backgroundColor = new Color(42, 42, 42);
     private static final ImageIcon icon = new ImageIcon("MIcon");
+    
+    
+    
     public static void main(String[] args)
     {
         EventQueue.invokeLater(new Runnable()
@@ -70,7 +77,7 @@ public class Mastermind_View extends JFrame
     }
 
     
-    private void colorUI(Color colorBackground, Color colorForeground,Color colorBorder)
+    private static void colorUI(Color colorBackground, Color colorForeground,Color colorBorder)
     {
     	for(int i = 0; i < usedComponents.length; i++)
     	{
@@ -93,13 +100,14 @@ public class Mastermind_View extends JFrame
         UIManager.put("ScrollBar.thumbLightShadow", Color.DARK_GRAY);
         UIManager.put("ScrollBar.shadow", Color.DARK_GRAY);
         UIManager.put("control", Color.DARK_GRAY);
+        painted = true;
     }
     
     
     public void createView()
     {
     	setIconImage(icon.getImage());
-    	colorUI(backgroundColor,Color.WHITE,Color.BLACK);
+    	if(!painted)colorUI(backgroundColor,Color.WHITE,Color.BLACK);
     	JPanel contentPane = new JPanel();
         contentPane.setLayout(null);
         setContentPane(contentPane);
@@ -161,7 +169,7 @@ public class Mastermind_View extends JFrame
                     }
 
                     
-                    if(jbutton_Add.getText() == "Set Code")
+                    if(jbutton_Add.getText().equals("Set Code"))
                     {
                     	startNewGame(newGame_View.getColorNumber(),
                             newGame_View.getRowNumber(),
@@ -173,7 +181,7 @@ public class Mastermind_View extends JFrame
                     else
                     {
 	                    
-	                    if (mastermind.getState() == State.playingHumanHelp)
+	                    if (mastermind.getModus() == State.playingHumanHelp)
 	                    {
 	                        mastermind.isPossible(newCode);
 	                    }
@@ -203,7 +211,9 @@ public class Mastermind_View extends JFrame
                 }
                 else
                 {
+                	setState(State.stopKI);
                     mastermind.stopKI();
+                   
                 }
             }
         });
@@ -212,6 +222,16 @@ public class Mastermind_View extends JFrame
         jLabel_Row = new JLabel("0/" + rowLength);
         contentPane.add(jLabel_Row);
 
+        //Status Bar
+ 
+        
+        
+        statusBar = new StatusBar();
+        contentPane.add(statusBar);
+        //getContentPane().add(statusBar, java.awt.BorderLayout.SOUTH);
+        
+        
+        
         // *** JMenuBar ***
         {
             JMenuBar jMenuBar = new JMenuBar();
@@ -374,6 +394,9 @@ public class Mastermind_View extends JFrame
             jMenuBar.add(jbutton_Exit);
         }
 
+        
+       
+        
         update();
         setTitle("Mastermind");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -382,7 +405,24 @@ public class Mastermind_View extends JFrame
         setVisible(true);
     }
     
-    
+    public class StatusBar extends JLabel {
+        
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 6984003196130959219L;
+
+		/** Creates a new instance of StatusBar */
+        public StatusBar() {
+            super();
+            super.setPreferredSize(new Dimension(100, 16));
+            setMessage("Ready");
+        }
+        
+        public void setMessage(String message) {
+            setText(" "+message);        
+        }        
+    }
 
     private void createBox(JScrollPane jScrollPane, Box box)
     {
@@ -453,6 +493,8 @@ public class Mastermind_View extends JFrame
         jbutton_Hint.setEnabled(true);
         jLabel_Row.setText(0 + "/" + rowLength);
         jLabel_Row.setVisible(rowLength != -1);
+        statusBar.setBounds(0, 570, rowSize, 25);
+        statusBar.setEnabled(true);
 
         Box startBox = Box.createHorizontalBox();
 
@@ -490,7 +532,7 @@ public class Mastermind_View extends JFrame
         // Neues Mastermind
         this.mastermind =
                 new Mastermind(this, newCodeLength, newRowLength,
-                        newColorLength, state, secretCode);
+                        newColorLength, state,state, secretCode);
         update();
     }
 
@@ -511,37 +553,56 @@ public class Mastermind_View extends JFrame
             }
             horizontalBox_SelectionStone.removeAll();
             jbutton_Add.setEnabled(false);
+            statusBar.setText("Ki playing now...");
             break;
         case playingHuman:
         	jbutton_Add.setText("Add");
         	jbutton_Hint.setEnabled(true);
         	jbutton_Add.setEnabled(true);
+        	jbutton_Add.setToolTipText("Add the choosen Code into the Field");
         case playingHumanHelp:
             jbutton_Add.setEnabled(true);
             jbutton_Hint.setEnabled(true);
             jbutton_Hint.setText("Hint");
+            jbutton_Hint.setToolTipText("This will give you a hint to find the Solution");
+            statusBar.setText("your turn...");
             break;
         case playingKI:
         	jbutton_Add.setEnabled(true);
         	jbutton_Hint.setEnabled(false);
         	jbutton_Add.setText("Set Code");
+        	jbutton_Add.setToolTipText("Choose your Code against the KI");
+        	statusBar.setText("Set your secret Code...");
         	break;
         case checkPossible:
             jbutton_Add.setEnabled(false);
             jbutton_Hint.setEnabled(false);
+            statusBar.setText("Checking for possibilitys...");
             break;
+        case stopKI:
+        	statusBar.setText("stopping Ki...");
+        	break;
+        case stoppedKI:
+        	statusBar.setText("Calculating stopped...");
+        	jbutton_Add.setEnabled(true);
+        	jbutton_Hint.setText("Hint");
+        	jbutton_Hint.setToolTipText("This will give you a hint to find the Solution");
+        	jbutton_Hint.setEnabled(true);
+        	break;
         case caculateKI:
         case caculateHelpKI:
             jbutton_Add.setEnabled(false);
             jbutton_Hint.setEnabled(true);
             jbutton_Hint.setText("Cancel");
+            jbutton_Hint.setToolTipText("Stop the Calculating if it lasts to long for you");
+            statusBar.setText("calculating...");
             break;
         default:
             verticalBox_Playfield.remove(0);
             jbutton_Add.setEnabled(false);
             jbutton_Hint.setEnabled(false);
             jbutton_Hint.setText("Hint");
-
+            jbutton_Hint.setToolTipText("This will give you a hint to find the Solution");
             horizontalBox_Hint.removeAll();
             for(int code : mastermind.getSecretCode())
             {
@@ -550,7 +611,7 @@ public class Mastermind_View extends JFrame
 
             jLabel_Row.setText(verticalBox_Playfield.getComponentCount() + "/"
                     + rowLength);
-            
+            statusBar.setText("done...");
             JOptionPane.showMessageDialog(this, (state == State.win ? "Win"
                     : "Lose"));
             break;

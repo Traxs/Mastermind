@@ -20,6 +20,7 @@ public class Mastermind implements java.io.Serializable
 	private int colorLength;
 	private ArrayList<Row> rows;
 	protected State state;
+	protected State modus;
 	private transient KI ki;
 	private transient Mastermind_View mastermind_View;
 	public static final int DEFAULTCODELENGTH = 6;
@@ -30,12 +31,12 @@ public class Mastermind implements java.io.Serializable
 	{
 		this(mastermind_View, Mastermind.DEFAULTCODELENGTH, 
 		        Mastermind.DEFAULTROWLENGTH, Mastermind.DEFAULTCOLORLENGTH, 
-		        State.playingHuman, null);
+		        State.playingHuman, State.playingHuman, null);
 	}
 	
 	
 	public Mastermind(Mastermind_View mastermind_View, int codeLength, 
-	        int rowLength, int colorLength, State state, int[] secretCode)
+	        int rowLength, int colorLength, State state, State modus, int[] secretCode)
 	{
 		this.mastermind_View = mastermind_View;
 		this.codeLength = codeLength;
@@ -51,6 +52,7 @@ public class Mastermind implements java.io.Serializable
 		}
 		rows = new ArrayList<Row>();
 		this.state = state;
+		this.modus = modus;
 		ki = new KI(this, colorLength, codeLength);
 	}
 
@@ -134,6 +136,11 @@ public class Mastermind implements java.io.Serializable
     public void stopKI()
     {
         ki.stop();
+        while(ki.getThreadState())
+        {
+        	
+        }
+        setState(State.stoppedKI);
         switch(state)
         {
             case caculateKI:
@@ -212,6 +219,11 @@ public class Mastermind implements java.io.Serializable
 	public State getState()
 	{
 		return state;
+	}
+	
+	public State getModus()
+	{
+		return modus;
 	}
 	
 	//*** SecretCode ***
