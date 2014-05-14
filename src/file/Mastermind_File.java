@@ -12,6 +12,7 @@
  *<p>
  * @author      Birk Kauer
  * @author      Raphael Pavlidis
+ * @author		Nico
  * @version     %I%, %G%
  * @since       1.0
  */
@@ -38,17 +39,19 @@ public class Mastermind_File
 {
 	
 	/**
-	 * Save mastermind will try to write the Object {@link Mastermind} into the File System.
+	 * saveMastermind will try to write the Object {@link mastermind.Mastermind} into the File System.
 	 * <p>
-	 * It will try to create a Data Stream which is ObjectOutputStream(Super class is OutputStream)
+	 * It will try to create a Data Stream which is {@link java.io.ObjectOutputStream}(Super class is {@link java.io.OutputStream})
 	 * If it does fail the routine will throw an IOException which is Handled in the GUI.
 	 * <p>
 	 * At the end it will Close the Data Stream. 
 	 *
-	 * @param 		mastermind the mastermind
-	 * @param 		file the file
-	 * @throws 		IOException Signals that an I/O exception has occurred.
-	 * @see			Mastermind
+	 * @param 		mastermind 		The current {@link mastermind.Mastermind} Object
+	 * @param 		file 			File Location to put at
+	 * @throws 		IOException 	Signals that an I/O exception has occurred.
+	 * @see			mastermind.Mastermind
+	 * @see			java.io.ObjectOutputStream
+	 * @see			java.io.IOException
 	 * @since		1.0
 	 */
 	public static void saveMastermind(Mastermind mastermind, File file) throws IOException
@@ -59,12 +62,24 @@ public class Mastermind_File
 	}
 
 	/**
-	 * Load mastermind.q	
-	 *
-	 * @param file the file
-	 * @return the mastermind
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 * @throws ClassNotFoundException the class not found exception
+	 * loadMastermind will try to load and saved Object of {@link mastermind.Mastermind} into the Memory of 
+	 * the running Mastermind process.
+	 * <p>
+	 * It will create a Data Stream which is {@link java.io.ObjectInputStream}(Super class is {@link java.io.InputStream})
+	 * If it does fail the routine will throw an {@link java.io.IOException} or an 
+	 * {@link java.lang.ClassNotFoundException} which is Handled in the {@link view.Mastermind_View}.
+	 * <p>
+	 * At the end it will Close the Data Stream.
+	 * 
+	 * @param 	file	 				File Location to put at
+	 * @return 	mastermind				{@link mastermind.Mastermind}
+	 * @throws 	IOException 			Signals that an I/O exception has occurred.
+	 * @throws 	ClassNotFoundException 	the class not found exception
+	 * @see		mastermind.Mastermind
+	 * @see		java.io.ObjectInputStream
+	 * @see		java.io.IOException
+	 * @see		java.lang.ClassNotFoundException
+	 * @since	1.0
 	 */
 	public static Mastermind loadMastermind(File file) throws IOException, ClassNotFoundException
 	{	
@@ -75,12 +90,24 @@ public class Mastermind_File
 		return mastermind;
 	}	
 	
-	//Bugfix gegen Lag
 	/**
 	 * To compatible image.
+	 * <p>
+	 * This method will check the current Configuration of the Display in {@link java.awt.GraphicsConfiguration}.
+	 * <p>
+	 * then it will compare the parameter <code>image</code> with the Display configuration
+	 * if it is optimized for the current System the function will simply return it.
+	 * if not it will create a new image and draw the old one in optimized settings on it.
+	 * <p>
+	 * At the end it will return the image.
 	 *
-	 * @param image the image
-	 * @return the buffered image
+	 * @param 	image		 	java.awt.image
+	 * @return 	buffered image	java.awt.image.BufferedImage
+	 * @see		java.awt.Graphics2D
+	 * @see 	java.awt.image.BufferedImage
+	 * @see 	java.awt.GraphicsConfiguration
+	 * @see		java.awt.GraphicsEnvironment
+	 * @since 	1.0
 	 */
 	private static BufferedImage toCompatibleImage(BufferedImage image)
 	{
@@ -115,9 +142,22 @@ public class Mastermind_File
 	
 	/**
 	 * Load image.
-	 *
-	 * @param PathToFile the path to file
-	 * @return the buffered image
+	 * <p>
+	 * This method will load an image via ImageIO.read from the drive.
+	 * The path where the file should be located will be transmitted via the parameter
+	 * PathToFile which is a String.
+	 * <p>
+	 * If it finds a compatible image on the Path it will return it via {@link #toCompatibleImage(BufferedImage)} into 
+	 * an BufferedImage.
+	 * <p>
+	 * if not it will catch an IOException and return <code>null</code>
+	 * 
+	 * @param 	PathToFile	 	the path to file
+	 * @return 	BufferedImage 	java.awt.image.BufferedImage
+	 * @see 	#toCompatibleImage(BufferedImage)
+	 * @see 	javax.imageio.ImageIO
+	 * @see		java.io.IOException
+	 * @since 	1.0
 	 */
 	public static BufferedImage loadImage(String PathToFile)
 	{
@@ -134,9 +174,14 @@ public class Mastermind_File
 	
 	/**
 	 * Load icon.
-	 *
-	 * @param PathToFile the path to file
-	 * @return the image icon
+	 * <p>
+	 * this function will load an Icon out of resources (img/...) into Memory so it can be used.
+	 * It simply returns the Pointer to the allocated Memory where the Icon sits.
+	 * 
+	 * @param 	PathToFile		the path to file
+	 * @return 	ImageIcon		the image icon
+	 * @see 	javax.swing.ImageIcon
+	 * @since	1.0	
 	 */
 	public static ImageIcon loadIcon(String PathToFile) 
 	{

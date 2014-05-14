@@ -118,7 +118,7 @@ public class KI
 	/**
 	 * Gets the hint.
 	 *
-	 * @return the hint
+	 * 
 	 */
 	public void getHint()
 	{

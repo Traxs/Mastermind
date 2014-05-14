@@ -1,5 +1,12 @@
-/*
- * 
+/**
+ * This class is basically the heart out of the whole project.
+ * inside of it is the structure and the control of every other object/class.
+ * <p>
+ * <p>
+ * @author      Birk Kauer
+ * @author      Raphael Pavlidis
+ * @version     %I%, %G%
+ * @since       1.0
  */
 package mastermind;
 
@@ -13,7 +20,7 @@ import file.Mastermind_File;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class Mastermind.
+ * The Class Mastermind im
  */
 public class Mastermind implements java.io.Serializable
 {
@@ -150,7 +157,7 @@ public class Mastermind implements java.io.Serializable
 	/**
 	 * Gets the hint.
 	 *
-	 * @return the hint
+	 * 
 	 */
 	public void getHint()
 	{
