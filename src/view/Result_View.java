@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package view;
 
 import java.awt.Dimension;
@@ -9,19 +12,42 @@ import javax.swing.JComponent;
 import mastermind.Row;
 import file.Mastermind_File;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Result_View.
+ */
 public class Result_View extends JComponent
 {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 3428603070137675412L;
 	
+	/** The Constant RESULTHOLE. */
 	private static final BufferedImage RESULTHOLE = Mastermind_File.loadImage("resulthole.png");
+	
+	/** The Constant RESULTWHITE. */
 	private static final BufferedImage RESULTWHITE = Mastermind_File.loadImage("resultwhite.png");
+	
+	/** The Constant RESULTRED. */
 	private static final BufferedImage RESULTRED = Mastermind_File.loadImage("resultred.png");
+	
+	/** The Constant RESULTSIZE. */
 	public static final int RESULTSIZE = 27;
 	
+	/** The red. */
 	private int red;
+	
+	/** The white. */
 	private int white;
+	
+	/** The code length. */
 	private int codeLength;
 
+	/**
+	 * Instantiates a new result_ view.
+	 *
+	 * @param row the row
+	 */
 	public Result_View(Row row)
 	{
 		this.red = row.getRed();
@@ -35,6 +61,9 @@ public class Result_View extends JComponent
 		setPreferredSize(new Dimension(RESULTSIZE * xSize, Stone_View.STONESIZE));
 	}
 	
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
+	 */
 	@Override
 	public void paint(Graphics arg0)
 	{		

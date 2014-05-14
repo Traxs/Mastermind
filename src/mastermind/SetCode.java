@@ -1,9 +1,18 @@
+/*
+ * 
+ */
 package mastermind;
 
 import java.util.ArrayList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SetCode.
+ */
 public class SetCode
 {
+	
+	/** The Constant set. */
 	private static final int[] set = { 
 		0b000000000000001, 0b000000000000010, 0b000000000000100, 
 		0b000000000001000, 0b000000000010000, 0b000000000100000,
@@ -11,6 +20,7 @@ public class SetCode
 		0b000001000000000, 0b000010000000000, 0b000100000000000, 
 		0b001000000000000, 0b010000000000000, 0b100000000000000};
 	
+	/** The Constant setAll. */
 	private static final int[] setAll = {	  0b000000000000000,
 		0b000000000000001, 0b000000000000011, 0b000000000000111, 
 		0b000000000001111, 0b000000000011111, 0b000000000111111,
@@ -18,8 +28,19 @@ public class SetCode
 		0b000001111111111, 0b000011111111111, 0b000111111111111, 
 		0b001111111111111, 0b011111111111111, 0b111111111111111};
 	
+	/**
+	 * Instantiates a new sets the code.
+	 */
 	private SetCode(){}
 
+	/**
+	 * Creates the row.
+	 *
+	 * @param resultCodes the result codes
+	 * @param colorLength the color length
+	 * @param stoneCodes the stone codes
+	 * @return the integer[]
+	 */
 	public static Integer[] createRow(int[] resultCodes, int colorLength, int[] stoneCodes)
 	{
 		Integer[] setCodes = new Integer[resultCodes.length];
@@ -45,6 +66,13 @@ public class SetCode
 		return setCodes;
 	}
 
+	/**
+	 * Union row.
+	 *
+	 * @param row1 the row1
+	 * @param row2 the row2
+	 * @return the integer[]
+	 */
 	public static Integer[] unionRow(Integer[] row1, Integer[] row2)
 	{
 		Integer[] newArray = new Integer[row1.length];
@@ -66,6 +94,12 @@ public class SetCode
 		return newArray;		
 	}
 
+	/**
+	 * Gets the row size.
+	 *
+	 * @param setCodes the set codes
+	 * @return the row size
+	 */
 	public static long getRowSize(Integer[] setCodes)
 	{
 		long size = 1;
@@ -78,6 +112,14 @@ public class SetCode
 		return size;
 	}
 
+	/**
+	 * Union set code array list.
+	 *
+	 * @param p1 the p1
+	 * @param p2 the p2
+	 * @param thread the thread
+	 * @return the array list
+	 */
 	public static ArrayList<Integer[]> unionSetCodeArrayList(ArrayList<Integer[]> p1,
 			ArrayList<Integer[]> p2, Thread thread)
 	{
@@ -106,11 +148,24 @@ public class SetCode
 		return newPossibilities;
 	}
 
+	/**
+	 * Contains.
+	 *
+	 * @param value the value
+	 * @param code the code
+	 * @return true, if successful
+	 */
 	public static boolean contains(int value, int code)
 	{
 		return (value & set[code]) != 0;
 	}
 
+	/**
+	 * Gets the size.
+	 *
+	 * @param value the value
+	 * @return the size
+	 */
 	public static int getSize(int value)
 	{
 		int size = 0;
@@ -124,6 +179,12 @@ public class SetCode
 		return size;
 	}
 
+	/**
+	 * Gets the first.
+	 *
+	 * @param value the value
+	 * @return the first
+	 */
 	public static int getFirst(int value)
 	{
 		for(int i = 0; i < 15; i++)

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package mastermind;
 
 import java.io.File;
@@ -8,25 +11,57 @@ import java.util.Random;
 import view.Mastermind_View;
 import file.Mastermind_File;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Mastermind.
+ */
 public class Mastermind implements java.io.Serializable
 {
-	/**
-	 * 
-	 */
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -4438978518578456012L;
+	
+	/** The secret code. */
 	private int[] secretCode;
+	
+	/** The code length. */
 	private int codeLength;
+	
+	/** The row length. */
 	private int rowLength;
+	
+	/** The color length. */
 	private int colorLength;
+	
+	/** The rows. */
 	private ArrayList<Row> rows;
+	
+	/** The state. */
 	protected State state;
+	
+	/** The modus. */
 	protected State modus;
+	
+	/** The ki. */
 	private transient KI ki;
+	
+	/** The mastermind_ view. */
 	private transient Mastermind_View mastermind_View;
+	
+	/** The Constant DEFAULTCODELENGTH. */
 	public static final int DEFAULTCODELENGTH = 6;
+	
+	/** The Constant DEFAULTROWLENGTH. */
 	public static final int DEFAULTROWLENGTH = 12;
+	
+	/** The Constant DEFAULTCOLORLENGTH. */
 	public static final int DEFAULTCOLORLENGTH = 6;
 	
+	/**
+	 * Instantiates a new mastermind.
+	 *
+	 * @param mastermind_View the mastermind_ view
+	 */
 	public Mastermind(Mastermind_View mastermind_View)
 	{
 		this(mastermind_View, Mastermind.DEFAULTCODELENGTH, 
@@ -35,6 +70,17 @@ public class Mastermind implements java.io.Serializable
 	}
 	
 	
+	/**
+	 * Instantiates a new mastermind.
+	 *
+	 * @param mastermind_View the mastermind_ view
+	 * @param codeLength the code length
+	 * @param rowLength the row length
+	 * @param colorLength the color length
+	 * @param state the state
+	 * @param modus the modus
+	 * @param secretCode the secret code
+	 */
 	public Mastermind(Mastermind_View mastermind_View, int codeLength, 
 	        int rowLength, int colorLength, State state, State modus, int[] secretCode)
 	{
@@ -56,12 +102,25 @@ public class Mastermind implements java.io.Serializable
 		ki = new KI(this, colorLength, codeLength);
 	}
 
+	/**
+	 * Save mastermind.
+	 *
+	 * @param file the file
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void saveMastermind(File file) throws IOException
 	{
 	    stopKI();
 		Mastermind_File.saveMastermind(this, file);
 	}
 	
+	/**
+	 * Load mastermind.
+	 *
+	 * @param file the file
+	 * @throws ClassNotFoundException the class not found exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void loadMastermind(File file) throws ClassNotFoundException, IOException
 	{
 		Mastermind mastermind = Mastermind_File.loadMastermind(file);
@@ -74,6 +133,9 @@ public class Mastermind implements java.io.Serializable
 		ki = new KI(this, colorLength, codeLength);
 	}
 
+	/**
+	 * Gen secret code.
+	 */
 	private void genSecretCode()
 	{
 		secretCode = new int[codeLength];
@@ -85,6 +147,11 @@ public class Mastermind implements java.io.Serializable
 		}
 	}
 
+	/**
+	 * Gets the hint.
+	 *
+	 * @return the hint
+	 */
 	public void getHint()
 	{
 		if(!ki.isKICalculating())
@@ -95,6 +162,11 @@ public class Mastermind implements java.io.Serializable
 		}
 	}
 	
+	/**
+	 * Finish hint.
+	 *
+	 * @param code the code
+	 */
 	public void finishHint(int[] code)
 	{
 	    mastermind_View.addHint(code);
@@ -111,6 +183,11 @@ public class Mastermind implements java.io.Serializable
 	    }
 	}
 
+    /**
+     * Checks if is possible.
+     *
+     * @param code the code
+     */
     public void isPossible(final int[] code)
     {
         if(!ki.isKICalculating())
@@ -120,6 +197,12 @@ public class Mastermind implements java.io.Serializable
         }
     }
     
+    /**
+     * Finish check.
+     *
+     * @param code the code
+     * @param isPossible the is possible
+     */
     public void finishCheck(final int[] code, boolean isPossible)
     {
         setState(State.playingHumanHelp);
@@ -133,10 +216,13 @@ public class Mastermind implements java.io.Serializable
         }
     }
 	
+    /**
+     * Stop ki.
+     */
     public void stopKI()
     {
         ki.stop();
-        while(ki.getThreadState())
+        while(ki.isKICalculating())
         {
         	
         }
@@ -155,6 +241,11 @@ public class Mastermind implements java.io.Serializable
         }
     }
 
+	/**
+	 * Adds the row.
+	 *
+	 * @param code the code
+	 */
 	public void addRow(int[] code)
 	{
 		switch(state)
@@ -210,53 +301,104 @@ public class Mastermind implements java.io.Serializable
 		}
 	}
 	
+	/**
+	 * Sets the state.
+	 *
+	 * @param state the new state
+	 */
 	private void setState(State state)
 	{
 		this.state = state;
 		mastermind_View.setState(state);
 	}
 	
+	/**
+	 * Gets the state.
+	 *
+	 * @return the state
+	 */
 	public State getState()
 	{
 		return state;
 	}
 	
+	/**
+	 * Gets the modus.
+	 *
+	 * @return the modus
+	 */
 	public State getModus()
 	{
 		return modus;
 	}
 	
 	//*** SecretCode ***
+	/**
+	 * Gets the secret code.
+	 *
+	 * @return the secret code
+	 */
 	public int[] getSecretCode()
 	{
 		return secretCode;
 	}
 	
+	/**
+	 * Gets the rows.
+	 *
+	 * @return the rows
+	 */
 	public ArrayList<Row> getRows()
 	{
 		return this.rows;
 	}
 	
+	/**
+	 * Gets the row size.
+	 *
+	 * @return the row size
+	 */
 	public int getRowSize()
 	{
 		return this.rows.size();
 	}
 	
+	/**
+	 * Gets the row.
+	 *
+	 * @param rowNumber the row number
+	 * @return the row
+	 */
 	public Row getRow(int rowNumber)
 	{
 		return rows.get(rowNumber);
 	}
 	
+	/**
+	 * Gets the code length.
+	 *
+	 * @return the code length
+	 */
 	public int getCodeLength()
 	{
 		return codeLength;
 	}
 	
+	/**
+	 * Gets the row length.
+	 *
+	 * @return the row length
+	 */
 	public int getRowLength()
 	{
 		return rowLength;
 	}
 	
+	/**
+	 * Gets the color length.
+	 *
+	 * @return the color length
+	 */
 	public int getColorLength()
 	{
 		return colorLength;

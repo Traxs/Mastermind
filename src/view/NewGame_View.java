@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package view;
 
 import java.awt.event.ItemEvent;
@@ -15,17 +18,40 @@ import javax.swing.JSlider;
 import mastermind.Mastermind;
 import mastermind.State;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NewGame_View.
+ */
 public class NewGame_View extends JPanel implements ItemListener
 {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 691420212962120955L;
+	
+	/** The j slider color number. */
 	private JSlider jSliderColorNumber;
+	
+	/** The j slider row number. */
 	private JSlider jSliderRowNumber;
+	
+	/** The j slider code number. */
 	private JSlider jSliderCodeNumber;
+	
+	/** The j check box row number. */
 	private JCheckBox jCheckBoxRowNumber;
+	
+	/** The j radio button human. */
 	private JRadioButton jRadioButtonHuman;
+	
+	/** The j radio button human help. */
 	private JRadioButton jRadioButtonHumanHelp;
+	
+	/** The j radio button ki. */
 	private JRadioButton jRadioButtonKI;
 	
+	/**
+	 * Instantiates a new new game_ view.
+	 */
 	public NewGame_View()
 	{
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -78,6 +104,11 @@ public class NewGame_View extends JPanel implements ItemListener
 	
 	}
 	
+	/**
+	 * Gets the state.
+	 *
+	 * @return the state
+	 */
 	public State getState()
 	{
 	    if(jRadioButtonHuman.isSelected())
@@ -89,21 +120,39 @@ public class NewGame_View extends JPanel implements ItemListener
 	    return State.playingKI;
 	}
 	
+	/**
+	 * Gets the color number.
+	 *
+	 * @return the color number
+	 */
 	public int getColorNumber()
 	{
 		return jSliderColorNumber.getValue();
 	}
 	
+	/**
+	 * Gets the row number.
+	 *
+	 * @return the row number
+	 */
 	public int getRowNumber()
 	{
 		return jCheckBoxRowNumber.isSelected() ? -1 : jSliderRowNumber.getValue();
 	}
 	
+	/**
+	 * Gets the code number.
+	 *
+	 * @return the code number
+	 */
 	public int getCodeNumber()
 	{
 		return jSliderCodeNumber.getValue();
 	}
 
+    /* (non-Javadoc)
+     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     */
     @Override
     public void itemStateChanged(ItemEvent e)
     {

@@ -1,3 +1,20 @@
+/**
+ * Mastermind_File is an class for communicating with the current File System.
+ * The class gets every Information it needs such as the Location where to load or put the File
+ * as well as what to specifically save.
+ * <p>
+ * This class is using the Method to save Objects into a File which is possible via Serialization.
+ * Objects who shouldn't be saved will be declared as Transient.
+ * <p>
+ * This class as well will load Images from Resources or the current HardDrive and compile it to
+ * an usable Image or Icon.
+ *<p>
+ *<p>
+ * @author      Birk Kauer
+ * @author      Raphael Pavlidis
+ * @version     %I%, %G%
+ * @since       1.0
+ */
 package file;
 
 import java.awt.Graphics2D;
@@ -16,8 +33,24 @@ import javax.swing.ImageIcon;
 
 import mastermind.Mastermind;
 
+// TODO: Auto-generated Javadoc
 public class Mastermind_File
 {
+	
+	/**
+	 * Save mastermind will try to write the Object {@link Mastermind} into the File System.
+	 * <p>
+	 * It will try to create a Data Stream which is ObjectOutputStream(Super class is OutputStream)
+	 * If it does fail the routine will throw an IOException which is Handled in the GUI.
+	 * <p>
+	 * At the end it will Close the Data Stream. 
+	 *
+	 * @param 		mastermind the mastermind
+	 * @param 		file the file
+	 * @throws 		IOException Signals that an I/O exception has occurred.
+	 * @see			Mastermind
+	 * @since		1.0
+	 */
 	public static void saveMastermind(Mastermind mastermind, File file) throws IOException
 	{
 		ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
@@ -25,6 +58,14 @@ public class Mastermind_File
 		objectOutputStream.close();
 	}
 
+	/**
+	 * Load mastermind.q	
+	 *
+	 * @param file the file
+	 * @return the mastermind
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws ClassNotFoundException the class not found exception
+	 */
 	public static Mastermind loadMastermind(File file) throws IOException, ClassNotFoundException
 	{	
 		ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(file));
@@ -35,6 +76,12 @@ public class Mastermind_File
 	}	
 	
 	//Bugfix gegen Lag
+	/**
+	 * To compatible image.
+	 *
+	 * @param image the image
+	 * @return the buffered image
+	 */
 	private static BufferedImage toCompatibleImage(BufferedImage image)
 	{
 	    if(image==null)
@@ -66,6 +113,12 @@ public class Mastermind_File
 	    return new_image; 
 	}
 	
+	/**
+	 * Load image.
+	 *
+	 * @param PathToFile the path to file
+	 * @return the buffered image
+	 */
 	public static BufferedImage loadImage(String PathToFile)
 	{
 		try
@@ -79,6 +132,12 @@ public class Mastermind_File
 		}
 	}
 	
+	/**
+	 * Load icon.
+	 *
+	 * @param PathToFile the path to file
+	 * @return the image icon
+	 */
 	public static ImageIcon loadIcon(String PathToFile) 
 	{
 		return new ImageIcon(Mastermind_File.class.getClassLoader().getResource("img/" + PathToFile));

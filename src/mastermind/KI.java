@@ -1,16 +1,42 @@
+/*
+ * 
+ */
 package mastermind;
 
 import java.util.ArrayList;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class KI.
+ */
 public class KI
 {
+	
+	/** The color length. */
 	private int colorLength;
+	
+	/** The code length. */
 	private int codeLength;
+	
+	/** The row cal. */
 	private int rowCal;
+	
+	/** The array list. */
 	private ArrayList<Integer[]> arrayList;
+	
+	/** The thread. */
 	private Thread thread;
+	
+	/** The mastermind. */
 	private Mastermind mastermind;
 	
+	/**
+	 * Instantiates a new ki.
+	 *
+	 * @param mastermind the mastermind
+	 * @param colorLenth the color lenth
+	 * @param codeLength the code length
+	 */
 	public KI(Mastermind mastermind, int colorLenth, int codeLength)
 	{
 		this.mastermind = mastermind;
@@ -26,17 +52,22 @@ public class KI
 		}
 	}
 	
+	/**
+	 * Stop.
+	 */
 	public void stop()
 	{
 		thread.interrupt();
 	    //thread.
 	}
 	
-	public boolean getThreadState()
-	{
-		return thread.isAlive();
-	}
 	
+	
+	/**
+	 * Checks if is possible.
+	 *
+	 * @param code the code
+	 */
 	public void isPossible(final int[] code)
 	{
 		thread = new Thread(new Runnable()
@@ -84,6 +115,11 @@ public class KI
 		thread.start();
 	}
 	
+	/**
+	 * Gets the hint.
+	 *
+	 * @return the hint
+	 */
 	public void getHint()
 	{
 		thread = new Thread(new Runnable()
@@ -98,6 +134,9 @@ public class KI
 		thread.start();
 	}
 	
+	/**
+	 * Start ki.
+	 */
 	private void startKI()
 	{
 		if(thread.isAlive())
@@ -136,11 +175,19 @@ public class KI
 		thread.start();
 	}
 
+	/**
+	 * Checks if is KI calculating.
+	 *
+	 * @return true, if is KI calculating
+	 */
 	public boolean isKICalculating()
 	{
 	    return thread.isAlive();
 	}
 	
+	/**
+	 * Calculate possibilities.
+	 */
 	private void calculatePossibilities()
 	{
 		final ArrayList<Row> rows = mastermind.getRows();
@@ -167,6 +214,11 @@ public class KI
 		}
 	}
 
+	/**
+	 * Gets the highest probability.
+	 *
+	 * @return the highest probability
+	 */
 	private int[] getHighestProbability()
 	{
 		int[] stoneCodes = new int[codeLength];
@@ -205,6 +257,12 @@ public class KI
 		return stoneCodes;
 	}
 	
+	/**
+	 * Gets the possibilities.
+	 *
+	 * @param row the row
+	 * @return the possibilities
+	 */
 	private ArrayList<Integer[]> getPossibilities(Row row)
 	{
 		ArrayList<Integer[]> arrayList = new ArrayList<Integer[]>();
@@ -238,6 +296,12 @@ public class KI
 		return arrayList;
 	}
 	
+	/**
+	 * Next permutation.
+	 *
+	 * @param permutation the permutation
+	 * @return true, if successful
+	 */
 	private static boolean nextPermutation(int []permutation)
 	{
 		int index, buffer;
@@ -258,6 +322,13 @@ public class KI
 		return false;
 	}
 	
+	/**
+	 * Next bigger.
+	 *
+	 * @param array the array
+	 * @param low the low
+	 * @return the int
+	 */
 	private static int nextBigger(int[] array, int low)
 	{
 		int a = array[low-1], c = Integer.MAX_VALUE, cindex = -1;
@@ -276,6 +347,13 @@ public class KI
 		return cindex;
 	}
 	
+	/**
+	 * Quick sort.
+	 *
+	 * @param arr the arr
+	 * @param low the low
+	 * @param high the high
+	 */
 	public static void quickSort(int[] arr, int low, int high)
 	{
 		if (arr == null || arr.length == 0)

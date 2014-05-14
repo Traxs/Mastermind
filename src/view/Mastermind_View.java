@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package view;
 
 import java.awt.Color;
@@ -31,33 +34,83 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Mastermind_View.
+ */
 public class Mastermind_View extends JFrame
 {
+    
+    /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -809208636941136548L;
+    
+    /** The mastermind. */
     private Mastermind mastermind;
+    
+    /** The new game_ view. */
     private NewGame_View newGame_View = null;
+    
+    /** The row length. */
     private int rowLength;
+    
+    /** The code length. */
     private int codeLength;
+    
+    /** The color length. */
     private int colorLength;
+    
+    /** The vertical box_ playfield. */
     private Box verticalBox_Playfield;
+    
+    /** The scroll pane_ playfield. */
     private JScrollPane scrollPane_Playfield;
+    
+    /** The scroll pane_ selection. */
     private JScrollPane scrollPane_Selection;
+    
+    /** The scroll pane_ hint. */
     private JScrollPane scrollPane_Hint;
+    
+    /** The horizontal box_ selection stone. */
     private Box horizontalBox_SelectionStone;
+    
+    /** The horizontal box_ hint. */
     private Box horizontalBox_Hint;
+    
+    /** The j label_ row. */
     private JLabel jLabel_Row;
+    
+    /** The jbutton_ hint. */
     private JButton jbutton_Hint;
+    
+    /** The jbutton_ add. */
     private JButton jbutton_Add;
+    
+    /** The pos y. */
     private int posX = 0, posY = 0;
+    
+    /** The status bar. */
     private StatusBar statusBar;
+    
+    /** The painted. */
     private static boolean painted = false;
     
+    /** The Constant usedComponents. */
     private static final String[] usedComponents = {"Menu","MenuBar", "MenuItem", "Panel", "RadioButton", "Slider", "Label", "ComboBox", "CheckBox", "Button"};
+    
+    /** The Constant backgroundColor. */
     public static final Color backgroundColor = new Color(42, 42, 42);
+    
+    /** The Constant icon. */
     private static final ImageIcon icon = new ImageIcon("MIcon");
     
     
     
+    /**
+     * The main method.
+     *
+     * @param args the arguments
+     */
     public static void main(String[] args)
     {
         EventQueue.invokeLater(new Runnable()
@@ -70,6 +123,9 @@ public class Mastermind_View extends JFrame
         });
     }
 
+    /**
+     * Instantiates a new mastermind_ view.
+     */
     public Mastermind_View()
     {
         this.mastermind = new Mastermind(this);
@@ -77,6 +133,13 @@ public class Mastermind_View extends JFrame
     }
 
     
+    /**
+     * Color ui.
+     *
+     * @param colorBackground the color background
+     * @param colorForeground the color foreground
+     * @param colorBorder the color border
+     */
     private static void colorUI(Color colorBackground, Color colorForeground,Color colorBorder)
     {
     	for(int i = 0; i < usedComponents.length; i++)
@@ -85,6 +148,7 @@ public class Mastermind_View extends JFrame
     		UIManager.put(usedComponents[i] + ".foreground", colorForeground);	
     	}
     	
+    	UIManager.put("Button.border", BorderFactory.createLineBorder(colorBorder));
     	UIManager.put("Menu.border", BorderFactory.createLineBorder(colorBorder));
     	UIManager.put("MenuItem.selectionBackground", Color.WHITE);
     	UIManager.put("MenuItem.selectionForeground", backgroundColor);
@@ -104,6 +168,9 @@ public class Mastermind_View extends JFrame
     }
     
     
+    /**
+     * Creates the view.
+     */
     public void createView()
     {
     	setIconImage(icon.getImage());
@@ -405,35 +472,53 @@ public class Mastermind_View extends JFrame
         setVisible(true);
     }
     
+    /**
+     * The Class StatusBar.
+     */
     public class StatusBar extends JLabel {
         
-        /**
-		 * 
-		 */
+        /** The Constant serialVersionUID. */
 		private static final long serialVersionUID = 6984003196130959219L;
 
-		/** Creates a new instance of StatusBar */
+		/**
+		 *  Creates a new instance of StatusBar.
+		 */
         public StatusBar() {
             super();
             super.setPreferredSize(new Dimension(100, 16));
             setMessage("Ready");
         }
         
+        /**
+         * Sets the message.
+         *
+         * @param message the new message
+         */
         public void setMessage(String message) {
             setText(" "+message);        
         }        
     }
 
+    /**
+     * Creates the box.
+     *
+     * @param jScrollPane the j scroll pane
+     * @param box the box
+     */
     private void createBox(JScrollPane jScrollPane, Box box)
     {
         jScrollPane.setBorder(BorderFactory.createLineBorder(Color.black));
         box.setOpaque(true);
-        box.setBackground(backgroundColor);
         jScrollPane.setViewportView(box);
     }
 
     
 
+    /**
+     * Adds the row.
+     *
+     * @param newRow the new row
+     */
     public void addRow(Row newRow)
     {
         Box horizontalBox = Box.createHorizontalBox();
@@ -451,6 +536,11 @@ public class Mastermind_View extends JFrame
         scrollPane_Playfield.updateUI();
     }
 
+    /**
+     * Adds the hint.
+     *
+     * @param code the code
+     */
     public void addHint(int[] code)
     {
         for (int i = 0; i < code.length; i++)
@@ -461,6 +551,9 @@ public class Mastermind_View extends JFrame
     }
 
     // Zum Updaten nach einem Laden
+    /**
+     * Update.
+     */
     public void update()
     {
         verticalBox_Playfield.removeAll();
@@ -526,6 +619,15 @@ public class Mastermind_View extends JFrame
 
     // Wird aufgerufen wenn der Benutzer w�hrend eines laufenden Spiels ein
     // neues Spiel startet
+    /**
+     * Start new game.
+     *
+     * @param newColorLength the new color length
+     * @param newRowLength the new row length
+     * @param newCodeLength the new code length
+     * @param state the state
+     * @param secretCode the secret code
+     */
     public void startNewGame(int newColorLength, int newRowLength,
             int newCodeLength, State state, int[] secretCode)
     {
@@ -536,11 +638,19 @@ public class Mastermind_View extends JFrame
         update();
     }
 
+    /**
+     * Checks if is not possible.
+     */
     public void isNotPossible()
     {
         JOptionPane.showMessageDialog(null, "This combination is not Possible");
     }
 
+    /**
+     * Sets the state.
+     *
+     * @param state the new state
+     */
     public void setState(State state)
     {
         switch (state)
