@@ -1,5 +1,9 @@
 /*
- * 
+ * DESCRIPTION
+ * @author      Birk Kauer
+ * @author      Raphael Pavlidis
+ * @version     %I%, %G%
+ * @since       1.0
  */
 package mastermind;
 

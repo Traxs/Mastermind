@@ -1,11 +1,18 @@
-/*
- * 
+/**
+ * Pretty much a dummy class.
+ * But it's needed because we use these elements nearly in every other class.
+ * <p>
+ * <p>
+ * @author      Raphael Pavlidis
+ * @version     %I%, %G%
+ * @since       1.0
  */
 package mastermind;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class ResultCode.
+ * 
  */
 public class ResultCode
 {

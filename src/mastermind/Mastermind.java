@@ -20,7 +20,9 @@ import file.Mastermind_File;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class Mastermind im
+ * The Class Mastermind implements Serializable for saving the whole Object.
+ * @see 	java.io.Serializable
+ * @since 	1.0
  */
 public class Mastermind implements java.io.Serializable
 {
@@ -40,19 +42,36 @@ public class Mastermind implements java.io.Serializable
 	/** The color length. */
 	private int colorLength;
 	
-	/** The rows. */
+	/** The rows. 
+	 * @see mastermind.Row
+	 */
 	private ArrayList<Row> rows;
 	
-	/** The state. */
+	/** The state. 
+	 * <p>
+	 * describes the different states which are possible in the programm.
+	 * <p>
+	 * @see mastermind.State
+	 */
 	protected State state;
 	
-	/** The modus. */
+	/** The modus.
+	 * <p>
+	 * describes the different states which are possible in the programm.
+	 * <p> 
+	 * @see mastermind.State
+	 */
 	protected State modus;
 	
-	/** The ki. */
+	/** The ki.
+	 * Ki is transient for not beeing put into file via Serializable
+	 * @see mastermind.KI
+	 */
 	private transient KI ki;
 	
-	/** The mastermind_ view. */
+	/** The mastermind_ view. 
+	 * @see view.Mastermind_View
+	 */
 	private transient Mastermind_View mastermind_View;
 	
 	/** The Constant DEFAULTCODELENGTH. */
@@ -66,8 +85,12 @@ public class Mastermind implements java.io.Serializable
 	
 	/**
 	 * Instantiates a new mastermind.
-	 *
-	 * @param mastermind_View the mastermind_ view
+	 * <p>
+	 * Parse the Gui Window into the Mastermind Object
+	 * and calling the big overloaded Constructor with default values.
+	 * <p>
+	 * @param 	mastermind_View 	the mastermind_ view
+	 * @see 	view.Mastermind_View
 	 */
 	public Mastermind(Mastermind_View mastermind_View)
 	{
@@ -79,14 +102,17 @@ public class Mastermind implements java.io.Serializable
 	
 	/**
 	 * Instantiates a new mastermind.
-	 *
-	 * @param mastermind_View the mastermind_ view
-	 * @param codeLength the code length
-	 * @param rowLength the row length
-	 * @param colorLength the color length
-	 * @param state the state
-	 * @param modus the modus
-	 * @param secretCode the secret code
+	 * <p>
+	 * Overloaded Constructor with Values which are parsed through parameters.
+	 * <p>
+	 * @param 	mastermind_View the mastermind_ view
+	 * @param 	codeLength 		the code length
+	 * @param 	rowLength 		the row length
+	 * @param 	colorLength 	the color length
+	 * @param 	state 			the state
+	 * @param 	modus			the modus
+	 * @param 	secretCode 		the secret code
+	 * @see 	view.Mastermind_View
 	 */
 	public Mastermind(Mastermind_View mastermind_View, int codeLength, 
 	        int rowLength, int colorLength, State state, State modus, int[] secretCode)
@@ -111,9 +137,15 @@ public class Mastermind implements java.io.Serializable
 
 	/**
 	 * Save mastermind.
-	 *
-	 * @param file the file
-	 * @throws IOException Signals that an I/O exception has occurred.
+	 * <p>
+	 * Stopping every Thread in KI.
+	 * <p>
+	 * then it will call {@link file.Mastermind_File#saveMastermind(Mastermind, File)} with Values
+	 * which are parsed out of {@link view.Mastermind_View}
+	 * <p>
+	 * @param 	file 		the file
+	 * @throws 	IOException Signals that an I/O exception has occurred.
+	 * @see 	file.Mastermind_File#saveMastermind(Mastermind, File)
 	 */
 	public void saveMastermind(File file) throws IOException
 	{
@@ -123,10 +155,24 @@ public class Mastermind implements java.io.Serializable
 	
 	/**
 	 * Load mastermind.
-	 *
+	 * <p>
+	 * it will call {@link file.Mastermind_File#loadMastermind(File)} 
+	 * and load every Instances of the loaded mastermind object into the current 
+	 * object
+	 * <p>
+	 * It will also create a new Instance of KI so it can calculate from scratch.
+	 * <p>
 	 * @param file the file
 	 * @throws ClassNotFoundException the class not found exception
 	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @see mastermind.KI#KI(Mastermind, int, int)
+	 * @see file.Mastermind_File#loadMastermind(File)
+	 * @see mastermind.Mastermind#secretCode
+	 * @see mastermind.Mastermind#codeLength
+	 * @see mastermind.Mastermind#rowLength
+	 * @see mastermind.Mastermind#colorLength
+	 * @see mastermind.Mastermind#rows
+	 * @see mastermind.Mastermind#state
 	 */
 	public void loadMastermind(File file) throws ClassNotFoundException, IOException
 	{
@@ -142,6 +188,10 @@ public class Mastermind implements java.io.Serializable
 
 	/**
 	 * Gen secret code.
+	 * <p>
+	 * this snipped is creating a random Secret Code if it's not manually set.
+	 * @see 	java.util.Random
+	 * @see		mastermind.Mastermind#secretCode
 	 */
 	private void genSecretCode()
 	{
@@ -156,8 +206,13 @@ public class Mastermind implements java.io.Serializable
 
 	/**
 	 * Gets the hint.
-	 *
-	 * 
+	 * <p> 
+	 * getHint will start the calculating functions in KI with {@link mastermind.KI#getHint()}
+	 * if the KI isn't already calculating which is checked via {@link mastermind.KI#isKICalculating()}
+	 * <p>
+	 * @see 	mastermind.Mastermind#state
+	 * @see 	mastermind.KI#getHint()
+	 * @see 	mastermind.KI#isKICalculating()
 	 */
 	public void getHint()
 	{
@@ -171,8 +226,18 @@ public class Mastermind implements java.io.Serializable
 	
 	/**
 	 * Finish hint.
-	 *
+	 * <p>
+	 * finishHint is called from KI when the calculation of the next hint is done.
+	 * <p>
+	 * it will add a hint with {@link view.Mastermind_View#addHint(int[])} and the parameter is the
+	 * calculated Hint code.
+	 * <p>
+	 * at the End the function will set the current state into an updated state({@link mastermind.Mastermind#setState(State)}.
+	 * <p>
 	 * @param code the code
+	 * @see 	view.Mastermind_View#addHint(int[])
+	 * @see 	mastermind.Mastermind#state
+	 * @see 	mastermind.Mastermind#setState(State)
 	 */
 	public void finishHint(int[] code)
 	{
@@ -192,8 +257,13 @@ public class Mastermind implements java.io.Serializable
 
     /**
      * Checks if is possible.
-     *
+     * <p>
+     * isPossible will ask the KI (as long as the KI is not calculating) if the current selected Code is possible to be selected.
+     * <p>
      * @param code the code
+     * @see	mastermind.KI#isPossible(int[])
+     * @see mastermind.KI#isKICalculating()
+     * @see mastermind.Mastermind#setState(State)
      */
     public void isPossible(final int[] code)
     {
@@ -206,9 +276,17 @@ public class Mastermind implements java.io.Serializable
     
     /**
      * Finish check.
-     *
+     * <p>
+     * Last check if the Code is possible with the current calculations to be set on the field.
+     * <p>
+     * If it's not possible it will display a Dialog which tells the User that it's not possible.
+     * <p>
      * @param code the code
      * @param isPossible the is possible
+     * @see mastermind.Mastermind#setState(State)
+     * @see mastermind.Mastermind#isPossible(int[])
+     * @see mastermind.Mastermind#addRow(int[])
+     * @see view.Mastermind_View#isNotPossible()
      */
     public void finishCheck(final int[] code, boolean isPossible)
     {
@@ -225,6 +303,15 @@ public class Mastermind implements java.io.Serializable
 	
     /**
      * Stop ki.
+     * <p>
+     * StopKI will try to interrupt the KI in its current calculations with {@link mastermind.KI#stop()}
+     * The routine will wait till its clear that the calculating Thread has stopped({@link mastermind.KI#isKICalculating()}).
+     * <p>
+     * After the calculating thread has stopped it will set a new State with {@link mastermind.Mastermind#setState(State)}.
+     * 
+     * @see 	mastermind.KI#stop()
+     * @see 	mastermind.KI#isKICalculating()
+     * @see 	mastermind.Mastermind#setState(State)
      */
     public void stopKI()
     {
@@ -250,8 +337,25 @@ public class Mastermind implements java.io.Serializable
 
 	/**
 	 * Adds the row.
-	 *
+	 * <p>
+	 * This method will add a selected Code into the playfield(The code lies within the parameter).
+	 * <p>
+	 * At first it will check if the user has already won or lose his game.
+	 * <p>
+	 * Next thing is it will calculate the difference between the added Row and the Secret Code
+	 * the difference will be stored in the locale variable red and white.
+	 * <p>
+	 * Then it will add the complete row with the red and whites into the playfield with the function
+	 * {@link view.Mastermind_View#addRow(Row)}
+	 * <p>
+	 * It will also set at the end if you now won or lose the game with {@link mastermind.Mastermind#setState(State)}.
+	 * <p>
 	 * @param code the code
+	 * @see 	mastermind.Mastermind#state
+	 * @see 	mastermind.Mastermind#secretCode
+	 * @see		mastermind.Mastermind#rows
+	 * @see 	view.Mastermind_View#addRow(Row)
+	 * @see 	mastermind.Mastermind#setState(State)
 	 */
 	public void addRow(int[] code)
 	{
@@ -309,9 +413,11 @@ public class Mastermind implements java.io.Serializable
 	}
 	
 	/**
-	 * Sets the state.
-	 *
+	 * Sets the state of Mastermind and Mastermind_View.
+	 * 
 	 * @param state the new state
+	 * @see 	mastermind.Mastermind#state
+	 * @see 	view.Mastermind_View#setState(State)
 	 */
 	private void setState(State state)
 	{
@@ -323,6 +429,7 @@ public class Mastermind implements java.io.Serializable
 	 * Gets the state.
 	 *
 	 * @return the state
+	 * @see 	mastermind.Mastermind#state
 	 */
 	public State getState()
 	{
@@ -333,6 +440,7 @@ public class Mastermind implements java.io.Serializable
 	 * Gets the modus.
 	 *
 	 * @return the modus
+	 * @see 	mastermind.Mastermind#state
 	 */
 	public State getModus()
 	{
@@ -344,6 +452,7 @@ public class Mastermind implements java.io.Serializable
 	 * Gets the secret code.
 	 *
 	 * @return the secret code
+	 * @see 	mastermind.Mastermind#secretCode
 	 */
 	public int[] getSecretCode()
 	{
@@ -354,6 +463,7 @@ public class Mastermind implements java.io.Serializable
 	 * Gets the rows.
 	 *
 	 * @return the rows
+	 * @see 	mastermind.Mastermind#rows
 	 */
 	public ArrayList<Row> getRows()
 	{
@@ -364,6 +474,7 @@ public class Mastermind implements java.io.Serializable
 	 * Gets the row size.
 	 *
 	 * @return the row size
+	 * @see 	mastermind.Mastermind#rows
 	 */
 	public int getRowSize()
 	{
@@ -375,6 +486,7 @@ public class Mastermind implements java.io.Serializable
 	 *
 	 * @param rowNumber the row number
 	 * @return the row
+	 * @see 	mastermind.Mastermind#rows
 	 */
 	public Row getRow(int rowNumber)
 	{
@@ -385,6 +497,7 @@ public class Mastermind implements java.io.Serializable
 	 * Gets the code length.
 	 *
 	 * @return the code length
+	 * @see 	mastermind.Mastermind#codeLength
 	 */
 	public int getCodeLength()
 	{
@@ -395,6 +508,7 @@ public class Mastermind implements java.io.Serializable
 	 * Gets the row length.
 	 *
 	 * @return the row length
+	 * @see 	mastermind.Mastermind#rowLength
 	 */
 	public int getRowLength()
 	{
@@ -405,6 +519,7 @@ public class Mastermind implements java.io.Serializable
 	 * Gets the color length.
 	 *
 	 * @return the color length
+	 * @see 	mastermind.Mastermind#colorLength
 	 */
 	public int getColorLength()
 	{

@@ -1,5 +1,14 @@
-/*
- * 
+/**
+ * The GUI class.
+ * <p>
+ * Here will everything be handled what the user can see and interact with.
+ * <p>
+ * <p>
+ * @author      Birk Kauer
+ * @author      Raphael Pavlidis
+ * @author 		Nico
+ * @version     %I%, %G%
+ * @since       1.0
  */
 package view;
 
@@ -44,10 +53,14 @@ public class Mastermind_View extends JFrame
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -809208636941136548L;
     
-    /** The mastermind. */
+    /** The mastermind.
+     * @see mastermind.Mastermind
+     */
     private Mastermind mastermind;
     
-    /** The new game_ view. */
+    /** The new game_ view. 
+     * @see 	view.NewGame_View
+     */
     private NewGame_View newGame_View = null;
     
     /** The row length. */
@@ -108,7 +121,9 @@ public class Mastermind_View extends JFrame
     
     /**
      * The main method.
-     *
+     * <p>
+     * Start a new Thread to ensure the GUI is always user interactive.
+     * <p>
      * @param args the arguments
      */
     public static void main(String[] args)
@@ -125,6 +140,13 @@ public class Mastermind_View extends JFrame
 
     /**
      * Instantiates a new mastermind_ view.
+     * <p>
+     * Familiarise the GUI with the Main class.
+     * <p>
+     * Start the generation of the Window with {@link #createView()}
+     * <p>
+     * @see 	mastermind.Mastermind
+     * @see 	#createView()
      */
     public Mastermind_View()
     {
@@ -135,7 +157,13 @@ public class Mastermind_View extends JFrame
     
     /**
      * Color ui.
-     *
+     * <p>
+     * Making GUI's fancy.
+     * <p>
+     * It's is theoretical customizable but we did stick with one Layout till now.
+     * <p>
+     * Using UIManager
+     * <p>
      * @param colorBackground the color background
      * @param colorForeground the color foreground
      * @param colorBorder the color border
@@ -170,6 +198,35 @@ public class Mastermind_View extends JFrame
     
     /**
      * Creates the view.
+     * <p>
+     * Method will create whole GUI including Listener and every Popupmenu.
+     * <p>
+     * 
+     * 				
+     * Describe GUI
+     * 
+     * 
+     * <p>
+     * <p>
+     * @see 	#setIconImage(java.awt.Image)
+     * @see 	#setContentPane(java.awt.Container)
+     * @see 	#addMouseListener(java.awt.event.MouseListener)
+     * @see 	#addMouseMotionListener(java.awt.event.MouseMotionListener)
+     * @see 	#scrollPane_Hint
+     * @see 	#scrollPane_Playfield
+     * @see 	#scrollPane_Selection
+     * @see 	#jbutton_Add
+     * @see 	#jbutton_Hint
+     * @see 	#jLabel_Row
+     * @see 	#statusBar
+     * @see 	#startNewGame(int, int, int, State, int[])
+     * @see 	#verticalBox_Playfield
+     * @see 	#horizontalBox_Hint
+     * @see 	#horizontalBox_SelectionStone
+     * @see 	#addHint(int[])
+     * @see 	#addRow(Row)
+     * @see 	#createBox(JScrollPane, Box)
+     *  	
      */
     public void createView()
     {
@@ -474,6 +531,8 @@ public class Mastermind_View extends JFrame
     
     /**
      * The Class StatusBar.
+     * <p>
+     * Little class to handle the Status of the statusbar.
      */
     public class StatusBar extends JLabel {
         
@@ -491,7 +550,7 @@ public class Mastermind_View extends JFrame
         
         /**
          * Sets the message.
-         *
+         * 
          * @param message the new message
          */
         public void setMessage(String message) {
@@ -515,7 +574,7 @@ public class Mastermind_View extends JFrame
     
 
     /**
-     * Adds the row.
+     * Add a row to the Playfield.
      *
      * @param newRow the new row
      */
@@ -550,9 +609,9 @@ public class Mastermind_View extends JFrame
         }
     }
 
-    // Zum Updaten nach einem Laden
     /**
-     * Update.
+     * Update every JComponent after loading.
+     * @see #createView()
      */
     public void update()
     {
@@ -621,12 +680,17 @@ public class Mastermind_View extends JFrame
     // neues Spiel startet
     /**
      * Start new game.
-     *
+     * <p>
+     * will start a new Game with Parameters.
+     * it will call the constructor {@link mastermind.Mastermind#Mastermind(Mastermind_View, int, int, int, State, State, int[])}
+     * <p>
      * @param newColorLength the new color length
      * @param newRowLength the new row length
      * @param newCodeLength the new code length
      * @param state the state
      * @param secretCode the secret code
+     * @see 	mastermind.Mastermind#Mastermind(Mastermind_View, int, int, int, State, State, int[])
+     * @see 	#update()
      */
     public void startNewGame(int newColorLength, int newRowLength,
             int newCodeLength, State state, int[] secretCode)
@@ -639,7 +703,7 @@ public class Mastermind_View extends JFrame
     }
 
     /**
-     * Checks if is not possible.
+     * Display of it's not possible.
      */
     public void isNotPossible()
     {
@@ -647,10 +711,12 @@ public class Mastermind_View extends JFrame
     }
 
     /**
-     * Sets the state.
-     *
-     * @param state the new state
-     */
+	 * Applying the settings to Display the right current State.
+	 * As well as displaying to the User if he did win or not.
+	 * 
+	 * @param state the new state
+	 * @see mastermind.Mastermind#getState()	
+	 */
     public void setState(State state)
     {
         switch (state)
