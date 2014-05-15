@@ -1,6 +1,15 @@
-/*
- * 
+/**
+ * The New Game GUI class.
+ * <p>
+ * In this class will the NewGame Window be created.
+ * <p>
+ * <p>
+ * @author      Raphael Pavlidis
+ * @author 		Nico
+ * @version     %I%, %G%
+ * @since       1.0
  */
+
 package view;
 
 import java.awt.event.ItemEvent;
@@ -51,6 +60,8 @@ public class NewGame_View extends JPanel implements ItemListener
 	
 	/**
 	 * Instantiates a new new game_ view.
+	 * to parse parameters for creating a new Game.
+	 * Alot of functions can be initialized here.
 	 */
 	public NewGame_View()
 	{
@@ -117,7 +128,7 @@ public class NewGame_View extends JPanel implements ItemListener
 	    if(jRadioButtonHumanHelp.isSelected())
 	        return State.playingHumanHelp;
 	       
-	    return State.playingKI;
+	    return State.setCode;
 	}
 	
 	/**

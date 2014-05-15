@@ -1,11 +1,18 @@
-/*
- * 
+/**
+ * This class are the single rows which we are implementing into the Playfield
+ * every row withstands out of the selected CodeLength and inherits the different colors.
+ * <p>
+ * <p>
+ * @author      Birk Kauer
+ * @author      Raphael Pavlidis
+ * @version     %I%, %G%
+ * @since       1.0
  */
 package mastermind;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class Row.
+ * The Class Row is Serializable for saving the Object onto the Filesystem.
  */
 public class Row implements java.io.Serializable
 {

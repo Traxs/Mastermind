@@ -1,11 +1,12 @@
 /*
- * 
+ * DESCRIPTION
+ * @author      Birk Kauer
+ * @author      Raphael Pavlidis
+ * @version     %I%, %G%
+ * @since       1.0
  */
 package mastermind;
 
-import java.util.ArrayList;
-
-// TODO: Auto-generated Javadoc
 /**
  * The Class SetCode.
  */
@@ -110,42 +111,6 @@ public class SetCode
 		}
 
 		return size;
-	}
-
-	/**
-	 * Union set code array list.
-	 *
-	 * @param p1 the p1
-	 * @param p2 the p2
-	 * @param thread the thread
-	 * @return the array list
-	 */
-	public static ArrayList<Integer[]> unionSetCodeArrayList(ArrayList<Integer[]> p1,
-			ArrayList<Integer[]> p2, Thread thread)
-	{
-		ArrayList<Integer[]> newPossibilities = new ArrayList<Integer[]>();
-		Integer[] newPossibility;
-		
-		for(Integer[] p1Element : p1)
-		{	
-			for(Integer[] p2Element : p2)
-			{
-				if(!thread.isInterrupted())
-				{
-				newPossibility = SetCode.unionRow(p1Element, p2Element);
-				if(newPossibility != null)
-				{
-					newPossibilities.add(0, newPossibility);
-				}
-				}
-				else
-				{
-					break;
-				}
-			}
-		}
-
-		return newPossibilities;
 	}
 
 	/**

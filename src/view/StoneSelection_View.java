@@ -120,7 +120,6 @@ public class StoneSelection_View extends Stone_View implements MouseListener
 		if(arg0.getButton() == MouseEvent.BUTTON1)
 		{
 			setCode((code + 1) >= colorLength ? 0 : code + 1);
-			repaint();
 		}
 	}
 

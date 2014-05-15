@@ -45,11 +45,6 @@ public class KI
 		this.rowCal = 0;
 		this.arrayList = new ArrayList<Integer[]>();
 		this.thread = new Thread();
-
-		if(mastermind.getState() == State.playingKI)
-		{
-			startKI();
-		}
 	}
 	
 	/**
@@ -60,9 +55,7 @@ public class KI
 		thread.interrupt();
 	    //thread.
 	}
-	
-	
-	
+
 	/**
 	 * Checks if is possible.
 	 *
@@ -81,31 +74,34 @@ public class KI
 					return;
 				}
 
-				calculatePossibilities();
+				try
+                {
+                    calculatePossibilities();
+                }
+                catch (InterruptException e)
+                {
+                    return;
+                }
 				
 				int i;
 				for(Integer[] arrayListElement : arrayList)
 				{
-					if ( ! thread.isInterrupted() )
-					{
-						for(i = 0; i < codeLength; i++)
-						{
-							if(!SetCode.contains(arrayListElement[i], code[i]))
-							{
-								break;
-							}
-						}
-				    
-						if(i == codeLength)
-						{
-						    mastermind.finishCheck(code, true);
-							return;
-						}
-				    }
-					else
-					{
-						break;
-					}
+					if (thread.isInterrupted())
+					    return;
+					
+                    for(i = 0; i < codeLength; i++)
+                    {
+                        if(!SetCode.contains(arrayListElement[i], code[i]))
+                        {
+                            break;
+                        }
+                    }
+                
+                    if(i == codeLength)
+                    {
+                        mastermind.finishCheck(code, true);
+                        return;
+                    }
 				}
 
 				mastermind.finishCheck(code, false);
@@ -118,7 +114,7 @@ public class KI
 	/**
 	 * Gets the hint.
 	 *
-	 * @return the hint
+	 * 
 	 */
 	public void getHint()
 	{
@@ -127,7 +123,14 @@ public class KI
 			@Override
 			public void run()
 			{
-				mastermind.finishHint(getHighestProbability());
+				try
+                {
+                    mastermind.finishHint(getHighestProbability());
+                }
+                catch (InterruptException e)
+                {
+                    return;
+                }
 			}
 		});
 
@@ -137,11 +140,8 @@ public class KI
 	/**
 	 * Start ki.
 	 */
-	private void startKI()
+	public void startKI()
 	{
-		if(thread.isAlive())
-			return;
-
 		thread = new Thread(new Runnable()
 		{
 			@Override
@@ -149,25 +149,26 @@ public class KI
 			{
 				while(mastermind.getState() == State.playingKI)
 				{
-					if ( ! thread.isInterrupted() )
-					{
-				 
-						try
-						{
-							Thread.sleep(2000);
-						}
-						catch (InterruptedException e)
-						{
-							e.printStackTrace();
-						}
-	
-						mastermind.addRow(getHighestProbability());
-					}
-					else
-					{
-						break;
-					}
-					
+					if (thread.isInterrupted())
+					        return;
+
+                    try
+                    {
+                        Thread.sleep(2000);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                    try
+                    {
+                        mastermind.addRow(getHighestProbability());
+                    }
+                    catch (InterruptException e)
+                    {
+                        return;
+                    }					
 				 }
 			}
 		});
@@ -187,8 +188,9 @@ public class KI
 	
 	/**
 	 * Calculate possibilities.
+	 * @throws InterruptException 
 	 */
-	private void calculatePossibilities()
+	private void calculatePossibilities() throws InterruptException
 	{
 		final ArrayList<Row> rows = mastermind.getRows();
 
@@ -202,24 +204,54 @@ public class KI
 
 		for(int i = rowCal; i < rowArray.length; i++)
 		{
-			if ( ! thread.isInterrupted() )
-			{
-			arrayList = SetCode.unionSetCodeArrayList(arrayList, 
-			        getPossibilities(rowArray[i]), this.thread);
-			}
-			else
-			{
-				break;
-			}
+			if (thread.isInterrupted())
+			    throw new InterruptException();
+			
+			arrayList = unionSetCodeArrayList(arrayList, 
+			        getPossibilities(rowArray[i]));
 		}
 	}
+	
+	   /**
+     * Union set code array list.
+     *
+     * @param p1 the p1
+     * @param p2 the p2
+     * @param thread the thread
+     * @return the array list
+	 * @throws InterruptException 
+     */
+    public ArrayList<Integer[]> unionSetCodeArrayList(ArrayList<Integer[]> p1,
+            ArrayList<Integer[]> p2) throws InterruptException
+    {
+        ArrayList<Integer[]> newPossibilities = new ArrayList<Integer[]>();
+        Integer[] newPossibility;
+        
+        for(Integer[] p1Element : p1)
+        {           
+            if (thread.isInterrupted())
+                throw new InterruptException();
+
+            for(Integer[] p2Element : p2)
+            {   
+                newPossibility = SetCode.unionRow(p1Element, p2Element);
+                if(newPossibility != null)
+                {
+                    newPossibilities.add(0, newPossibility);
+                }
+            }
+        }
+
+        return newPossibilities;
+    }
 
 	/**
 	 * Gets the highest probability.
 	 *
 	 * @return the highest probability
+	 * @throws InterruptException 
 	 */
-	private int[] getHighestProbability()
+	private int[] getHighestProbability() throws InterruptException
 	{
 		int[] stoneCodes = new int[codeLength];
 		
@@ -247,7 +279,6 @@ public class KI
 				max = buffer;
 			}
 		}
-		
 
 		for(int i = 0; i < setStoneCodesMax.length; i++)
 		{
