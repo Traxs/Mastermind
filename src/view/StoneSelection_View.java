@@ -14,7 +14,7 @@ import javax.swing.JPopupMenu;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class StoneSelection_View.
+ * The Class StoneSelection_View. Represents the color stone selector in the GUI.
  */
 public class StoneSelection_View extends Stone_View implements MouseListener
 {

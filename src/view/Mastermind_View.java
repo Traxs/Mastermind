@@ -53,7 +53,7 @@ public class Mastermind_View extends JFrame
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = -809208636941136548L;
     
-    /** The mastermind.
+    /** The logic object controlling the mastermind game.
      * @see mastermind.Mastermind
      */
     private Mastermind mastermind;

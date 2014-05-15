@@ -1,17 +1,14 @@
-/*
- * DESCRIPTION
- * @author      Birk Kauer
- * @author      Raphael Pavlidis
- * @version     %I%, %G%
- * @since       1.0
- */
 package mastermind;
 
 import java.util.ArrayList;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class SetCode.
+/*
+ * The Class SetCode. A helper class of {@link mastermind.KI} to figure out 
+ * possible color combinations.
+ * @author      Birk Kauer
+ * @author      Raphael Pavlidis
+ * @version     %I%, %G%
+ * @since       1.0
  */
 public class SetCode
 {

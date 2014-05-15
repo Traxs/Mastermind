@@ -67,8 +67,8 @@ public class Result_View extends JComponent
 	@Override
 	public void paint(Graphics arg0)
 	{		
-		int red = this.red;
-		int white = this.white;
+		int _red = this.red;
+		int _white = this.white;
 		int x = 0,y = 0;
 		
 		for(int i = 0; i < codeLength; i++)
@@ -76,15 +76,15 @@ public class Result_View extends JComponent
 			y = i % 2 == 0 ? 0 : RESULTSIZE;
 			x = RESULTSIZE * (i / 2);
 
-			if(red > 0)
+			if(_red > 0)
 			{
 				arg0.drawImage(RESULTRED, x, y, null);
-				red--;
+				_red--;
 			}
-			else if(white > 0)
+			else if(_white > 0)
 			{
 				arg0.drawImage(RESULTWHITE, x, y, null);
-				white--;
+				_white--;
 			}
 			else
 			{

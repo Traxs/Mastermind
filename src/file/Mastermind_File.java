@@ -34,7 +34,10 @@ import javax.swing.ImageIcon;
 
 import mastermind.Mastermind;
 
-// TODO: Auto-generated Javadoc
+/**
+ * Manages loading and saving of a {@link mastermind.Mastermind} object.
+ * @author b5cully (Neutronio Games)
+ */
 public class Mastermind_File
 {
 	

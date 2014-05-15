@@ -1,13 +1,3 @@
-/**
- * This class is basically the heart out of the whole project.
- * inside of it is the structure and the control of every other object/class.
- * <p>
- * <p>
- * @author      Birk Kauer
- * @author      Raphael Pavlidis
- * @version     %I%, %G%
- * @since       1.0
- */
 package mastermind;
 
 import java.io.File;
@@ -20,9 +10,15 @@ import file.Mastermind_File;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class Mastermind implements Serializable for saving the whole Object.
- * @see 	java.io.Serializable
- * @since 	1.0
+ * This class is basically the heart out of the whole project.
+ * inside of it is the structure and the control of every other object/class.
+ * Implements Serializable for saving the whole Object, with a few exceptions.
+ * <p>
+ * <p>
+ * @author      Birk Kauer
+ * @author      Raphael Pavlidis
+ * @version     %I%, %G%
+ * @since       1.0
  */
 public class Mastermind implements java.io.Serializable
 {
@@ -156,8 +152,8 @@ public class Mastermind implements java.io.Serializable
 	/**
 	 * Load mastermind.
 	 * <p>
-	 * it will call {@link file.Mastermind_File#loadMastermind(File)} 
-	 * and load every Instances of the loaded mastermind object into the current 
+	 * Calls {@link file.Mastermind_File#loadMastermind(File)} 
+	 * and loads every instance of the loaded mastermind object into the current 
 	 * object
 	 * <p>
 	 * It will also create a new Instance of KI so it can calculate from scratch.
@@ -187,9 +183,9 @@ public class Mastermind implements java.io.Serializable
 	}
 
 	/**
-	 * Gen secret code.
+	 * Generates a secret code.
 	 * <p>
-	 * this snipped is creating a random Secret Code if it's not manually set.
+	 * This snippet creates a random secretCode if it's not manually set.
 	 * @see 	java.util.Random
 	 * @see		mastermind.Mastermind#secretCode
 	 */
@@ -205,7 +201,7 @@ public class Mastermind implements java.io.Serializable
 	}
 
 	/**
-	 * Gets the hint.
+	 * Gets a hint from the AI (KI).
 	 * <p> 
 	 * getHint will start the calculating functions in KI with {@link mastermind.KI#getHint()}
 	 * if the KI isn't already calculating which is checked via {@link mastermind.KI#isKICalculating()}
@@ -265,7 +261,7 @@ public class Mastermind implements java.io.Serializable
      * @see mastermind.KI#isKICalculating()
      * @see mastermind.Mastermind#setState(State)
      */
-    public void isPossible(final int[] code)
+    public void isPossible(final int[] code) //final?
     {
         if(!ki.isKICalculating())
         {
@@ -319,7 +315,10 @@ public class Mastermind implements java.io.Serializable
         while(ki.isKICalculating())
         {
         	
-        }
+        } //??? lol dat thread callback; macht man normalerweise mit Observer Pattern/Listeners
+        //siehe http://gameprogrammingpatterns.com/observer.html
+        //jedes mal neuen thread erstellen u. starten kann u.U auch viele resourcen aufbrauchen
+        
         setState(State.stoppedKI);
         switch(state)
         {

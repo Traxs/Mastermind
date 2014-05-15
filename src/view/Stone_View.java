@@ -13,7 +13,8 @@ import file.Mastermind_File;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class Stone_View.
+ * The Class Stone_View. A collection of images
+ * each color, mapped to an int value.
  */
 public class Stone_View extends JComponent
 {
@@ -87,7 +88,7 @@ public class Stone_View extends JComponent
 	{
 		//Code Zuweisen
 		this.code = code;
-		//Gr��e Setzen
+		//Groesse Setzen
 		setMinimumSize(new Dimension(STONESIZE, STONESIZE));
 		setMaximumSize(new Dimension(STONESIZE, STONESIZE));
 		setPreferredSize(new Dimension(STONESIZE, STONESIZE));		

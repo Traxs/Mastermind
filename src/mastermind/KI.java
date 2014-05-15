@@ -7,7 +7,9 @@ import java.util.ArrayList;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class KI.
+ * The Class KI. Artificial intelligence that
+ * is being used while playing against CPU. 
+ * Also used to generate hints for the user.
  */
 public class KI
 {
@@ -64,7 +66,7 @@ public class KI
 	
 	
 	/**
-	 * Checks if is possible.
+	 * Checks if a color code seems possible. 
 	 *
 	 * @param code the code
 	 */
@@ -135,7 +137,7 @@ public class KI
 	}
 	
 	/**
-	 * Start ki.
+	 * Start ki. Creates a  new thread.
 	 */
 	private void startKI()
 	{

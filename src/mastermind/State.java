@@ -1,17 +1,15 @@
-/**
- * This enum describes the different States which the Programm can become.
- * <p>
- * @author      Birk Kauer
- * @author      Raphael Pavlidis
- * @version     %I%, %G%
- * @since       1.0
- */
 package mastermind;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Enum State.
- */
+* This enum describes different game states. The current game state 
+* is tracked and coordinated by this enum. Player and KI actions 
+* are defined as well as win or lose states.
+* <p>
+* @author      Birk Kauer
+* @author      Raphael Pavlidis
+* @version     %I%, %G%
+* @since       1.0
+*/
 public enum State
 {
 	
