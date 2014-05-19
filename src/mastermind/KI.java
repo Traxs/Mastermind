@@ -202,18 +202,15 @@ public class KI
 			rowCal = 1;
 		}
 
-		for(int i = rowCal; i < rowArray.length; i++)
+		for(; rowCal < rowArray.length; rowCal++)
 		{
-			if (thread.isInterrupted())
-			    throw new InterruptException();
-			
-			arrayList = unionSetCodeArrayList(arrayList, 
-			        getPossibilities(rowArray[i]));
+			arrayList = intersectSetCodeArrayList(arrayList, 
+			        getPossibilities(rowArray[rowCal]));
 		}
 	}
 	
-	   /**
-     * Union set code array list.
+	/**
+     * Intersect set code array list.
      *
      * @param p1 the p1
      * @param p2 the p2
@@ -221,7 +218,7 @@ public class KI
      * @return the array list
 	 * @throws InterruptException 
      */
-    public ArrayList<Integer[]> unionSetCodeArrayList(ArrayList<Integer[]> p1,
+    public ArrayList<Integer[]> intersectSetCodeArrayList(ArrayList<Integer[]> p1,
             ArrayList<Integer[]> p2) throws InterruptException
     {
         ArrayList<Integer[]> newPossibilities = new ArrayList<Integer[]>();
@@ -234,7 +231,7 @@ public class KI
 
             for(Integer[] p2Element : p2)
             {   
-                newPossibility = SetCode.unionRow(p1Element, p2Element);
+                newPossibility = SetCode.intersectRow(p1Element, p2Element);
                 if(newPossibility != null)
                 {
                     newPossibilities.add(0, newPossibility);

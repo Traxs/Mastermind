@@ -68,13 +68,13 @@ public class SetCode
 	}
 
 	/**
-	 * Union row.
+	 * Intersect row.
 	 *
 	 * @param row1 the row1
 	 * @param row2 the row2
 	 * @return the integer[]
 	 */
-	public static Integer[] unionRow(Integer[] row1, Integer[] row2)
+	public static Integer[] intersectRow(Integer[] row1, Integer[] row2)
 	{
 		Integer[] newArray = new Integer[row1.length];
 		int newSet;
