@@ -6,8 +6,7 @@ package view;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-
-import javax.swing.JComponent;
+import javax.swing.JButton;
 
 import file.Mastermind_File;
 
@@ -15,7 +14,7 @@ import file.Mastermind_File;
 /**
  * The Class Stone_View.
  */
-public class Stone_View extends JComponent
+public class Stone_View extends JButton
 {
 	
 	/** The Constant serialVersionUID. */
@@ -85,6 +84,7 @@ public class Stone_View extends JComponent
 	 */
 	public Stone_View(int code)
 	{
+        setFocusable(false);
 		//Code Zuweisen
 		this.code = code;
 		//Gr��e Setzen

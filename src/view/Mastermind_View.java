@@ -81,7 +81,7 @@ public class Mastermind_View extends JFrame
     private JScrollPane scrollPane_Hint;
 
     /** The horizontal box_ selection stone. */
-    private Box horizontalBox_SelectionStone;
+    private Box horizontalBox_Selection;
 
     /** The horizontal box_ hint. */
     private Box horizontalBox_Hint;
@@ -175,7 +175,7 @@ public class Mastermind_View extends JFrame
      * @see #startNewGame(int, int, int, State, int[])
      * @see #verticalBox_Playfield
      * @see #horizontalBox_Hint
-     * @see #horizontalBox_SelectionStone
+     * @see #horizontalBox_Selection
      * @see #addHint(int[])
      * @see #addRow(Row)
      * @see #createBox(JScrollPane, Box)
@@ -184,6 +184,7 @@ public class Mastermind_View extends JFrame
     public void createView()
     {
         setIconImage(new ImageIcon("MIcon").getImage());
+
 
         // Making GUI's fancy.
         String[] usedComponents =
@@ -211,6 +212,7 @@ public class Mastermind_View extends JFrame
         UIManager.put("ScrollBar.thumbLightShadow", borderColor);
         UIManager.put("ScrollBar.shadow",borderColor);
         UIManager.put("control", borderColor);
+
         
 
         // TODO
@@ -247,8 +249,8 @@ public class Mastermind_View extends JFrame
 
         // *** Selection Box ***
         scrollPane_Selection = new JScrollPane();
-        horizontalBox_SelectionStone = Box.createHorizontalBox();
-        createBox(scrollPane_Selection, horizontalBox_SelectionStone);
+        horizontalBox_Selection = Box.createHorizontalBox();
+        createBox(scrollPane_Selection, horizontalBox_Selection);
         contentPane.add(scrollPane_Selection);
 
         // *** Hint Box ***
@@ -257,10 +259,9 @@ public class Mastermind_View extends JFrame
         createBox(scrollPane_Hint, horizontalBox_Hint);
         contentPane.add(scrollPane_Hint);
         jbutton_Add = new JButton("Add");
-        jbutton_Add.addMouseListener(new MouseAdapter()
+        jbutton_Add.addActionListener(new ActionListener()
         {
-            @Override
-            public void mouseClicked(MouseEvent e)
+            public void actionPerformed(ActionEvent e)
             {
                 if (!jbutton_Add.isEnabled())
                     return;
@@ -269,7 +270,7 @@ public class Mastermind_View extends JFrame
                 for (int i = 0; i < codeLength; i++)
                 {
                     newCode[i] =
-                            ((Stone_View) horizontalBox_SelectionStone
+                            ((Stone_View) horizontalBox_Selection
                                     .getComponent(i)).getCode();
                 }
 
@@ -282,7 +283,7 @@ public class Mastermind_View extends JFrame
                         {
                             horizontalBox_Hint.add(new Stone_View(code));
                         }
-                        horizontalBox_SelectionStone.removeAll();
+                        horizontalBox_Selection.removeAll();
                     }
                 }
                 else if (mastermind.getState() == State.playingHumanHelp)
@@ -299,10 +300,9 @@ public class Mastermind_View extends JFrame
         contentPane.add(jbutton_Add);
 
         jbutton_Hint = new JButton();
-        jbutton_Hint.addMouseListener(new MouseAdapter()
+        jbutton_Hint.addActionListener(new ActionListener()
         {
-            @Override
-            public void mouseClicked(MouseEvent e)
+            public void actionPerformed(ActionEvent e)
             {
                 if (!jbutton_Hint.isEnabled())
                     return;
@@ -450,7 +450,7 @@ public class Mastermind_View extends JFrame
                 {
                     JOptionPane
                             .showMessageDialog(null,
-                                    "Version 1.0.0 \u00A9 by \n- Birk Kauer\n- Raphael Pavlidis\n- Nico\n- Bettina");
+                                    "Version 1.0.0 \u00A9 by \n- Birk Kauer\n- Raphael Pavlidis\n- Nico Meier\n- Bettina Schuller");
                 }
             });
             jMenu_Help.add(jMenuItem_about);
@@ -530,7 +530,7 @@ public class Mastermind_View extends JFrame
         verticalBox_Playfield.add(horizontalBox, 1);
         jLabel_Row.setText(verticalBox_Playfield.getComponentCount() - 1 + "/"
                 + rowLength);
-        scrollPane_Playfield.repaint();
+        scrollPane_Playfield.validate();
     }
 
     /**
@@ -543,7 +543,7 @@ public class Mastermind_View extends JFrame
     {
         for (int i = 0; i < code.length; i++)
         {
-            ((StoneSelection_View) horizontalBox_SelectionStone.getComponent(i))
+            ((StoneSelection_View) horizontalBox_Selection.getComponent(i))
                     .setCode(code[i]);
         }
     }
@@ -557,7 +557,7 @@ public class Mastermind_View extends JFrame
     {
         verticalBox_Playfield.removeAll();
         horizontalBox_Hint.removeAll();
-        horizontalBox_SelectionStone.removeAll();
+        horizontalBox_Selection.removeAll();
 
         rowLength = mastermind.getRowLength();
         codeLength = mastermind.getCodeLength();
@@ -606,7 +606,7 @@ public class Mastermind_View extends JFrame
         for (int i = 0; i < codeLength; i++)
         {
             stoneSelection_View = new StoneSelection_View(colorLength);
-            horizontalBox_SelectionStone.add(stoneSelection_View);
+            horizontalBox_Selection.add(stoneSelection_View);
         }
 
         setState(mastermind.getState());
@@ -729,8 +729,13 @@ public class Mastermind_View extends JFrame
             break;
         }
 
-        scrollPane_Selection.updateUI();
-        scrollPane_Hint.updateUI();
-        scrollPane_Playfield.updateUI();
+        horizontalBox_Selection.validate();
+        horizontalBox_Hint.validate();
+        verticalBox_Playfield.validate();
+        
+        scrollPane_Selection.repaint();
+        scrollPane_Hint.repaint();
+        scrollPane_Playfield.repaint();
+        
     }
 }
