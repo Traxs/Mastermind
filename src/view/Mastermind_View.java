@@ -729,8 +729,8 @@ public class Mastermind_View extends JFrame
             break;
         }
 
-        scrollPane_Selection.repaint();
-        scrollPane_Hint.repaint();
-        scrollPane_Playfield.repaint();
+        scrollPane_Selection.updateUI();
+        scrollPane_Hint.updateUI();
+        scrollPane_Playfield.updateUI();
     }
 }
