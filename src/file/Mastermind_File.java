@@ -1,20 +1,3 @@
-/**
- * Mastermind_File is an class for communicating with the current File System.
- * The class gets every Information it needs such as the Location where to load or put the File
- * as well as what to specifically save.
- * <p>
- * This class is using the Method to save Objects into a File which is possible via Serialization.
- * Objects who shouldn't be saved will be declared as Transient.
- * <p>
- * This class as well will load Images from Resources or the current HardDrive and compile it to
- * an usable Image or Icon.
- *<p>
- *<p>
- * @author      Birk Kauer
- * @author      Raphael Pavlidis
- * @version     %I%, %G%
- * @since       1.0
- */
 package file;
 
 import java.awt.Graphics2D;
@@ -33,7 +16,23 @@ import javax.swing.ImageIcon;
 
 import mastermind.Mastermind;
 
-// TODO: Auto-generated Javadoc
+/**
+ * Mastermind_File is an class for communicating with the current File System.
+ * The class gets every Information it needs such as the Location where to load or put the File
+ * as well as what to specifically save.
+ * <p>
+ * This class is using the Method to save Objects into a File which is possible via Serialization.
+ * Objects who shouldn't be saved will be declared as Transient.
+ * <p>
+ * This class as well will load Images from Resources or the current HardDrive and compile it to
+ * an usable Image or Icon.
+ *<p>
+ *<p>
+ * @author      Birk Kauer
+ * @author      Raphael Pavlidis
+ * @version     %I%, %G%
+ * @since       1.0
+ */
 public class Mastermind_File
 {
 	

@@ -1,13 +1,3 @@
-/**
- * This class is basically the heart out of the whole project.
- * inside of it is the structure and the control of every other object/class.
- * <p>
- * <p>
- * @author      Birk Kauer
- * @author      Raphael Pavlidis
- * @version     %I%, %G%
- * @since       1.0
- */
 package mastermind;
 
 import java.io.File;
@@ -18,11 +8,17 @@ import java.util.Random;
 import view.Mastermind_View;
 import file.Mastermind_File;
 
-// TODO: Auto-generated Javadoc
 /**
+ * This class is basically the heart out of the whole project.
+ * inside of it is the structure and the control of every other object/class.
  * The Class Mastermind implements Serializable for saving the whole Object.
- * @see 	java.io.Serializable
- * @since 	1.0
+ * <p>
+ * <p>
+ * @author      Birk Kauer
+ * @author      Raphael Pavlidis
+ * @version     %I%, %G%
+ * @since       1.0
+ * @see         java.io.Serializable
  */
 public class Mastermind implements java.io.Serializable
 {
@@ -61,10 +57,9 @@ public class Mastermind implements java.io.Serializable
 	 * <p> 
 	 * @see mastermind.State
 	 */
-	//protected State modus;
 	
-	/** The ki.
-	 * Ki is transient for not beeing put into file via Serializable
+	/** The KI.
+	 * KI is transient for not beeing put into file via Serializable
 	 * @see mastermind.KI
 	 */
 	private transient KI ki;

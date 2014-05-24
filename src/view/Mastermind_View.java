@@ -1,15 +1,3 @@
-/**
- * The GUI class.
- * <p>
- * Here will everything be handled what the user can see and interact with.
- * <p>
- * <p>
- * @author      Birk Kauer
- * @author      Raphael Pavlidis
- * @author 		Nico
- * @version     %I%, %G%
- * @since       1.0
- */
 package view;
 
 import java.awt.Color;
@@ -42,9 +30,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class Mastermind_View.
+ * The GUI class.
+ * <p>
+ * Here will everything be handled what the user can see and interact with.
+ * <p>
+ * <p>
+ * @author      Birk Kauer
+ * @author      Raphael Pavlidis
+ * @author      Nico
+ * @version     %I%, %G%
+ * @since       1.0
  */
 public class Mastermind_View extends JFrame
 {
@@ -213,9 +209,6 @@ public class Mastermind_View extends JFrame
         UIManager.put("ScrollBar.shadow",borderColor);
         UIManager.put("control", borderColor);
 
-        
-
-        // TODO
         JPanel contentPane = new JPanel();
         contentPane.setLayout(null);
         setContentPane(contentPane);

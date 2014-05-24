@@ -1,6 +1,3 @@
-/*
- * 
- */
 package view;
 
 import java.awt.event.ActionEvent;
@@ -10,7 +7,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class StoneSelection_View.
  */

@@ -1,3 +1,5 @@
+package mastermind;
+
 /**
  * This enum describes the different States which the Programm can become.
  * <p>
@@ -5,12 +7,6 @@
  * @author      Raphael Pavlidis
  * @version     %I%, %G%
  * @since       1.0
- */
-package mastermind;
-
-// TODO: Auto-generated Javadoc
-/**
- * The Enum State.
  */
 public enum State
 {

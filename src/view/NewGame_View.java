@@ -1,15 +1,3 @@
-/**
- * The New Game GUI class.
- * <p>
- * In this class will the NewGame Window be created.
- * <p>
- * <p>
- * @author      Raphael Pavlidis
- * @author 		Nico
- * @version     %I%, %G%
- * @since       1.0
- */
-
 package view;
 
 import java.awt.event.ItemEvent;
@@ -27,9 +15,16 @@ import javax.swing.JSlider;
 import mastermind.Mastermind;
 import mastermind.State;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class NewGame_View.
+ * The New Game GUI class.
+ * <p>
+ * In this class will the NewGame Window be created.
+ * <p>
+ * <p>
+ * @author      Raphael Pavlidis
+ * @author      Nico
+ * @version     %I%, %G%
+ * @since       1.0
  */
 public class NewGame_View extends JPanel implements ItemListener
 {

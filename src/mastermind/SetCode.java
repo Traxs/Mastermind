@@ -1,14 +1,14 @@
 /*
- * DESCRIPTION
- * @author      Birk Kauer
- * @author      Raphael Pavlidis
- * @version     %I%, %G%
- * @since       1.0
+
  */
 package mastermind;
 
 /**
  * The Class SetCode.
+ * @author      Birk Kauer
+ * @author      Raphael Pavlidis
+ * @version     %I%, %G%
+ * @since       1.0
  */
 public class SetCode
 {
@@ -30,17 +30,17 @@ public class SetCode
 		0b001111111111111, 0b011111111111111, 0b111111111111111};
 	
 	/**
-	 * Instantiates a new sets the code.
+	 * Verhindert das eine SetCode Instanz erstellt wird.
 	 */
 	private SetCode(){}
 
 	/**
-	 * Creates the row.
+	 * Erstellt eine Geheimcode-Menge(Array von Mengen) in Abhängigkeit der Parameter.
 	 *
 	 * @param resultCodes the result codes
 	 * @param colorLength the color length
 	 * @param stoneCodes the stone codes
-	 * @return the integer[]
+	 * @return Geheimcode-Menge.
 	 */
 	public static Integer[] createRow(int[] resultCodes, int colorLength, int[] stoneCodes)
 	{
@@ -49,38 +49,25 @@ public class SetCode
 		{
 			setCodes[i] = resultCodes[i] == ResultCode.RED ? set[stoneCodes[i]] 
 					: setAll[colorLength] ^ set[stoneCodes[i]];
-			/*
-			switch(resultCodes[i])
-			{
-				case ResultCode.RED:
-					setCodes[i] = set[stoneCodes[i]];
-				break;
-				case ResultCode.WHITE:
-					setCodes[i] = (short) (setAll[colorLength] ^ set[stoneCodes[i]]);
-				break;
-				case ResultCode.NOTHING:
-					setCodes[i] = (short) (setAll[colorLength] ^ set[stoneCodes[i]]);
-				break;
-			}*/
 		}
 
 		return setCodes;
 	}
 
 	/**
-	 * Intersect row.
+	 * Gibt die Schnittmenge von zwei Geheimcode-Mengen(Array von Mengen).
 	 *
-	 * @param row1 the row1
-	 * @param row2 the row2
-	 * @return the integer[]
+	 * @param set1 die erste Geheimcode-Mengen.
+	 * @param set2 die zweite Geheimcode-Mengen.
+	 * @return die Schnittmenge von set1 und set2.
 	 */
-	public static Integer[] intersectRow(Integer[] row1, Integer[] row2)
+	public static Integer[] intersectRow(Integer[] set1, Integer[] set2)
 	{
-		Integer[] newArray = new Integer[row1.length];
+		Integer[] newArray = new Integer[set1.length];
 		int newSet;
-		for(int i = 0; i < row1.length; i++)
+		for(int i = 0; i < set1.length; i++)
 		{
-			newSet = row1[i] & row2[i];
+			newSet = set1[i] & set2[i];
 
 			if(newSet == 0)
 			{
@@ -96,68 +83,68 @@ public class SetCode
 	}
 
 	/**
-	 * Gets the row size.
+	 * Gibt die Anzahl der Elemente in der Geheimcode-Menge(Array von Mengen).
 	 *
-	 * @param setCodes the set codes
-	 * @return the row size
+	 * @param set die Geheimcode-Menge.
+	 * @return die Anzahl der Elemente in der Geheimcode-Menge.
 	 */
-	public static long getRowSize(Integer[] setCodes)
+	public static long getRowSize(Integer[] set)
 	{
 		long size = 1;
 
-		for(int setCode : setCodes)
+		for(int column : set)
 		{
-			size *= getSize(setCode);
+			size *= getSize(column);
 		}
 
 		return size;
 	}
 
 	/**
-	 * Contains.
+	 * Überpruft ob die Menge das Element enthält.
 	 *
-	 * @param value the value
-	 * @param code the code
-	 * @return true, if successful
+	 * @param set die Menge
+	 * @param element das Element welches überpruft werden soll ob es in der Menge drin ist.
+	 * @return true, wenn die Menge das Element enthält.
 	 */
-	public static boolean contains(int value, int code)
+	public static boolean contains(int set, int element)
 	{
-		return (value & set[code]) != 0;
+		return (set & SetCode.set[element]) != 0;
 	}
 
 	/**
-	 * Gets the size.
+	 * Gibt die Anzahl der Elemente in der Menge.
 	 *
-	 * @param value the value
-	 * @return the size
+	 * @param set die Menge
+	 * @return die Anzahl der Elemente in der Menge.
 	 */
-	public static int getSize(int value)
+	public static int getSize(int set)
 	{
 		int size = 0;
-		while(value != 0)
+		while(set != 0)
 		{
-			if(value % 2 == 1)
+			if(set % 2 == 1)
 				size++;
 
-			value >>= 1;
+			set >>= 1;
 		}
 		return size;
 	}
 
 	/**
-	 * Gets the first.
+	 * Gibt das erste Element der Menge.
 	 *
-	 * @param value the value
-	 * @return the first
+	 * @param set die Menge.
+	 * @return das erste Element, wenn die Menge leer ist gibt es -1 zurück.
 	 */
-	public static int getFirst(int value)
+	public static int getFirst(int set)
 	{
 		for(int i = 0; i < 15; i++)
 		{
-			if(value % 2 == 1)
+			if(set % 2 == 1)
 				return i;
 			
-			value >>= 1;
+			set >>= 1;
 		}
 
 		return -1;

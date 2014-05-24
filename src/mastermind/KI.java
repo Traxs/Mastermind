@@ -1,37 +1,37 @@
-/*
- * 
- */
 package mastermind;
 
 import java.util.ArrayList;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class KI.
+ * Die Klasse KI wird benötigt um gegen den Computer zu spielen, um ein Tipp zu bekommen und 
+ * für die Assistent-Funktion.
+ * @author      Birk Kauer
+ * @author      Raphael Pavlidis
+ * @version     %I%, %G%
+ * @since       1.0
  */
 public class KI
 {
-	
 	/** The color length. */
 	private int colorLength;
 	
 	/** The code length. */
 	private int codeLength;
 	
-	/** The row cal. */
+	/** Bis zu welcher Zeile man schon berechnet hat. */
 	private int rowCal;
 	
-	/** The array list. */
+	/** Mengen von Geheimcode-Mengen die schon berechent wurden. */
 	private ArrayList<Integer[]> arrayList;
 	
-	/** The thread. */
+	/** Der Thread der die Berechnung im Hintergrund macht. */
 	private Thread thread;
 	
 	/** The mastermind. */
 	private Mastermind mastermind;
 	
 	/**
-	 * Instantiates a new ki.
+	 * Instantiates a new KI.
 	 *
 	 * @param mastermind the mastermind
 	 * @param colorLenth the color lenth
@@ -48,16 +48,15 @@ public class KI
 	}
 	
 	/**
-	 * Stop.
+	 * Stop the KI.
 	 */
 	public void stop()
 	{
 		thread.interrupt();
-	    //thread.
 	}
 
 	/**
-	 * Checks if is possible.
+	 * Überprüft ob es möglich das dieser Code der Geheimcode ist in Abhängigkeit der vorherigene Eingaben.
 	 *
 	 * @param code the code
 	 */
@@ -78,7 +77,7 @@ public class KI
                 {
                     calculatePossibilities();
                 }
-                catch (InterruptException e)
+                catch (InterruptKIException e)
                 {
                     return;
                 }
@@ -113,8 +112,6 @@ public class KI
 	
 	/**
 	 * Gets the hint.
-	 *
-	 * 
 	 */
 	public void getHint()
 	{
@@ -127,7 +124,7 @@ public class KI
                 {
                     mastermind.finishHint(getHighestProbability());
                 }
-                catch (InterruptException e)
+                catch (InterruptKIException e)
                 {
                     return;
                 }
@@ -138,7 +135,7 @@ public class KI
 	}
 	
 	/**
-	 * Start ki.
+	 * Startet das Spiel gegen die KI.
 	 */
 	public void startKI()
 	{
@@ -165,7 +162,7 @@ public class KI
                     {
                         mastermind.addRow(getHighestProbability());
                     }
-                    catch (InterruptException e)
+                    catch (InterruptKIException e)
                     {
                         return;
                     }					
@@ -187,10 +184,12 @@ public class KI
 	}
 	
 	/**
-	 * Calculate possibilities.
-	 * @throws InterruptException 
+	 * Berechnet die Geheimcodes die durch die vorherigen Eingaben gemacht wurden sind.
+	 * 
+	 * @throws InterruptKIException wenn die KI während der Berechnung gestoppt wird.
+	 * @see mastermind.InterruptKIException
 	 */
-	private void calculatePossibilities() throws InterruptException
+	private void calculatePossibilities() throws InterruptKIException
 	{
 		final ArrayList<Row> rows = mastermind.getRows();
 
@@ -210,16 +209,16 @@ public class KI
 	}
 	
 	/**
-     * Intersect set code array list.
+     * Erstellt die Schnittmenge zwichen zwei Mengen von Geheimcode-Mengen.
      *
-     * @param p1 the p1
-     * @param p2 the p2
-     * @param thread the thread
-     * @return the array list
-	 * @throws InterruptException 
+     * @param p1 die erste Menge
+     * @param p2 die zweite Menge
+     * @return die Schnittmenge von p1 und p2
+	 * @throws InterruptKIException wenn die KI während der Berechnung gestoppt wird.
+	 * @see mastermind.InterruptKIException
      */
     public ArrayList<Integer[]> intersectSetCodeArrayList(ArrayList<Integer[]> p1,
-            ArrayList<Integer[]> p2) throws InterruptException
+            ArrayList<Integer[]> p2) throws InterruptKIException
     {
         ArrayList<Integer[]> newPossibilities = new ArrayList<Integer[]>();
         Integer[] newPossibility;
@@ -227,7 +226,7 @@ public class KI
         for(Integer[] p1Element : p1)
         {           
             if (thread.isInterrupted())
-                throw new InterruptException();
+                throw new InterruptKIException();
 
             for(Integer[] p2Element : p2)
             {   
@@ -243,12 +242,13 @@ public class KI
     }
 
 	/**
-	 * Gets the highest probability.
+	 * Gibt denn Wahrscheinlichsten Geheimcode in Abhängigkeit der vorherigen Eingaben.
 	 *
 	 * @return the highest probability
-	 * @throws InterruptException 
+	 * @throws InterruptKIException wenn die KI während der Berechnung gestoppt wird.
+	 * @see mastermind.InterruptKIException
 	 */
-	private int[] getHighestProbability() throws InterruptException
+	private int[] getHighestProbability() throws InterruptKIException
 	{
 		int[] stoneCodes = new int[codeLength];
 		
@@ -286,10 +286,10 @@ public class KI
 	}
 	
 	/**
-	 * Gets the possibilities.
+	 * Gibt eine Menge von Geheimcode-Menge die in Abhängigkeit der Codeeingabe und des Resultates(Rot, Weiß) vom Parameter row möglich sind. 
 	 *
-	 * @param row the row
-	 * @return the possibilities
+	 * @param row die Zeile welches die Codeeingabe und Resultat enthält nachwelchem die Geheimcode-Menge erstellt werden soll.
+	 * @return die Geheimcode-Menge.
 	 */
 	private ArrayList<Integer[]> getPossibilities(Row row)
 	{
@@ -325,12 +325,12 @@ public class KI
 	}
 	
 	/**
-	 * Next permutation.
+	 * Gibt die nächste Permutation an.
 	 *
-	 * @param permutation the permutation
-	 * @return true, if successful
+	 * @param permutation die Permutation.
+	 * @return wahr, wenn es eine nächste Permutation gibt, ansonsten falsch.
 	 */
-	private static boolean nextPermutation(int []permutation)
+	private static boolean nextPermutation(int[] permutation)
 	{
 		int index, buffer;
 		for(int i = permutation.length - 1; i > 0; i--)
@@ -351,11 +351,11 @@ public class KI
 	}
 	
 	/**
-	 * Next bigger.
+	 * Gibt die Position im Array der nächst größeren Zahl im Intervall [low, array.length] an.
 	 *
-	 * @param array the array
-	 * @param low the low
-	 * @return the int
+	 * @param array im welchen gesucht werden soll.
+	 * @param low die untere grenze des Intervalls.
+	 * @return die Position der nächst größeren Zahl im Array.
 	 */
 	private static int nextBigger(int[] array, int low)
 	{
@@ -376,50 +376,50 @@ public class KI
 	}
 	
 	/**
-	 * Quick sort.
+	 * Sortiert das Array im Intervall [low, high] mittels Quick sort.
 	 *
-	 * @param arr the arr
-	 * @param low the low
-	 * @param high the high
+	 * @param array im welches sortiert werden soll.
+	 * @param low die untere grenze des Intervalls.
+	 * @param high die obere grenze des Intervalls.
 	 */
-	public static void quickSort(int[] arr, int low, int high)
+	public static void quickSort(int[] array, int low, int high)
 	{
-		if (arr == null || arr.length == 0)
+		if (array == null || array.length == 0)
 			return;
  
 		if (low >= high)
 			return;
  
 		int middle = low + (high - low) / 2;
-		int pivot = arr[middle];
+		int pivot = array[middle];
  
 		int i = low, j = high;
 		while (i <= j)
 		{
-			while (arr[i] < pivot)
+			while (array[i] < pivot)
 			{
 				i++;
 			}
  
-			while (arr[j] > pivot)
+			while (array[j] > pivot)
 			{
 				j--;
 			}
  
 			if (i <= j)
 			{
-				int temp = arr[i];
-				arr[i] = arr[j];
-				arr[j] = temp;
+				int temp = array[i];
+				array[i] = array[j];
+				array[j] = temp;
 				i++;
 				j--;
 			}
 		}
 
 		if (low < j)
-			quickSort(arr, low, j);
+			quickSort(array, low, j);
  
 		if (high > i)
-			quickSort(arr, i, high);
+			quickSort(array, i, high);
 	}
 }

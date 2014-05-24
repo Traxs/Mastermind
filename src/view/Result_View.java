@@ -1,6 +1,3 @@
-/*
- * 
- */
 package view;
 
 import java.awt.Dimension;
@@ -12,7 +9,6 @@ import javax.swing.JComponent;
 import mastermind.Row;
 import file.Mastermind_File;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Result_View.
  */

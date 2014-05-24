@@ -1,6 +1,3 @@
-/*
- * 
- */
 package view;
 
 import java.awt.Dimension;
@@ -10,7 +7,6 @@ import javax.swing.JButton;
 
 import file.Mastermind_File;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Stone_View.
  */
@@ -85,9 +81,7 @@ public class Stone_View extends JButton
 	public Stone_View(int code)
 	{
         setFocusable(false);
-		//Code Zuweisen
 		this.code = code;
-		//Gr��e Setzen
 		setMinimumSize(new Dimension(STONESIZE, STONESIZE));
 		setMaximumSize(new Dimension(STONESIZE, STONESIZE));
 		setPreferredSize(new Dimension(STONESIZE, STONESIZE));		
