@@ -30,17 +30,16 @@ public class SetCode
 		0b001111111111111, 0b011111111111111, 0b111111111111111};
 	
 	/**
-	 * Verhindert das eine SetCode Instanz erstellt wird.
+	 * denies another instanz of SetCode.
 	 */
 	private SetCode(){}
 
 	/**
-	 * Erstellt eine Geheimcode-Menge(Array von Mengen) in Abhängigkeit der Parameter.
-	 *
+	 * Creates a SecretCode-set based on parameters.
 	 * @param resultCodes the result codes
 	 * @param colorLength the color length
 	 * @param stoneCodes the stone codes
-	 * @return Geheimcode-Menge.
+	 * @return SecretCode-set.
 	 */
 	public static Integer[] createRow(int[] resultCodes, int colorLength, int[] stoneCodes)
 	{
@@ -55,11 +54,10 @@ public class SetCode
 	}
 
 	/**
-	 * Gibt die Schnittmenge von zwei Geheimcode-Mengen(Array von Mengen).
-	 *
-	 * @param set1 die erste Geheimcode-Mengen.
-	 * @param set2 die zweite Geheimcode-Mengen.
-	 * @return die Schnittmenge von set1 und set2.
+	 * Delivers the intersection between two SecretCode-sets.
+	 * @param 	set1 first SecretCode-set.
+	 * @param 	set2 second SecretCode-set.
+	 * @return 	the intersection between set1 and set2.
 	 */
 	public static Integer[] intersectRow(Integer[] set1, Integer[] set2)
 	{
@@ -83,10 +81,10 @@ public class SetCode
 	}
 
 	/**
-	 * Gibt die Anzahl der Elemente in der Geheimcode-Menge(Array von Mengen).
-	 *
-	 * @param set die Geheimcode-Menge.
-	 * @return die Anzahl der Elemente in der Geheimcode-Menge.
+	 * Delivers the amount of elements in the parameter SecretCode-set[set].
+	 * 
+	 * @param 	set The SecretCode-set.
+	 * @return 	the amount of elements in set.
 	 */
 	public static long getRowSize(Integer[] set)
 	{
@@ -101,11 +99,10 @@ public class SetCode
 	}
 
 	/**
-	 * Überpruft ob die Menge das Element enthält.
-	 *
-	 * @param set die Menge
-	 * @param element das Element welches überpruft werden soll ob es in der Menge drin ist.
-	 * @return true, wenn die Menge das Element enthält.
+	 * Checks if Set contains the parameter element.
+	 * @param 	set 	set
+	 * @param 	element the element to be checked on.
+	 * @return 	delivers true if the set contains the element.
 	 */
 	public static boolean contains(int set, int element)
 	{
@@ -113,10 +110,9 @@ public class SetCode
 	}
 
 	/**
-	 * Gibt die Anzahl der Elemente in der Menge.
-	 *
-	 * @param set die Menge
-	 * @return die Anzahl der Elemente in der Menge.
+	 * Delivers the amount of elements in the set.
+	 * @param 	set 	set
+	 * @return 	the amount of elemts in the set.
 	 */
 	public static int getSize(int set)
 	{
@@ -132,10 +128,9 @@ public class SetCode
 	}
 
 	/**
-	 * Gibt das erste Element der Menge.
-	 *
-	 * @param set die Menge.
-	 * @return das erste Element, wenn die Menge leer ist gibt es -1 zurück.
+	 * Delivers the first element in the set.
+	 * @param 	set 	set.
+	 * @return 	returns the first element of the set. If it's empty it will return -1.
 	 */
 	public static int getFirst(int set)
 	{

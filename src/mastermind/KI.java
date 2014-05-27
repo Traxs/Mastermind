@@ -3,11 +3,11 @@ package mastermind;
 import java.util.ArrayList;
 
 /**
- * Die Klasse KI wird benötigt um gegen den Computer zu spielen, um ein Tipp zu bekommen und 
- * für die Assistent-Funktion.
+ * The Class KI is used to play against the computer, getting a tipp to play with or for 
+ * complete assistent function.
+ * 
  * @author      Birk Kauer
  * @author      Raphael Pavlidis
- * @version     %I%, %G%
  * @since       1.0
  */
 public class KI
@@ -18,13 +18,19 @@ public class KI
 	/** The code length. */
 	private int codeLength;
 	
-	/** Bis zu welcher Zeile man schon berechnet hat. */
+	/** 
+	 * Displays the row which was already calculated.
+	 * */
 	private int rowCal;
 	
-	/** Mengen von Geheimcode-Mengen die schon berechent wurden. */
+	/**  
+	 * Sets of SecretCode-sets which were already calculated.
+	 * */
 	private ArrayList<Integer[]> arrayList;
 	
-	/** Der Thread der die Berechnung im Hintergrund macht. */
+	/** 
+	 * Thread for background calculation.
+	 * */
 	private Thread thread;
 	
 	/** The mastermind. */
@@ -56,9 +62,9 @@ public class KI
 	}
 
 	/**
-	 * Überprüft ob es möglich das dieser Code der Geheimcode ist in Abhängigkeit der vorherigene Eingaben.
-	 *
-	 * @param code the code
+	 * Checks if the current parameter is in the SecretCode-sets which were calculated by previous Inputs.
+	 * 
+	 * @param code 		the Input Code to check.
 	 */
 	public void isPossible(final int[] code)
 	{
@@ -135,7 +141,7 @@ public class KI
 	}
 	
 	/**
-	 * Startet das Spiel gegen die KI.
+	 * Initialise a game against the KI
 	 */
 	public void startKI()
 	{
@@ -184,10 +190,9 @@ public class KI
 	}
 	
 	/**
-	 * Berechnet die Geheimcodes die durch die vorherigen Eingaben gemacht wurden sind.
-	 * 
-	 * @throws InterruptKIException wenn die KI während der Berechnung gestoppt wird.
-	 * @see mastermind.InterruptKIException
+	 * Calculates the secretcodes based by the previous inputs.
+	 * @throws 	InterruptKIException 	will throw the Exception when the KI is forced to stop while calculating. 
+	 * @see 	mastermind.InterruptKIException
 	 */
 	private void calculatePossibilities() throws InterruptKIException
 	{
@@ -209,13 +214,12 @@ public class KI
 	}
 	
 	/**
-     * Erstellt die Schnittmenge zwichen zwei Mengen von Geheimcode-Mengen.
-     *
-     * @param p1 die erste Menge
-     * @param p2 die zweite Menge
-     * @return die Schnittmenge von p1 und p2
-	 * @throws InterruptKIException wenn die KI während der Berechnung gestoppt wird.
-	 * @see mastermind.InterruptKIException
+     * Creates the intersection between the two sets of SecretCode.
+     * @param 	p1 	first set
+     * @param 	p2 	second set
+     * @return 	the intersection of p1 and p2
+	 * @throws 	InterruptKIException 	will throw the Exception when the KI is forced to stop while calculating. 
+	 * @see 	mastermind.InterruptKIException
      */
     public ArrayList<Integer[]> intersectSetCodeArrayList(ArrayList<Integer[]> p1,
             ArrayList<Integer[]> p2) throws InterruptKIException
@@ -242,11 +246,10 @@ public class KI
     }
 
 	/**
-	 * Gibt denn Wahrscheinlichsten Geheimcode in Abhängigkeit der vorherigen Eingaben.
-	 *
-	 * @return the highest probability
-	 * @throws InterruptKIException wenn die KI während der Berechnung gestoppt wird.
-	 * @see mastermind.InterruptKIException
+	 * Returns 	the highest probability of the secret code based on previous inputs.
+	 * @return 	the highest probability
+	 * @throws 	InterruptKIException 	will throw the Exception when the KI is forced to stop while calculating. 
+	 * @see 	mastermind.InterruptKIException
 	 */
 	private int[] getHighestProbability() throws InterruptKIException
 	{
@@ -285,11 +288,10 @@ public class KI
 		return stoneCodes;
 	}
 	
-	/**
-	 * Gibt eine Menge von Geheimcode-Menge die in Abhängigkeit der Codeeingabe und des Resultates(Rot, Weiß) vom Parameter row möglich sind. 
-	 *
-	 * @param row die Zeile welches die Codeeingabe und Resultat enthält nachwelchem die Geheimcode-Menge erstellt werden soll.
-	 * @return die Geheimcode-Menge.
+	/** 
+	 * Returns a Set of SecretCode-set which is based on the codeinput and the result of red and white pins of the parameter row.
+	 * @param 	row 	the row which includes the codeinput and the result which will generates a secretcode-set.
+	 * @return the secretcode-set.
 	 */
 	private ArrayList<Integer[]> getPossibilities(Row row)
 	{
@@ -325,10 +327,9 @@ public class KI
 	}
 	
 	/**
-	 * Gibt die nächste Permutation an.
-	 *
-	 * @param permutation die Permutation.
-	 * @return wahr, wenn es eine nächste Permutation gibt, ansonsten falsch.
+	 * Will return the next permutation.
+	 * @param 	permutation 	the permutation.
+	 * @return 	will deliver true if there is another permutation otherwise false.
 	 */
 	private static boolean nextPermutation(int[] permutation)
 	{
@@ -351,11 +352,13 @@ public class KI
 	}
 	
 	/**
-	 * Gibt die Position im Array der nächst größeren Zahl im Intervall [low, array.length] an.
-	 *
-	 * @param array im welchen gesucht werden soll.
-	 * @param low die untere grenze des Intervalls.
-	 * @return die Position der nächst größeren Zahl im Array.
+	 * This Method will be used by the nextPermutation Method.
+	 * Delivers the position of the next increased number of the intervall [low,array.length].
+	 * 
+	 * @param The array which the method will look into.
+	 * @param low the lower border of the array.
+	 * @return the position of the increased number in the array.
+	 * @see #nextPermutation(int[])
 	 */
 	private static int nextBigger(int[] array, int low)
 	{
@@ -376,11 +379,10 @@ public class KI
 	}
 	
 	/**
-	 * Sortiert das Array im Intervall [low, high] mittels Quick sort.
-	 *
-	 * @param array im welches sortiert werden soll.
-	 * @param low die untere grenze des Intervalls.
-	 * @param high die obere grenze des Intervalls.
+	 * will sort the array inside of the intervall [low, high] by using quick sort.
+	 * @param 	array 	array to be sorted.
+	 * @param 	low 	lower border of the intervall.
+	 * @param 	high 	upper border of the intervall.
 	 */
 	public static void quickSort(int[] array, int low, int high)
 	{

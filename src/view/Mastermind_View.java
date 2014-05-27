@@ -398,14 +398,12 @@ public class Mastermind_View extends JFrame
                         }
                         catch (ClassNotFoundException e)
                         {
-                            e.printStackTrace();
                             JOptionPane.showMessageDialog(null,
                                     "Class not found.");
                             return;
                         }
                         catch (IOException e)
                         {
-                            e.printStackTrace();
                             JOptionPane.showMessageDialog(null,
                                     "Wrong or corrupted file.");
                             return;

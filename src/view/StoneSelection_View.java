@@ -33,7 +33,8 @@ public class StoneSelection_View extends Stone_View implements ActionListener
 	}
 
 	/**
-	 * The Class PopUp.
+	 * The inner class PopUp will create the dialog to choose the color in the selection Box.
+	 * the PopUp will show every possible color in the current game verticaly.
 	 */
 	class PopUp extends JPopupMenu
 	{

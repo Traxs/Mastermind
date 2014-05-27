@@ -1,10 +1,9 @@
 package mastermind;
 
 /**
- * Diese Exception wird benötigt wenn die KI gestoppt wird.
+ * This Exception will be used if KI are about to stop.
  * @author      Birk Kauer
  * @author      Raphael Pavlidis
- * @version     %I%, %G%
  * @since       1.0
  * @see         java.lang.Exception
  */
