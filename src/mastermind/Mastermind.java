@@ -49,7 +49,7 @@ public class Mastermind implements java.io.Serializable
 	 * <p>
 	 * @see mastermind.State
 	 */
-	protected State state;
+	private State state;
 	
 	/** The modus.
 	 * <p>
@@ -307,7 +307,7 @@ public class Mastermind implements java.io.Serializable
      */
     public void stopKI()
     {
-        // Setzt den Status das die KI Stoppt
+        // Set the State to KI stop
         switch(state)
         {
             case caculateKI:
@@ -324,13 +324,13 @@ public class Mastermind implements java.io.Serializable
         }
 
         ki.stop();
-        // Wartet solange bis die KI gestoppt wurde
+        // waits until KI stopped
         while(ki.isKICalculating())
         {
         	
         }
         
-        // Setzt den neuen Status ein
+        // Set a new State
         switch(state)
         {
             case stopCaculateKI:
@@ -369,7 +369,7 @@ public class Mastermind implements java.io.Serializable
 	 */
 	public void addRow(int[] code)
 	{
-	    // Überpruft ob das Spiel schon beendet wurde
+	    // Checks if game has finished
 		switch(state)
 		{
 			case win:
@@ -379,13 +379,13 @@ public class Mastermind implements java.io.Serializable
 			break;
 		}
 		
-		// mark[] wird gebracuht um die Stellen zu markieren die bearbeitet wurden 
+		// mark[] is used to mark the spot where it was edited
 		boolean[] mark = new boolean[codeLength];
 		int red = 0, white = 0;
 		
 		for(int i = 0; i < codeLength; i++)
 		{
-		    // Überpruft ob richtige Farbe mit richtiger Position(Rote Kugeln)
+			// checks if the color and position is correct(Red Ball) 
 			if(code[i] == secretCode[i])
 			{
 				mark[i] = true;
@@ -393,7 +393,7 @@ public class Mastermind implements java.io.Serializable
 			}
 			else
 			{
-			    // Durchsucht ob die Farbe im Geheimcode entahlten ist(Weiße Kugeln)
+				// Searches for if the color is within the Secret-Code(White Ball)
 				int j;
 				for(j = 0; j < codeLength; j++)
 				{
@@ -411,17 +411,17 @@ public class Mastermind implements java.io.Serializable
 			}
 		}
 
-        // Füge die neue Zeile ein
+        // Adds a new row
 		Row newRow = new Row(code, red, white);
 		rows.add(newRow);
 		mastermind_View.addRow(newRow);
-
-		// Überpruft ob der Geheimcode erraten wurde
+		
+		// Checks if the Secret-Code has been guessed
 		if(newRow.getRed() == codeLength)
 		{
 			setState(State.win);
 		}
-		// Überpruft ob man das Spiel verloren hat
+		// Checks if you lost the game
 		else if(rows.size() >= rowLength && rowLength > 0)
 		{
 			setState(State.lose);

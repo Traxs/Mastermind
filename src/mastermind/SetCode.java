@@ -15,19 +15,19 @@ public class SetCode
 	
 	/** The Constant set. */
 	private static final int[] set = { 
-		0b000000000000001, 0b000000000000010, 0b000000000000100, 
-		0b000000000001000, 0b000000000010000, 0b000000000100000,
-		0b000000001000000, 0b000000010000000, 0b000000100000000, 
-		0b000001000000000, 0b000010000000000, 0b000100000000000, 
-		0b001000000000000, 0b010000000000000, 0b100000000000000};
+		0x1, 0x2, 0x4, 
+		0x8, 0x10, 0x20,
+		0x40, 0x80, 0x100, 
+		0x200, 0x400, 0x800, 
+		0x1000, 0x2000, 0x4000};
 	
 	/** The Constant setAll. */
-	private static final int[] setAll = {	  0b000000000000000,
-		0b000000000000001, 0b000000000000011, 0b000000000000111, 
-		0b000000000001111, 0b000000000011111, 0b000000000111111,
-		0b000000001111111, 0b000000011111111, 0b000000111111111, 
-		0b000001111111111, 0b000011111111111, 0b000111111111111, 
-		0b001111111111111, 0b011111111111111, 0b111111111111111};
+	private static final int[] setAll = {	  0x0,
+		0x1, 0x3, 0x7, 
+		0xF, 0x1F, 0x3F,
+		0x7F, 0xFF, 0x1FF, 
+		0x3FF, 0x7FF, 0xFFF, 
+		0x1FFF, 0x3FFF, 0x7FFF};
 	
 	/**
 	 * denies another instance of SetCode.
@@ -43,11 +43,11 @@ public class SetCode
 	 */
 	public static Integer[] createRow(int[] resultCodes, int colorLength, int[] stoneCodes)
 	{
-	    // Erstellt für jede Spalte die Menge
+	    // Creates a set for every column
 		Integer[] setCodes = new Integer[resultCodes.length];
 		for(int i = 0; i < resultCodes.length; i++)
 		{
-		    // Erstellt die Menge in Abhängigkeit von R und N (siehe KI Doku)
+			// Creates the set in dependency of R and N (Look KI Doku)
 			setCodes[i] = resultCodes[i] == ResultCode.RED ? set[stoneCodes[i]] 
 					: setAll[colorLength] ^ set[stoneCodes[i]];
 		}
@@ -65,15 +65,15 @@ public class SetCode
 	{
 		Integer[] newArray = new Integer[set1.length];
 		int newSet;
-		// Vereinigt(Schnitt) die zwei Elemente der Geheimcode-Menge(Integer[]) Spaltenweise
+		// Union of the two elements from the Secret-Code set(Integer[]) column by column
 		for(int i = 0; i < set1.length; i++)
 		{
 			newSet = set1[i] & set2[i];
 
-			// Überprüft ob die neue Spalte(Menge) die Leere Menge ist
+			// Checks if the new column is a NULL set
 			if(newSet == 0)
 			{
-			    // wenn ja bedeutet es das man die Elemente nicht vereinigen(Schnitt) kann.
+				// if yes you can't unite these Elements with Union
 				return null;
 			}
 			else

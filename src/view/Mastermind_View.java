@@ -426,7 +426,8 @@ public class Mastermind_View extends JFrame
                 @Override
                 public void actionPerformed(ActionEvent arg0)
                 {
-                    // LOAD BENUTZERHANDBUCH GENAU HIER !!
+                    // loading the Manual via AWT Desktop
+                	Mastermind_File.loadPDF();
                 }
             });
             jMenu_Help.add(jMenuItem_Help);

@@ -1,5 +1,6 @@
 package file;
 
+import java.awt.Desktop;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
@@ -128,6 +129,40 @@ public class Mastermind_File
 		}
 	}
 	
+	/**
+	 * Load Manual.
+	 * Loading the Manual via AWTDesktop which is Cross-Platform
+	 * @param PathToFile the path to file
+	 * @return the buffered image
+	 */
+	
+	public static void loadPDF()
+	{
+		try 
+		{
+			File pdfFile = new File("src/img/Mastermind_man.pdf");
+			
+			if (pdfFile.exists()) {
+	 
+				if (Desktop.isDesktopSupported()) {
+					Desktop.getDesktop().open(pdfFile);
+				} 
+				else 
+				{
+					System.out.println("Awt Desktop is not supported!");
+				}
+	 
+			} 
+			else 
+			{
+				System.out.println("File does not exist!");
+			}
+		  } 
+		catch (Exception ex) 
+		{
+			ex.printStackTrace();
+		}
+	}
 	/**
 	 * Load icon.
 	 *
