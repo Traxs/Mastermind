@@ -212,7 +212,7 @@ public class Mastermind_View extends JFrame
         JPanel contentPane = new JPanel();
         contentPane.setLayout(null);
         setContentPane(contentPane);
-
+        //Adding a mouse Listener for dragging the GUI around since we deleted the standard Box
         addMouseListener(new MouseAdapter()
         {
             public void mousePressed(MouseEvent e)
@@ -258,20 +258,22 @@ public class Mastermind_View extends JFrame
             {
                 if (!jbutton_Add.isEnabled())
                     return;
-
+                
                 int[] newCode = new int[codeLength];
+                //Adding the Code into the Stone_View Box
                 for (int i = 0; i < codeLength; i++)
                 {
                     newCode[i] =
                             ((Stone_View) horizontalBox_Selection
                                     .getComponent(i)).getCode();
                 }
-
+                //Checks if the button has a different Text for different modes
                 if (jbutton_Add.getText().equals("Set Code"))
                 {
                     if (mastermind.setSecretCode(newCode))
                     {
                         horizontalBox_Hint.removeAll();
+                        //Adding the Secret Code to the Secret Code field
                         for (int code : newCode)
                         {
                             horizontalBox_Hint.add(new Stone_View(code));
@@ -291,7 +293,7 @@ public class Mastermind_View extends JFrame
         });
 
         contentPane.add(jbutton_Add);
-
+        //Button "Hint"
         jbutton_Hint = new JButton();
         jbutton_Hint.addActionListener(new ActionListener()
         {
@@ -299,7 +301,7 @@ public class Mastermind_View extends JFrame
             {
                 if (!jbutton_Hint.isEnabled())
                     return;
-
+                //Checks if the Button has the correct Text to start the getHint()
                 if (jbutton_Hint.getText().equals("Hint"))
                 {
                     mastermind.getHint();
@@ -338,7 +340,7 @@ public class Mastermind_View extends JFrame
                 public void actionPerformed(ActionEvent arg0)
                 {
                     NewGame_View newGame_View = new NewGame_View();
-
+                    //New Game button in Menu opening the New Game Panel
                     if (JOptionPane.showConfirmDialog(null, newGame_View,
                             "New Game", JOptionPane.OK_CANCEL_OPTION,
                             JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION)
@@ -359,7 +361,8 @@ public class Mastermind_View extends JFrame
                 @Override
                 public void actionPerformed(ActionEvent arg0)
                 {
-                    JFileChooser jFileChooser = new JFileChooser();
+                    //Saving the current Mastermind Object
+                	JFileChooser jFileChooser = new JFileChooser();
                     jFileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 
                     if (jFileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
@@ -378,7 +381,7 @@ public class Mastermind_View extends JFrame
                 }
             });
             jMenu_File.add(jMenuItem_Save);
-
+            //Button to load a Mastermind Object
             JMenuItem jMenuItem_load =
                     new JMenuItem("Load", Mastermind_File.loadIcon("load.png"));
             jMenuItem_load.addActionListener(new ActionListener()
@@ -386,9 +389,10 @@ public class Mastermind_View extends JFrame
                 @Override
                 public void actionPerformed(ActionEvent arg0)
                 {
-                    JFileChooser jFileChooser = new JFileChooser();
+                    //Choose the File
+                	JFileChooser jFileChooser = new JFileChooser();
                     jFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-
+                    //Loading the Mastermind object
                     if (jFileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
                     {
                         try
@@ -414,7 +418,7 @@ public class Mastermind_View extends JFrame
                 }
             });
             jMenu_File.add(jMenuItem_load);
-
+            //Button to load the Help Dokument
             JMenu jMenu_Help = new JMenu("Help");
             jMenu_Help.setBorderPainted(false);
             jMenuBar.add(jMenu_Help);
@@ -431,7 +435,7 @@ public class Mastermind_View extends JFrame
                 }
             });
             jMenu_Help.add(jMenuItem_Help);
-
+            //Credits
             JMenuItem jMenuItem_about =
                     new JMenuItem("About",
                             Mastermind_File.loadIcon("about.png"));
@@ -475,7 +479,7 @@ public class Mastermind_View extends JFrame
             });
             jMenuBar.add(jbutton_Exit);
         }
-
+        //Repainting/updating the GUI
         update();
         setTitle("Mastermind");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -554,16 +558,14 @@ public class Mastermind_View extends JFrame
         rowLength = mastermind.getRowLength();
         codeLength = mastermind.getCodeLength();
         colorLength = mastermind.getColorLength();
-
-        // Berechnung der Gr��en der Fensterinhalte dynamisch anhand der
-        // Codel�nge
+        // Calculates the size of the Window dynamically out of the Codelength
         int rowSize =
                 Stone_View.STONESIZE
                         * codeLength
                         + (Result_View.RESULTSIZE * (codeLength % 2 == 0
                                 ? codeLength / 2 : codeLength / 2 + 1)) + 30;
 
-        // Setze Fenstergr��e
+        // Set size of Window
         setSize(rowSize + 135, 610);
         scrollPane_Playfield.setBounds(12, 12, rowSize, 410);
         scrollPane_Selection.setBounds(12, 434, rowSize, 60);
@@ -628,7 +630,7 @@ public class Mastermind_View extends JFrame
     public void startNewGame(int newColorLength, int newRowLength,
             int newCodeLength, State state)
     {
-        // Neues Mastermind
+        // New Mastermind
         this.mastermind =
                 new Mastermind(this, newCodeLength, newRowLength,
                         newColorLength, state);
