@@ -73,8 +73,7 @@ public class Mastermind_File
 
 		return mastermind;
 	}	
-	
-	//Bugfix gegen Lag
+
 	/**
 	 * To compatible image.
 	 *
@@ -90,10 +89,9 @@ public class Mastermind_File
 	            getLocalGraphicsEnvironment().getDefaultScreenDevice().
 	            getDefaultConfiguration();
 
-	    /*
-	     * if image is already compatible and optimized for current system 
-	     * settings, simply return it
-	     */
+
+	    // if image is already compatible and optimized for current system 
+	    // settings, simply return it
 	    if (image.getColorModel().equals(gfx_config.getColorModel()))
 	            return image;
 
@@ -108,7 +106,6 @@ public class Mastermind_File
 	    g2d.drawImage(image, 0, 0, null);
 	    g2d.dispose();
 
-	    // return the new optimized image
 	    return new_image; 
 	}
 	

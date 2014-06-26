@@ -179,9 +179,9 @@ public class Mastermind implements java.io.Serializable
 	}
 
 	/**
-	 * Gen secret code.
+	 * Generate secret code.
 	 * <p>
-	 * this snipped is creating a random Secret Code if it's not manually set.
+	 * this snipped is creating a random secret-code if it's not manually set.
 	 * @see 	java.util.Random
 	 * @see		mastermind.Mastermind#secretCode
 	 */
@@ -307,7 +307,7 @@ public class Mastermind implements java.io.Serializable
      */
     public void stopKI()
     {
-        
+        // Setzt den Status das die KI Stoppt
         switch(state)
         {
             case caculateKI:
@@ -324,11 +324,13 @@ public class Mastermind implements java.io.Serializable
         }
 
         ki.stop();
+        // Wartet solange bis die KI gestoppt wurde
         while(ki.isKICalculating())
         {
         	
         }
         
+        // Setzt den neuen Status ein
         switch(state)
         {
             case stopCaculateKI:
@@ -367,6 +369,7 @@ public class Mastermind implements java.io.Serializable
 	 */
 	public void addRow(int[] code)
 	{
+	    // Überpruft ob das Spiel schon beendet wurde
 		switch(state)
 		{
 			case win:
@@ -376,11 +379,13 @@ public class Mastermind implements java.io.Serializable
 			break;
 		}
 		
+		// mark[] wird gebracuht um die Stellen zu markieren die bearbeitet wurden 
 		boolean[] mark = new boolean[codeLength];
 		int red = 0, white = 0;
 		
 		for(int i = 0; i < codeLength; i++)
 		{
+		    // Überpruft ob richtige Farbe mit richtiger Position(Rote Kugeln)
 			if(code[i] == secretCode[i])
 			{
 				mark[i] = true;
@@ -388,6 +393,7 @@ public class Mastermind implements java.io.Serializable
 			}
 			else
 			{
+			    // Durchsucht ob die Farbe im Geheimcode entahlten ist(Weiße Kugeln)
 				int j;
 				for(j = 0; j < codeLength; j++)
 				{
@@ -405,15 +411,17 @@ public class Mastermind implements java.io.Serializable
 			}
 		}
 
+        // Füge die neue Zeile ein
 		Row newRow = new Row(code, red, white);
-		
 		rows.add(newRow);
 		mastermind_View.addRow(newRow);
 
+		// Überpruft ob der Geheimcode erraten wurde
 		if(newRow.getRed() == codeLength)
 		{
 			setState(State.win);
 		}
+		// Überpruft ob man das Spiel verloren hat
 		else if(rows.size() >= rowLength && rowLength > 0)
 		{
 			setState(State.lose);

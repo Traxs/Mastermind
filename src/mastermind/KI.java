@@ -68,19 +68,23 @@ public class KI
 	 */
 	public void isPossible(final int[] code)
 	{
+	    // Erzeuge einen neuen Thread
 		thread = new Thread(new Runnable()
 		{
 			@Override
 			public void run()
 			{
+			    // Überprüft ob keine Eingaben gemacht wurden sind
 				if(mastermind.getRowSize() == 0)
 				{
+				    // Akzeptiere die Eingabe code[] als möglich
 				    mastermind.finishCheck(code, true);
 					return;
 				}
 
 				try
                 {
+				    // Berechne die Geheimcode-Menge.
                     calculatePossibilities();
                 }
                 catch (InterruptKIException e)
@@ -88,6 +92,7 @@ public class KI
                     return;
                 }
 				
+				// Überpruft ob code[] in der Geheimcode-Menge ist
 				int i;
 				for(Integer[] arrayListElement : arrayList)
 				{
@@ -104,11 +109,15 @@ public class KI
                 
                     if(i == codeLength)
                     {
+                        // code[] ist in der Geheimcode-Menge
+                        // Akzeptiere die Eingabe code[] als möglich
                         mastermind.finishCheck(code, true);
                         return;
                     }
 				}
 
+				// code[] ist nicht in der Geheimcode-Menge
+				// Akzeptiere die Eingabe code[] als nicht möglich
 				mastermind.finishCheck(code, false);
 			}
 		});
@@ -121,6 +130,7 @@ public class KI
 	 */
 	public void getHint()
 	{
+	    // Erzeuge einen neuen Thread
 		thread = new Thread(new Runnable()
 		{
 			@Override
@@ -128,6 +138,8 @@ public class KI
 			{
 				try
                 {
+				    // Berechne den Wahrscheinlichste Geheimcode
+				    // Zeige den errechneten Geheimcode als Tipp
                     mastermind.finishHint(getHighestProbability());
                 }
                 catch (InterruptKIException e)
@@ -145,18 +157,21 @@ public class KI
 	 */
 	public void startKI()
 	{
+	    // Erzeuge einen neuen Thread
 		thread = new Thread(new Runnable()
 		{
 			@Override
 			public void run()
 			{
+			    // wiederhole solange bis das Spiel beendet ist
 				while(mastermind.getState() == State.playingKI)
 				{
 					if (thread.isInterrupted())
-					        return;
+					    return;
 
                     try
                     {
+                        // warte 2 Sekunden
                         Thread.sleep(2000);
                     }
                     catch (InterruptedException e)
@@ -166,6 +181,8 @@ public class KI
 
                     try
                     {
+                        // Berechne den Wahrscheinlichste Geheimcode
+                        // Gebe den errechneten Geheimcode als Eingabe
                         mastermind.addRow(getHighestProbability());
                     }
                     catch (InterruptKIException e)
@@ -199,15 +216,18 @@ public class KI
 		final ArrayList<Row> rows = mastermind.getRows();
 
 		Row[] rowArray = (Row[])rows.toArray(new Row[0]);
-
+		
+		// Überpruft ob keine Eingaben(Zeilen) errechnet wurden
 		if(rowCal == 0)
 		{
 			arrayList = getPossibilities(rowArray[0]);
 			rowCal = 1;
 		}
 
+		// Berechene alle noch offene Eingaben(Zeilen)
 		for(; rowCal < rowArray.length; rowCal++)
 		{
+		    // Füge die neue Geheimcode-Menge mit der Schnittmengen Operation ein
 			arrayList = intersectSetCodeArrayList(arrayList, 
 			        getPossibilities(rowArray[rowCal]));
 		}
@@ -227,16 +247,23 @@ public class KI
         ArrayList<Integer[]> newPossibilities = new ArrayList<Integer[]>();
         Integer[] newPossibility;
         
+        // Jedes Element von p1
         for(Integer[] p1Element : p1)
-        {           
+        {       
             if (thread.isInterrupted())
                 throw new InterruptKIException();
-
+            
+            // und Jedes Element von p2
             for(Integer[] p2Element : p2)
-            {   
+            {
+                // wird mit der Schnitmenge Operation vereinigt
                 newPossibility = SetCode.intersectRow(p1Element, p2Element);
+                
+                // Überprüft ob die Vereinigung nicht Null ergibt
+                // (Ergibt Null wenn man die Elemente nicht zusammen führen kann)
                 if(newPossibility != null)
                 {
+                    // Wenn ja dann in der Neuen Menge aufnehmen
                     newPossibilities.add(0, newPossibility);
                 }
             }
@@ -255,8 +282,10 @@ public class KI
 	{
 		int[] stoneCodes = new int[codeLength];
 		
+		// Überprüft ob keine Eingaben gemacht wurden sind.
 		if(mastermind.getRowSize() == 0)
 		{
+		    // Wenn ja dann Rate.
 			for(int i = 0; i < codeLength; i++)
 			{
 				stoneCodes[i] = i % colorLength; 
@@ -265,11 +294,12 @@ public class KI
 			return stoneCodes;
 		}
 
+		// Ansonsten berechne alle Möglichkeiten für denn Geheimcode.
 		calculatePossibilities();
 
+		// Berechne denn Wahrscheinlichste Geheimcode aus denn Möglichkeiten
 		Integer[] setStoneCodesMax = null;
 		long max = 0, buffer;
-
 		for(Integer[] setStoneCodesBuffer : arrayList)
 		{
 			buffer = SetCode.getRowSize(setStoneCodesBuffer);
@@ -295,6 +325,7 @@ public class KI
 	 */
 	private ArrayList<Integer[]> getPossibilities(Row row)
 	{
+	    // Erzeuge die Initial-Permutation
 		ArrayList<Integer[]> arrayList = new ArrayList<Integer[]>();
 		int[] stoneCodes = row.getCode();
 		int red = row.getRed(), white = row.getWhite();
@@ -319,9 +350,10 @@ public class KI
 
 		do
 		{
+		    // Erzeuge eine Geiheimcode-Menge in Abhängigkeit der Permutation
 			arrayList.add(SetCode.createRow(permutation, colorLength, stoneCodes));
 		}
-		while(nextPermutation(permutation));
+		while(nextPermutation(permutation));// Wiederhole bis es keine Permutationen mehr gibt
 
 		return arrayList;
 	}

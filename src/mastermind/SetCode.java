@@ -4,7 +4,7 @@
 package mastermind;
 
 /**
- * The Class SetCode.
+ * The Class SetCode is a help-class for handle the Integer-Sets and SecretCode-set
  * @author      Birk Kauer
  * @author      Raphael Pavlidis
  * @version     %I%, %G%
@@ -30,7 +30,7 @@ public class SetCode
 		0b001111111111111, 0b011111111111111, 0b111111111111111};
 	
 	/**
-	 * denies another instanz of SetCode.
+	 * denies another instance of SetCode.
 	 */
 	private SetCode(){}
 
@@ -43,9 +43,11 @@ public class SetCode
 	 */
 	public static Integer[] createRow(int[] resultCodes, int colorLength, int[] stoneCodes)
 	{
+	    // Erstellt für jede Spalte die Menge
 		Integer[] setCodes = new Integer[resultCodes.length];
 		for(int i = 0; i < resultCodes.length; i++)
 		{
+		    // Erstellt die Menge in Abhängigkeit von R und N (siehe KI Doku)
 			setCodes[i] = resultCodes[i] == ResultCode.RED ? set[stoneCodes[i]] 
 					: setAll[colorLength] ^ set[stoneCodes[i]];
 		}
@@ -63,12 +65,15 @@ public class SetCode
 	{
 		Integer[] newArray = new Integer[set1.length];
 		int newSet;
+		// Vereinigt(Schnitt) die zwei Elemente der Geheimcode-Menge(Integer[]) Spaltenweise
 		for(int i = 0; i < set1.length; i++)
 		{
 			newSet = set1[i] & set2[i];
 
+			// Überprüft ob die neue Spalte(Menge) die Leere Menge ist
 			if(newSet == 0)
 			{
+			    // wenn ja bedeutet es das man die Elemente nicht vereinigen(Schnitt) kann.
 				return null;
 			}
 			else
