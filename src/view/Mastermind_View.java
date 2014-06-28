@@ -22,6 +22,7 @@ import javax.swing.UIManager;
 import mastermind.Mastermind;
 import mastermind.Row;
 import mastermind.State;
+import file.AwtDesktopNotSupported;
 import file.Mastermind_File;
 
 import java.awt.event.ActionEvent;
@@ -29,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * The GUI class.
@@ -36,11 +38,12 @@ import java.io.IOException;
  * Here will everything be handled what the user can see and interact with.
  * <p>
  * <p>
- * @author      Birk Kauer
- * @author      Raphael Pavlidis
- * @author      Nico
- * @version     %I%, %G%
- * @since       1.0
+ * 
+ * @author Birk Kauer
+ * @author Raphael Pavlidis
+ * @author Nico
+ * @version %I%, %G%
+ * @since 1.0
  */
 public class Mastermind_View extends JFrame
 {
@@ -99,10 +102,10 @@ public class Mastermind_View extends JFrame
 
     /** The Constant backgroundColor. */
     public static final Color backgroundColor = new Color(42, 42, 42);
-    
+
     /** The Constant foregroundColor. */
     public static final Color foregroundColor = Color.white;
-    
+
     /** The Constant borderColor. */
     public static final Color borderColor = Color.black;
 
@@ -181,19 +184,18 @@ public class Mastermind_View extends JFrame
     {
         setIconImage(new ImageIcon("MIcon").getImage());
 
-
         // Making GUI's fancy.
         String[] usedComponents =
                 { "Menu", "MenuBar", "MenuItem", "Panel", "RadioButton",
                         "Slider", "Label", "ComboBox", "CheckBox", "Button",
                         "OptionPane" };
-        
+
         for (String usedComponent : usedComponents)
         {
             UIManager.put(usedComponent + ".background", backgroundColor);
             UIManager.put(usedComponent + ".foreground", foregroundColor);
         }
-        
+
         UIManager.put("Button.border",
                 BorderFactory.createLineBorder(borderColor, 2));
         UIManager.put("Menu.border",
@@ -206,13 +208,14 @@ public class Mastermind_View extends JFrame
         UIManager.put("ScrollBar.thumbShadow", borderColor);
         UIManager.put("ScrollBar.thumbDarkShadow", borderColor);
         UIManager.put("ScrollBar.thumbLightShadow", borderColor);
-        UIManager.put("ScrollBar.shadow",borderColor);
+        UIManager.put("ScrollBar.shadow", borderColor);
         UIManager.put("control", borderColor);
 
         JPanel contentPane = new JPanel();
         contentPane.setLayout(null);
         setContentPane(contentPane);
-        //Adding a mouse Listener for dragging the GUI around since we deleted the standard Box
+        // Adding a mouse Listener for dragging the GUI around since we deleted
+        // the standard Box
         addMouseListener(new MouseAdapter()
         {
             public void mousePressed(MouseEvent e)
@@ -258,22 +261,22 @@ public class Mastermind_View extends JFrame
             {
                 if (!jbutton_Add.isEnabled())
                     return;
-                
+
                 int[] newCode = new int[codeLength];
-                //Adding the Code into the Stone_View Box
+                // Adding the Code into the Stone_View Box
                 for (int i = 0; i < codeLength; i++)
                 {
                     newCode[i] =
                             ((Stone_View) horizontalBox_Selection
                                     .getComponent(i)).getCode();
                 }
-                //Checks if the button has a different Text for different modes
+                // Checks if the button has a different Text for different modes
                 if (jbutton_Add.getText().equals("Set Code"))
                 {
                     if (mastermind.setSecretCode(newCode))
                     {
                         horizontalBox_Hint.removeAll();
-                        //Adding the Secret Code to the Secret Code field
+                        // Adding the Secret Code to the Secret Code field
                         for (int code : newCode)
                         {
                             horizontalBox_Hint.add(new Stone_View(code));
@@ -293,7 +296,7 @@ public class Mastermind_View extends JFrame
         });
 
         contentPane.add(jbutton_Add);
-        //Button "Hint"
+        // Button "Hint"
         jbutton_Hint = new JButton();
         jbutton_Hint.addActionListener(new ActionListener()
         {
@@ -301,7 +304,8 @@ public class Mastermind_View extends JFrame
             {
                 if (!jbutton_Hint.isEnabled())
                     return;
-                //Checks if the Button has the correct Text to start the getHint()
+                // Checks if the Button has the correct Text to start the
+                // getHint()
                 if (jbutton_Hint.getText().equals("Hint"))
                 {
                     mastermind.getHint();
@@ -340,7 +344,7 @@ public class Mastermind_View extends JFrame
                 public void actionPerformed(ActionEvent arg0)
                 {
                     NewGame_View newGame_View = new NewGame_View();
-                    //New Game button in Menu opening the New Game Panel
+                    // New Game button in Menu opening the New Game Panel
                     if (JOptionPane.showConfirmDialog(null, newGame_View,
                             "New Game", JOptionPane.OK_CANCEL_OPTION,
                             JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION)
@@ -361,8 +365,8 @@ public class Mastermind_View extends JFrame
                 @Override
                 public void actionPerformed(ActionEvent arg0)
                 {
-                    //Saving the current Mastermind Object
-                	JFileChooser jFileChooser = new JFileChooser();
+                    // Saving the current Mastermind Object
+                    JFileChooser jFileChooser = new JFileChooser();
                     jFileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 
                     if (jFileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION)
@@ -381,7 +385,7 @@ public class Mastermind_View extends JFrame
                 }
             });
             jMenu_File.add(jMenuItem_Save);
-            //Button to load a Mastermind Object
+            // Button to load a Mastermind Object
             JMenuItem jMenuItem_load =
                     new JMenuItem("Load", Mastermind_File.loadIcon("load.png"));
             jMenuItem_load.addActionListener(new ActionListener()
@@ -389,10 +393,10 @@ public class Mastermind_View extends JFrame
                 @Override
                 public void actionPerformed(ActionEvent arg0)
                 {
-                    //Choose the File
-                	JFileChooser jFileChooser = new JFileChooser();
+                    // Choose the File
+                    JFileChooser jFileChooser = new JFileChooser();
                     jFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-                    //Loading the Mastermind object
+                    // Loading the Mastermind object
                     if (jFileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
                     {
                         try
@@ -418,7 +422,7 @@ public class Mastermind_View extends JFrame
                 }
             });
             jMenu_File.add(jMenuItem_load);
-            //Button to load the Help Dokument
+            // Button to load the Help Dokument
             JMenu jMenu_Help = new JMenu("Help");
             jMenu_Help.setBorderPainted(false);
             jMenuBar.add(jMenu_Help);
@@ -431,11 +435,28 @@ public class Mastermind_View extends JFrame
                 public void actionPerformed(ActionEvent arg0)
                 {
                     // loading the Manual via AWT Desktop
-                	Mastermind_File.loadPDF();
+                    try
+                    {
+                        Mastermind_File.loadPDF();
+                    }
+                    catch (IOException e)
+                    {
+                        JOptionPane.showMessageDialog(null,
+                                "Cannot open the PDF");
+                    }
+                    catch (AwtDesktopNotSupported e)
+                    {
+                        JOptionPane.showMessageDialog(null,
+                                "Awt Desktop is not supported");
+                    }
+                    catch (URISyntaxException e)
+                    {
+                        JOptionPane.showMessageDialog(null, "URI Syntax error");
+                    }
                 }
             });
             jMenu_Help.add(jMenuItem_Help);
-            //Credits
+            // Credits
             JMenuItem jMenuItem_about =
                     new JMenuItem("About",
                             Mastermind_File.loadIcon("about.png"));
@@ -445,7 +466,8 @@ public class Mastermind_View extends JFrame
                 public void actionPerformed(ActionEvent arg0)
                 {
                     JOptionPane
-                            .showMessageDialog(null,
+                            .showMessageDialog(
+                                    null,
                                     "Version 1.0.0 \u00A9 by \n- Birk Kauer\n- Raphael Pavlidis\n- Nico Meier\n- Bettina Schuller");
                 }
             });
@@ -479,7 +501,7 @@ public class Mastermind_View extends JFrame
             });
             jMenuBar.add(jbutton_Exit);
         }
-        //Repainting/updating the GUI
+        // Repainting/updating the GUI
         update();
         setTitle("Mastermind");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -726,10 +748,10 @@ public class Mastermind_View extends JFrame
         horizontalBox_Selection.validate();
         horizontalBox_Hint.validate();
         verticalBox_Playfield.validate();
-        
+
         scrollPane_Selection.repaint();
         scrollPane_Hint.repaint();
         scrollPane_Playfield.repaint();
-        
+
     }
 }
