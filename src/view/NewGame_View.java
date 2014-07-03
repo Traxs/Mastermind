@@ -47,9 +47,6 @@ public class NewGame_View extends JPanel implements ItemListener
     /** The j radio button human. */
     private JRadioButton jRadioButtonHuman;
 
-    /** The j radio button human help. */
-    private JRadioButton jRadioButtonHumanHelp;
-
     /** The j radio button ki. */
     private JRadioButton jRadioButtonKI;
 
@@ -90,12 +87,10 @@ public class NewGame_View extends JPanel implements ItemListener
 
         jRadioButtonHuman = new JRadioButton("Normal");
         jRadioButtonHuman.setSelected(true);
-        jRadioButtonHumanHelp = new JRadioButton("with Assistent");
         jRadioButtonKI = new JRadioButton("against KI");
 
         ButtonGroup buttonGroup = new ButtonGroup();
         buttonGroup.add(jRadioButtonHuman);
-        buttonGroup.add(jRadioButtonHumanHelp);
         buttonGroup.add(jRadioButtonKI);
 
         add(new JLabel("how many different colors?\n"));
@@ -107,7 +102,6 @@ public class NewGame_View extends JPanel implements ItemListener
         add(jCheckBoxRowNumber);
         add(new JLabel("\n\nMode:\n"));
         add(jRadioButtonHuman);
-        add(jRadioButtonHumanHelp);
         add(jRadioButtonKI);
 
     }
@@ -121,9 +115,6 @@ public class NewGame_View extends JPanel implements ItemListener
     {
         if (jRadioButtonHuman.isSelected())
             return State.playingHuman;
-
-        if (jRadioButtonHumanHelp.isSelected())
-            return State.playingHumanHelp;
 
         return State.setCode;
     }

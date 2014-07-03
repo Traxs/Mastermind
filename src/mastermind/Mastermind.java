@@ -390,6 +390,17 @@ public class Mastermind implements java.io.Serializable
             break;
         }
     }
+    
+    /**
+     * This function will allows the user to decide from him self if he wants to play with helps
+     */
+    public void toggleHelp()
+    {
+    	if(state == State.playingHuman)
+    		setState(State.playingHumanHelp);
+    	else if(state == State.playingHumanHelp)
+    		setState(State.playingHuman); 
+    }
 
     /**
      * Adds the row.

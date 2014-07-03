@@ -6,6 +6,7 @@ import java.awt.Frame;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -93,6 +94,9 @@ public class Mastermind_View extends JFrame
 
     /** The jbutton_ add. */
     private JButton jbutton_Add;
+    
+    /** The JCheckBox_Help. */
+    private JCheckBox jCheckBox_Help;
 
     /** The pos y. */
     private int posX = 0, posY = 0;
@@ -317,6 +321,19 @@ public class Mastermind_View extends JFrame
             }
         });
         contentPane.add(jbutton_Hint);
+        
+        jCheckBox_Help = new JCheckBox("Help");
+        jCheckBox_Help.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				if(jCheckBox_Help.isEnabled())
+					mastermind.toggleHelp();
+				
+			}
+		});
+        contentPane.add(jCheckBox_Help);
 
         jLabel_Row = new JLabel();
         contentPane.add(jLabel_Row);
@@ -595,6 +612,7 @@ public class Mastermind_View extends JFrame
 
         jbutton_Add.setBounds(rowSize + 24, 434, 98, 25);
         jbutton_Hint.setBounds(rowSize + 24, 397, 98, 25);
+        jCheckBox_Help.setBounds(rowSize + 24, 471, 98, 25);
         jLabel_Row.setBounds(rowSize + 24, 12, 80, 30);
 
         jbutton_Add.setEnabled(true);
@@ -652,6 +670,7 @@ public class Mastermind_View extends JFrame
     public void startNewGame(int newColorLength, int newRowLength,
             int newCodeLength, State state)
     {
+    	this.mastermind.stopKI();
         // New Mastermind
         this.mastermind =
                 new Mastermind(this, newCodeLength, newRowLength,
@@ -680,6 +699,7 @@ public class Mastermind_View extends JFrame
         switch (state)
         {
         case setCode:
+        	jCheckBox_Help.setEnabled(false);
             jbutton_Add.setEnabled(true);
             jbutton_Add.setText("Set Code");
             jbutton_Add.setToolTipText("Choose your Code against the KI");
@@ -688,6 +708,8 @@ public class Mastermind_View extends JFrame
             break;
         case playingHuman:
         case playingHumanHelp:
+        	jCheckBox_Help.setSelected(state == State.playingHumanHelp);
+        	jCheckBox_Help.setEnabled(true);
             jbutton_Add.setEnabled(true);
             jbutton_Add.setText("Add");
             jbutton_Add.setToolTipText("Add the choosen Code into the Field");
@@ -699,10 +721,12 @@ public class Mastermind_View extends JFrame
             jLabel_statusBar.setText("your turn...");
             break;
         case playingKI:
+        	jCheckBox_Help.setEnabled(false);
             jbutton_Add.setEnabled(false);
             jLabel_statusBar.setText("Ki playing now...");
             break;
         case checkPossible:
+        	jCheckBox_Help.setEnabled(false);
             jbutton_Add.setEnabled(false);
             jbutton_Hint.setEnabled(false);
             jLabel_statusBar.setText("Checking for possibilitys...");
@@ -710,12 +734,14 @@ public class Mastermind_View extends JFrame
         case stopCaculateKI:
         case stopCaculateHelpKI:
         case stopCheckPossible:
+        	jCheckBox_Help.setEnabled(false);
             jbutton_Add.setEnabled(false);
             jbutton_Hint.setEnabled(false);
             jLabel_statusBar.setText("stopping Ki...");
             break;
         case caculateKI:
         case caculateHelpKI:
+        	jCheckBox_Help.setEnabled(false);
             jbutton_Add.setEnabled(false);
             jbutton_Hint.setEnabled(true);
             jbutton_Hint.setText("Cancel");
@@ -725,6 +751,7 @@ public class Mastermind_View extends JFrame
             break;
         default:
             verticalBox_Playfield.remove(0);
+            jCheckBox_Help.setEnabled(false);
             jbutton_Add.setEnabled(false);
             jbutton_Hint.setEnabled(false);
             jbutton_Hint.setText("Hint");
